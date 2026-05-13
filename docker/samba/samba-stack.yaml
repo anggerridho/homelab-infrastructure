@@ -1,0 +1,33 @@
+version: "3.10"
+
+services:
+  samba:
+    image: dperson/samba:latest
+    environment:
+      - USER=${SAMBA_CREDENTIALS}
+    env_file:
+      - .env
+    ports:
+      - target: 139
+        published: 139
+        protocol: tcp
+        mode: host
+      - target: 445
+        published: 445
+        protocol: tcp
+        mode: host
+      - target: 137
+        published: 137
+        protocol: udp
+        mode: host
+      - target: 138
+        published: 138
+        protocol: udp
+        mode: host
+    volumes:
+      - /mnt/disk2:/storage
+      - /root/homelab-infrastructure/docker/samba/smb.conf:/etc/samba/smb.conf:ro
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager

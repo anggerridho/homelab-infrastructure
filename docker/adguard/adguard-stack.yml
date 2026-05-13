@@ -1,0 +1,26 @@
+version: "3.10"
+services:
+  adguardhome:
+    image: adguard/adguardhome
+    ports:
+      # Port DNS
+      - target: 53
+        published: 53
+        protocol: udp
+        mode: host
+      - target: 53
+        published: 53
+        protocol: tcp
+        mode: host
+      # Port Web Dashboard (Akses langsung)
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+    volumes:
+      - /mnt/disk1/adguard/work:/opt/adguardhome/work
+      - /mnt/disk1/adguard/conf:/opt/adguardhome/conf
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab-2

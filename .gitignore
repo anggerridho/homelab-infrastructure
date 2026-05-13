@@ -30,3 +30,13 @@ go.work.sum
 # Editor/IDE
 # .idea/
 # .vscode/
+configs/mikrotik_config_backup/
+scripts/vault.sh
+scripts/get-secrets.sh
+scripts/auto-unseal.sh
+
+# Abaikan semua file .env di folder manapun
+**/.env
+
+# Kecuali file contoh/template
+!**/.env.example

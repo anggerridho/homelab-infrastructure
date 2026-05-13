@@ -1,0 +1,26 @@
+version: "3.10"
+
+services:
+  redis:
+    # Menggunakan Alpine untuk menghindari masalah library glibc
+    image: redis:7.0-alpine
+    # String format biasanya lebih 'safe' daripada array format di beberapa parser Swarm
+    command: redis-server --save "" --appendonly no
+    ports:
+      - target: 6379
+        published: 6379
+        protocol: tcp
+        mode: host
+    networks:
+      - net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == homelab-2
+      restart_policy:
+        condition: on-failure
+
+networks:
+  net:
+    external: true

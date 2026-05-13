@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  vault:
+    image: hashicorp/vault:latest
+    command: server
+    networks:
+      - net
+    environment:
+      VAULT_ADDR: 'http://127.0.0.1:8200'
+      SKIP_SETCAP: "true"
+      SKIP_CHOWN: "true"
+      VAULT_LOCAL_CONFIG: |
+        disable_mlock = true
+        ui = true
+        api_addr = "http://127.0.0.1:8200"      # Tambahkan baris ini
+        cluster_addr = "http://127.0.0.1:8201"  # Tambahkan baris ini
+        storage "raft" {
+          path = "/vault/file"
+          node_id = "homelab-1"
+        }
+        listener "tcp" {
+          address = "0.0.0.0:8200"
+          tls_disable = "true"
+        }
+    volumes:
+      # Pastikan data tetap di disk1 homelab-1
+      - /mnt/disk1/vault-storage:/vault/file
+    ports:
+      - "8200:8200"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          # Kunci mati di node-1
+          - node.hostname == homelab-1
+
+networks:
+  net:
+    external: true

@@ -1,0 +1,28 @@
+version: "3.10"
+
+services:
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --no-autoupdate --protocol http2 --metrics 0.0.0.0:2000 run
+    env_file:
+      - .env
+    # BYPASS DNS: Jangan lewat Mikrotik/AdGuard untuk tunnel
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    networks:
+      - net
+    deploy:
+      mode: global
+      restart_policy:
+        condition: any
+        delay: 10s
+        max_attempts: 5
+        window: 120s
+      update_config:
+        parallelism: 1
+        delay: 10s
+
+networks:
+  net:
+    external: true

@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  tailscale:
+    image: tailscale/tailscale:latest
+    # Menggunakan template swarm untuk nama unik
+    hostname: "homelab-{{.Node.Hostname}}" 
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_USERSPACE=false
+      - TS_ROUTES=${TS_ROUTES}
+      - TS_ACCEPT_DNS=false
+      - TS_AUTHKEY=${TS_AUTHKEY}
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
+    volumes:
+      # Gunakan sub-folder berdasarkan hostname agar tidak bentrok
+      - /root/tailscale/{{.Node.Hostname}}:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    networks:
+      - net
+    healthcheck:
+      test: ["CMD", "tailscale", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 1m
+    deploy:
+      mode: global
+      restart_policy:
+        condition: any
+        delay: 30s      # Memberi jeda sedikit lebih lama dari Cloudflare, menghindari lonjakan beban CPU secara bersamaan saat semua layanan mencoba menyala kembali (thundering herd problem)
+        max_attempts: 5
+        window: 120s
+
+networks:
+  net:
+    external: true

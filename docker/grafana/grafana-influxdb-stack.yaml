@@ -1,0 +1,46 @@
+version: "3.10"
+
+services:
+  influxdb:
+    image: influxdb:1.8
+    ports:
+      - target: 8086
+        published: 8086
+        protocol: tcp
+        mode: host
+    volumes:
+      # Pastikan path ini sudah ada beserta datanya di homelab-2
+      - /mnt/disk1/influxdb:/var/lib/influxdb
+    networks:
+      - net
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab-2
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - target: 3000
+        published: 3030
+        protocol: tcp
+        mode: host
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_NAME=Main Org.
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    volumes:
+      # Pastikan path ini sudah ada beserta datanya di homelab-2
+      - /mnt/disk1/grafana/data:/var/lib/grafana
+      - /mnt/disk1/grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - net
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab-2
+
+networks:
+  net:
+    # Mutlak diperlukan agar Node 1 dan Node 2 bisa saling ping
+    external: true
