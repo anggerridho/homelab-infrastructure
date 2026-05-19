@@ -3,6 +3,7 @@ export HOMELAB="/root/homelab-infrastructure/scripts"
 
 # Import fungsi-fungsi Anda
 source ${HOMELAB}/vault.sh
+source ${HOMELAB}/selfhealing-container.sh
 source ${HOMELAB}/need-reboot-homelab-1.sh
 source ${HOMELAB}/check_vpn_kantor.sh
 source ${HOMELAB}/check_traffic_vpn.sh
@@ -18,6 +19,8 @@ main() {
     if [ -d "/sys/class/net/ppp0" ]; then
         cek_traffic_vpn
     fi
+
+    selfhealing_swarm
 }
 
 # Jalankan main dan catat log jika ada error
