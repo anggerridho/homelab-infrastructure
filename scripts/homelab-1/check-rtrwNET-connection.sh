@@ -2,7 +2,7 @@
 PATH=/usr/bin
 
 export HOMELAB="/root/homelab-infrastructure/scripts"
-export HOST_LAB="${HOST_LAB}/homelab-1"
+export HOST_LAB="${HOMELAB}/homelab-1"
 
 source ${HOMELAB}/vault.sh
 source ${HOST_LAB}/get_data_mikrotik.sh

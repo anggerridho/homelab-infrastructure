@@ -1,15 +1,14 @@
-HOMELAB="/root/homelab-infrastructure/scripts"
-HOST_LAB="${HOMELAB}/homelab-1"
+HOST_LAB="/root/homelab-infrastructure/scripts/homelab-1"
 
 #@reboot ${HOMELAB}/startup.sh #&& ${HOMELAB}/rclone_inotify.sh
 #*/5 * * * * ${HOMELAB}/check-rtrwNET-connection.sh
 #0 3 * * * docker-compose -f /root/homelab/samba.yaml stop && docker-compose -f /root/homelab/samba.yaml up -d
 #0 */1 * * * ${HOMELAB}/rclone_timer.sh
 
-0 * * * * ${HOST_LAB}/grafana-backup.sh >> /var/log/grafana_backup.log 2>&1
-*/5 * * * * ${HOST_LAB}/check-rtrwNET-connection.sh
-* * * * * ${HOST_LAB}/watchdog.sh
-50 5,17 * * * ${HOST_LAB}/disconnect_vpn.sh
-0 1 * * * ${HOST_LAB}/backupMikroTik.sh
-@reboot ${HOST_LAB}/startup.sh
+0 * * * * ${HOST_LAB}/grafana-backup.sh #>> /var/log/grafana_backup.log 2>&1
+*/5 * * * * ${HOST_LAB}/check-rtrwNET-connection.sh #>> /var/log/check-rtrwNET-connection.log 2>&1
+* * * * * ${HOST_LAB}/watchdog.sh #>> /var/log/watchdog.log 2>&1
+50 5,17 * * * ${HOST_LAB}/disconnect_vpn.sh >> /var/log/disconnect_vpn.log 2>&1
+0 1 * * * ${HOST_LAB}/backupMikroTik.sh >> /var/log/backupMikroTik.log 2>&1
+@reboot ${HOST_LAB}/startup.sh >> /var/log/startup.log 2>&1
 57 5 * * * /usr/sbin/reboot

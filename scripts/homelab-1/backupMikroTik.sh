@@ -7,6 +7,10 @@ RETENTION_DAYS=2  # Jumlah hari file disimpan
 HOMELAB="/root/homelab-infrastructure/scripts"
 source ${HOMELAB}/vault.sh && vault
 
+if [ -z $BACKUP_DIR ]; then
+    exit 1
+fi
+
 if [ ! -d ${BACKUP_DIR} ]; then
     mkdir -p $BACKUP_DIR
 fi
@@ -19,7 +23,7 @@ ${HOMELAB}/terminate.sh -t 3 sshpass -p "$(echo ${MIKROTIK_PSSWD} | base64 -d)" 
 sleep 5
 
 # --- 2. Download File ke Homelab ---
-echo "[$(date)] Mengunduh file ke Homelab..."
+echo "[$(date)] Mengunduh file ke Homelab: ${BACKUP_DIR}"
 ${HOMELAB}/terminate.sh -t 3 sshpass -p "$(echo ${MIKROTIK_PSSWD} | base64 -d)" scp ${MIKROTIK_HOST}:/backup_$DATE.backup $BACKUP_DIR/
 ${HOMELAB}/terminate.sh -t 3 sshpass -p "$(echo ${MIKROTIK_PSSWD} | base64 -d)" scp ${MIKROTIK_HOST}:/backup_$DATE.rsc $BACKUP_DIR/
 
