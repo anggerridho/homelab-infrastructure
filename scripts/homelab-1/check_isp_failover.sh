@@ -54,7 +54,7 @@ cek_isp_failover(){
 
     # Eksekusi fungsi dengan parameter yang sudah disiapkan
     process_isp "IndiHome" "$STATUS_INDIHOME" "ICMP Ping (8.8.8.8)"
-    process_isp "XL_Backup" "$STATUS_XL" "HTTP Fetch (detectportal.firefox.com)"
+    process_isp "XL_Backup" "$STATUS_XL" "HTTP Fetch (cloudflare.com)"
 
     echo "[$(date +'%Y%m%d_%H:%M:%S')] - Selesai mengecek ISP."
 }
