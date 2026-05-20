@@ -1,0 +1,6 @@
+HOMELAB="/root/homelab-infrastructure/scripts"
+HOST_LAB="${HOMELAB}/homelab-2"
+
+*/5 * * * * ${HOST_LAB}/watchdog.sh
+@reboot ${HOST_LAB}/startup.sh
+57 5 * * * /usr/sbin/reboot
