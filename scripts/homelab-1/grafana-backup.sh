@@ -5,8 +5,8 @@
 # ==========================================
 
 # Konfigurasi
-HOMELAB="/root/homelab-infrastructure"
-source ${HOMELAB}/scripts/vault.sh && vault
+HOMELAB="/root/homelab-infrastructure/scripts"
+source ${HOMELAB}/vault.sh && vault
 DATE_NOW=$(date +'%Y-%m-%d_%H:%M:%S')
 
 echo "[$DATE_NOW] Memulai backup Grafana Dashboards..."
@@ -22,13 +22,13 @@ fi
 # 2. Loop setiap DASH_UID
 for DASH_UID in $DASHBOARD_UIDS; do
     RAW_JSON=$(curl -s "$GRAFANA_URL/api/dashboards/uid/$DASH_UID")
-    
+
     # Perbaikan: Hapus karakter ilegal termasuk slash (/)
     DASH_TITLE=$(echo "$RAW_JSON" | jq -r '.dashboard.title' | sed 's/[^a-zA-Z0-9._-]/_/g')
-    
+
     # Simpan ke folder provisioning
     echo "$RAW_JSON" | jq '.dashboard | .id = null' > "$PROVISION_DIR/${DASH_TITLE}.json"
-    
+
     echo "  -> Berhasil membackup: ${DASH_TITLE}.json"
 done
 

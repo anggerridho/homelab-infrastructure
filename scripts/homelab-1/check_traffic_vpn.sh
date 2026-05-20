@@ -51,7 +51,7 @@ cek_traffic_vpn() {
 
         if [ "$IS_LOCKED" != "1" ]; then
             MSG="[$(date +'%Y%m%d_%H:%M:%S')] - ⚠️ WARNING: Traffic VPN Tinggi! RX: ${RX_MBPS} Mbps"
-            TxT="$(echo "${MSG}")" ${HOMELAB_SCRIPT}/alertelegram.sh
+            TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
             # redis-cli SETEX $REDIS_KEY_TRAFFIC 1800 "1" # Lock selama 30 menit
             redis-cli -h ${REDIS_HOST} SET $REDIS_KEY "1" > /dev/null 2>&1 # Permanent Lock
         fi

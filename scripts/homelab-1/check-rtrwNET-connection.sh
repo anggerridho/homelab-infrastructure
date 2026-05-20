@@ -2,23 +2,25 @@
 PATH=/usr/bin
 
 export HOMELAB="/root/homelab-infrastructure/scripts"
+export HOST_LAB="${HOST_LAB}/homelab-1"
+
 source ${HOMELAB}/vault.sh
-source ${HOMELAB}/get_data_mikrotik.sh
-source ${HOMELAB}/check_cctv.sh
-source ${HOMELAB}/check_rtrwNet.sh
-source ${HOMELAB}/check_hectic_isp.sh
-source ${HOMELAB}/check_traffic_distribution.sh
-source ${HOMELAB}/check_top_user.sh
-source ${HOMELAB}/check_isp_failover.sh
-source ${HOMELAB}/check_critical_applications.sh
-source ${HOMELAB}/check_anomali_speedtest.sh
-source ${HOMELAB}/check_remote.sh
-source ${HOMELAB}/check_disk.sh
-source ${HOMELAB}/check_cpu_load_usage_mikrotik.sh
-source ${HOMELAB}/check_cpu_mem_usage_stb.sh
-source ${HOMELAB}/check_disk_io_stb.sh
-source ${HOMELAB}/check_vps_monitor.sh
-source ${HOMELAB}/telemetry_collector.sh
+source ${HOST_LAB}/get_data_mikrotik.sh
+source ${HOST_LAB}/check_cctv.sh
+source ${HOST_LAB}/check_rtrwNet.sh
+source ${HOST_LAB}/check_hectic_isp.sh
+source ${HOST_LAB}/check_traffic_distribution.sh
+source ${HOST_LAB}/check_top_user.sh
+source ${HOST_LAB}/check_isp_failover.sh
+source ${HOST_LAB}/check_critical_applications.sh
+source ${HOST_LAB}/check_anomali_speedtest.sh
+source ${HOST_LAB}/check_remote.sh
+source ${HOST_LAB}/check_disk.sh
+source ${HOST_LAB}/check_cpu_load_usage_mikrotik.sh
+source ${HOST_LAB}/check_cpu_mem_usage_stb.sh
+source ${HOST_LAB}/check_disk_io_stb.sh
+source ${HOST_LAB}/check_vps_monitor.sh
+source ${HOST_LAB}/telemetry_collector.sh
 source ${HOMELAB}/housekeeping.sh
 
 main(){

@@ -1,14 +1,13 @@
 #!/bin/bash
 export HOMELAB="/root/homelab-infrastructure/scripts"
+export HOST_LAB="${HOMELAB}/homelab-1"
 
 # Import fungsi-fungsi Anda
 source ${HOMELAB}/vault.sh
-source ${HOMELAB}/selfhealing-container.sh
-source ${HOMELAB}/need-reboot-homelab-1.sh
-source ${HOMELAB}/check_vpn_kantor.sh
-source ${HOMELAB}/check_traffic_vpn.sh
-
-export HOMELAB_SCRIPT="${HOMELAB}"
+source ${HOST_LAB}/selfhealing-container.sh
+source ${HOST_LAB}/need-reboot.sh
+source ${HOST_LAB}/check_vpn_kantor.sh
+source ${HOST_LAB}/check_traffic_vpn.sh
 
 main() {
     vault

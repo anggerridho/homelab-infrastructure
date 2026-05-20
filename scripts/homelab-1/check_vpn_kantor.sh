@@ -49,7 +49,7 @@ cek_vpn_kantor() {
             
             # Eksekusi Telegram (Jika ini hang/gagal, Redis sudah terlanjur di-lock, sehingga aman dari spam)
             MSG="[$(date +'%Y%m%d_%H:%M:%S')] - 🚨 ALERT: ${ERROR_DETAIL} | STB"
-            TxT="$(echo "${MSG}")" ${HOMELAB_SCRIPT}/alertelegram.sh
+            TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
         else
             # Silent mode
             echo "[HECTIC] ${APP_NAME} Down. (Masa Lock Telegram)" > /dev/null 2>&1
@@ -66,7 +66,7 @@ cek_vpn_kantor() {
             
             # Baru kirim Telegram
             MSG="[$(date +'%Y%m%d_%H:%M:%S')] - ✅ RECOVERY SUCCESS: ${APP_NAME} is back Online! | STB"
-            TxT="$(echo "${MSG}")" ${HOMELAB_SCRIPT}/alertelegram.sh
+            TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
         else
             echo "[NORMAL] ${APP_NAME} is Online."
         fi
