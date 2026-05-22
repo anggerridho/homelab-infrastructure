@@ -47,7 +47,7 @@ for LOOP_REMOTE in ${LIST_REMOTE}; do
           TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
           
           # Lock Redis selama 1 Jam (3600 detik)
-          redis-cli -h ${REDIS_HOST} SETEX $REDIS_KEY 3600 "1" > /dev/null 2>&1
+          redis-cli -h ${REDIS_HOST} SET $REDIS_KEY "1" > /dev/null 2>&1
           echo "[ALERT] ${LOOP_REMOTE} Down! Telegram terkirim & Redis Lock aktif."
       else
           # Silent mode jika masih di masa lock
