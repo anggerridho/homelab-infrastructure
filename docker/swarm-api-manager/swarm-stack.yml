@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  alert-service:
+    image: local-alert-service:0.1
+    environment:
+      - API_KEY=${API_KEY}
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - TZ=Asia/Jakarta
+    env_file:
+      - .env
+    networks:
+      - net
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+
+  api-manager:
+    image: local-api-manager:0.1
+    environment:
+      - API_KEY=${API_KEY}
+      - STOP_COMMAND=docker service rm homelab_tailscale
+      - HOUSEKEEPING_CMD=find /housekeeping -type f -name "*.log" -delete
+      - TZ=Asia/Jakarta
+      - ALERT_SERVICE_URL=http://alert-service:3001/api/alert
+    env_file:
+      - .env
+    networks:
+      - net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/homelab-infrastructure/docker/tailscale:/data:ro
+      - /var/log:/housekeeping
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          # WAJIB di manager node karena butuh docker.sock host
+          - node.role == manager
+
+networks:
+  net:
+    external: true
