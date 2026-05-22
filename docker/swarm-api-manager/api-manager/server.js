@@ -68,7 +68,7 @@ const runCommand = (cmd) => {
 app.get('/api/tailscale/start', async (req, res) => {
     try {
         // Ambil input secara aman
-        const inputMinutes = req.query.minutes || req.body.minutes;
+        const inputMinutes = req.query.minutes || req.body?.minutes;
         
         // Validasi ketat: jika input ada dan merupakan angka, parse ke integer. Jika tidak, paksa 60.
         const autoStopMinutes = (inputMinutes && !isNaN(inputMinutes)) ? parseInt(inputMinutes, 10) : 60;
