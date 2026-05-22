@@ -67,14 +67,15 @@ const runCommand = (cmd) => {
 // --- ENDPOINT: START TAILSCALE (Dengan Durasi Dinamis) ---
 app.get('/api/tailscale/start', async (req, res) => {
     try {
-        // Ambil menit dari parameter query (?minutes=30), body, atau gunakan default 60
+        // Ambil input secara aman
         const inputMinutes = req.query.minutes || req.body.minutes;
-        const autoStopMinutes = inputMinutes ? parseInt(inputMinutes, 10) : 60;
+        
+        // Validasi ketat: jika input ada dan merupakan angka, parse ke integer. Jika tidak, paksa 60.
+        const autoStopMinutes = (inputMinutes && !isNaN(inputMinutes)) ? parseInt(inputMinutes, 10) : 60;
 
         const deployCmd = "cd /data && export $(grep -v '^#' .env | xargs) && docker stack deploy -c tailscale-stack.yaml homelab";
         await runCommand(deployCmd);
         
-        // Bersihkan timer lama jika ada (agar tidak bentrok jika di-hit berulang)
         if (tailscaleTimer) {
             clearTimeout(tailscaleTimer);
             console.log('Timer auto-stop Tailscale diperbarui.');
@@ -92,6 +93,8 @@ app.get('/api/tailscale/start', async (req, res) => {
         console.log(`Tailscale started. Will auto-stop in ${autoStopMinutes} minutes.`);
         res.json({ message: `Tailscale started. Will auto-stop in ${autoStopMinutes} minutes.` });
     } catch (err) {
+        // Tambahkan log ini agar jika ada error lain, Anda bisa tahu detailnya via Docker logs/Telegram
+        originalError('Error detail pada start-endpoint:', err);
         res.status(500).json({ error: 'Failed to start Tailscale' });
     }
 });
