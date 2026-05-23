@@ -48,6 +48,9 @@ jobs:
             git reset --hard origin/main
             git pull origin main
             
+            # Mengaktifkan file crontab-root.txt menjadi crontab sistem
+            crontab crontab-list.txt
+
             # Gunakan substitusi langsung GitHub Secrets agar tidak lolos saat HereDoc (EOF)
             curl -s -X POST http://localhost:3001/api/alert \
               -H "x-api-key: ${{ secrets.ALERT_API_KEY }}" \
@@ -62,6 +65,9 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             git pull origin main
+
+            # Mengaktifkan file crontab-root.txt menjadi crontab sistem
+            crontab crontab-list.txt
             
             # Gunakan substitusi langsung GitHub Secrets agar tidak lolos saat HereDoc (EOF)
             curl -s -X POST http://localhost:3001/api/alert \
