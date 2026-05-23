@@ -41,8 +41,6 @@ jobs:
           ssh-keyscan -T 10 -H ${{ secrets.HOST_2_IP }} >> ~/.ssh/known_hosts 2>/dev/null || true
 
       - name: Execute Pull on Homelab-1
-        env:
-          ALERT_API_KEY: ${{ secrets.ALERT_API_KEY }}
         run: |
           ssh -i ~/.ssh/id_ed25519 root@${{ secrets.HOST_1_IP }} << EOF
             cd /root/homelab-infrastructure
@@ -50,15 +48,14 @@ jobs:
             git reset --hard origin/main
             git pull origin main
             
+            # Gunakan substitusi langsung GitHub Secrets agar tidak lolos saat HereDoc (EOF)
             curl -s -X POST http://localhost:3001/api/alert \
-              -H "x-api-key: \$ALERT_API_KEY" \
+              -H "x-api-key: ${{ secrets.ALERT_API_KEY }}" \
               -H "Content-Type: application/json" \
-              -d '{"text": "✅ Sinkronisasi CI/CD Github ke Homelab-1 Berhasil!", "type": "INFO"}'
+              -d '{"text": "✅ Sinkronisasi CI/CD Github ke Homelab-1 Berhasil!", "type": "INFO"}' || true
           EOF
-
+      
       - name: Execute Pull on Homelab-2
-        env:
-          ALERT_API_KEY: ${{ secrets.ALERT_API_KEY }}
         run: |
           ssh -i ~/.ssh/id_ed25519 root@${{ secrets.HOST_2_IP }} << EOF
             cd /root/homelab-infrastructure
@@ -66,8 +63,9 @@ jobs:
             git reset --hard origin/main
             git pull origin main
             
+            # Gunakan substitusi langsung GitHub Secrets agar tidak lolos saat HereDoc (EOF)
             curl -s -X POST http://localhost:3001/api/alert \
-              -H "x-api-key: \$ALERT_API_KEY" \
+              -H "x-api-key: ${{ secrets.ALERT_API_KEY }}" \
               -H "Content-Type: application/json" \
-              -d '{"text": "✅ Sinkronisasi CI/CD Github ke Homelab-2 Berhasil!", "type": "INFO"}'
+              -d '{"text": "✅ Sinkronisasi CI/CD Github ke Homelab-2 Berhasil!", "type": "INFO"}' || true
           EOF
