@@ -4,7 +4,7 @@ services:
   tailscale:
     image: tailscale/tailscale:latest
     # Menggunakan template swarm untuk nama unik
-    hostname: "homelab-{{.Node.Hostname}}" 
+    hostname: "homelab-{{.Node.Hostname}}"
     cap_add:
       - NET_ADMIN
       - NET_RAW
@@ -22,7 +22,7 @@ services:
       - /root/tailscale/{{.Node.Hostname}}:/var/lib/tailscale
       - /dev/net/tun:/dev/net/tun
     networks:
-      - net
+      - host
     healthcheck:
       test: ["CMD", "tailscale", "status"]
       interval: 30s
@@ -38,5 +38,6 @@ services:
         window: 120s
 
 networks:
-  net:
+  host:
+    name: host
     external: true

@@ -16,7 +16,6 @@ jobs:
           TSL_API_URL: ${{ secrets.TSL_API_URL }}
         run: |
           curl -s -H "x-api-key: $API_KEY" "$TSL_API_URL"
-          sleep 30
 
       - name: Connect to Tailscale
         uses: tailscale/github-action@v2
@@ -32,10 +31,14 @@ jobs:
           
           # Tunggu dan verifikasi koneksi Tailscale
           echo "Memastikan koneksi Tailscale..."
-          tailscale status | grep -E 'homelab|linux'
+          while true; do
+            if [ "$(tailscale status | grep 'linux' | grep 'homelab')" ]; then
+              break
+            fi
+          done
           
-          ssh-keyscan -T 5 -H ${{ secrets.HOST_1_IP }} >> ~/.ssh/known_hosts || true
-          ssh-keyscan -T 5 -H ${{ secrets.HOST_2_IP }} >> ~/.ssh/known_hosts || true
+          ssh-keyscan -T 10 -H ${{ secrets.HOST_1_IP }} >> ~/.ssh/known_hosts || true
+          ssh-keyscan -T 10 -H ${{ secrets.HOST_2_IP }} >> ~/.ssh/known_hosts || true
 
       - name: Execute Pull on Homelab-1
         env:
