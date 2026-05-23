@@ -1,0 +1,66 @@
+name: Deploy via Tailscale SSH
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-homelab:
+    name: Deploy via SSH to Homelab
+    runs-on: ubuntu-latest
+    steps:
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          version: latest
+
+      - name: Setup SSH Key and Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          
+          # Mendaftarkan fingerprint host agar tidak ada prompt "Are you sure you want to continue connecting?"
+          # Ganti 'homelab-1' dan 'homelab-2' dengan IP Tailscale jika MagicDNS tidak aktif
+          ssh-keyscan -H homelab-1 >> ~/.ssh/known_hosts
+          ssh-keyscan -H homelab-2 >> ~/.ssh/known_hosts
+
+      - name: Execute Pull on Homelab-1
+        # Mengambil API key dari GitHub Secrets ke environment variable runner
+        env:
+          ALERT_API_KEY: ${{ secrets.ALERT_API_KEY }}
+        run: |
+          # Perhatikan penggunaan EOF tanpa tanda kutip tunggal ('EOF') 
+          # agar variabel $ALERT_API_KEY bisa dieksekusi/dibaca oleh GitHub Runner 
+          # sebelum dikirim ke STB via SSH
+          ssh -i ~/.ssh/id_rsa root@homelab-1 << EOF
+            cd /root/homelab-infrastructure
+            git fetch --all
+            git reset --hard origin/main
+            git pull origin main
+            
+            # Kirim notifikasi sukses via alert-service di localhost STB
+            curl -s -X POST http://localhost:3001/api/alert \
+              -H "x-api-key: $ALERT_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{"text": "✅ Sinkronisasi CI/CD Github ke Homelab-1 Berhasil!", "type": "INFO"}'
+          EOF
+
+      - name: Execute Pull on Homelab-2
+        env:
+          ALERT_API_KEY: ${{ secrets.ALERT_API_KEY }}
+        run: |
+          ssh -i ~/.ssh/id_rsa root@homelab-2 << EOF
+            cd /root/homelab-infrastructure
+            git fetch --all
+            git reset --hard origin/main
+            git pull origin main
+            
+            # Kirim notifikasi sukses via alert-service di localhost STB
+            curl -s -X POST http://localhost:3001/api/alert \
+              -H "x-api-key: $ALERT_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{"text": "✅ Sinkronisasi CI/CD Github ke Homelab-2 Berhasil!", "type": "INFO"}'
+          EOF
