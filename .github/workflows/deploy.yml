@@ -49,7 +49,7 @@ jobs:
             git pull origin main
             
             # Mengaktifkan file crontab-root.txt menjadi crontab sistem
-            crontab crontab-list.txt
+            crontab scripts/homelab-1/crontab-list.txt
 
             # Gunakan substitusi langsung GitHub Secrets agar tidak lolos saat HereDoc (EOF)
             curl -s -X POST http://localhost:3001/api/alert \
@@ -67,7 +67,7 @@ jobs:
             git pull origin main
 
             # Mengaktifkan file crontab-root.txt menjadi crontab sistem
-            crontab crontab-list.txt
+            crontab scripts/homelab-2/crontab-list.txt
             
             # Gunakan substitusi langsung GitHub Secrets agar tidak lolos saat HereDoc (EOF)
             curl -s -X POST http://localhost:3001/api/alert \
