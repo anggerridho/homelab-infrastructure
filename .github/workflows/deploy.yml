@@ -15,7 +15,6 @@ jobs:
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           version: 1.66.0
-          hostname-as-dns-search-domain: true
 
       - name: Setup SSH Key and Known Hosts
         run: |
@@ -23,16 +22,15 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           
-          # Gunakan FQDN lengkap (.ts.net) agar DNS global Tailscale langsung mengenali tanpa trik search domain
-          ssh-keyscan -H homelab-homelab-1.tailnet-ed0c1.ts.net >> ~/.ssh/known_hosts
-          ssh-keyscan -H homelab-homelab-2.tailnet-ed0c1.ts.net >> ~/.ssh/known_hosts
+          # Mendaftarkan IP Statis Tailscale ke known_hosts
+          ssh-keyscan -H ${{ secrets.HOST_1_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.HOST_2_IP }} >> ~/.ssh/known_hosts
 
       - name: Execute Pull on Homelab-1
         env:
           ALERT_API_KEY: ${{ secrets.ALERT_API_KEY }}
         run: |
-          # SSH menggunakan FQDN lengkap
-          ssh -i ~/.ssh/id_rsa root@homelab-homelab-1.tailnet-ed0c1.ts.net << EOF
+          ssh -i ~/.ssh/id_rsa root@${{ secrets.HOST_1_IP }} << EOF
             cd /root/homelab-infrastructure
             git fetch --all
             git reset --hard origin/main
@@ -48,8 +46,7 @@ jobs:
         env:
           ALERT_API_KEY: ${{ secrets.ALERT_API_KEY }}
         run: |
-          # SSH menggunakan FQDN lengkap
-          ssh -i ~/.ssh/id_rsa root@homelab-homelab-2.tailnet-ed0c1.ts.net << EOF
+          ssh -i ~/.ssh/id_rsa root@${{ secrets.HOST_2_IP }} << EOF
             cd /root/homelab-infrastructure
             git fetch --all
             git reset --hard origin/main
