@@ -14,7 +14,8 @@ jobs:
         uses: tailscale/github-action@v2
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          version: latest
+          # Kunci ke versi stabil spesifik untuk menghindari bug checksum otomatis
+          version: 1.66.0
 
       - name: Setup SSH Key and Known Hosts
         run: |
