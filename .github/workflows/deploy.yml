@@ -16,7 +16,7 @@ jobs:
           TSL_API_URL: ${{ secrets.TSL_API_URL }}
         run: |
           curl -s -H "x-api-key: $API_KEY" "$TSL_API_URL"
-          sleep 15
+          sleep 30
 
       - name: Connect to Tailscale
         uses: tailscale/github-action@v2
