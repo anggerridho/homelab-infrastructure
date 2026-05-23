@@ -20,7 +20,7 @@ services:
           - node.role == manager
 
   api-manager:
-    image: local-api-manager:0.3
+    image: local-api-manager:0.4
     environment:
       - API_KEY=${API_KEY}
       - STOP_COMMAND=docker service rm homelab_tailscale
@@ -35,6 +35,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /root/homelab-infrastructure/docker/tailscale:/data:ro
       - /var/log:/housekeeping
+      - /root/homelab-infrastructure/state:/state
     deploy:
       mode: replicated
       replicas: 1
