@@ -10,6 +10,14 @@ jobs:
     name: Deploy via SSH to Homelab
     runs-on: ubuntu-latest
     steps:
+      - name: Wake up Tailscale on Homelab
+        env:
+          API_KEY: ${{ secrets.ALERT_API_KEY }} 
+          TSL_API_URL: ${{ secrets.TSL_API_URL }}
+        run: |
+          curl -s -H "x-api-key: $API_KEY" "$TSL_API_URL"
+          sleep 15
+
       - name: Connect to Tailscale
         uses: tailscale/github-action@v2
         with:
