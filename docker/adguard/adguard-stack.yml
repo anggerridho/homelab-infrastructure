@@ -2,6 +2,8 @@ version: "3.10"
 services:
   adguardhome:
     image: adguard/adguardhome
+    networks:
+      - net
     ports:
       # Port DNS
       - target: 53
@@ -24,3 +26,6 @@ services:
       placement:
         constraints:
           - node.hostname == homelab-2
+networks:
+  net:
+    external: true
