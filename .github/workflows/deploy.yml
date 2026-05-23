@@ -26,7 +26,9 @@ jobs:
       - name: Setup SSH Key and Known Hosts
         run: |
           mkdir -p ~/.ssh
-          cat <<< "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          
+          # Hapus karakter \r (Windows CRLF) agar OpenSSH tidak error
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           
           echo "Memastikan koneksi Tailscale..."
@@ -35,8 +37,8 @@ jobs:
             if [ "${tailscale_status}" ]; then break; fi
           done
           
-          ssh-keyscan -T 10 -H ${{ secrets.HOST_1_IP }} >> ~/.ssh/known_hosts || true
-          ssh-keyscan -T 10 -H ${{ secrets.HOST_2_IP }} >> ~/.ssh/known_hosts || true
+          ssh-keyscan -T 10 -H ${{ secrets.HOST_1_IP }} >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh-keyscan -T 10 -H ${{ secrets.HOST_2_IP }} >> ~/.ssh/known_hosts 2>/dev/null || true
 
       - name: Execute Pull on Homelab-1
         env:
