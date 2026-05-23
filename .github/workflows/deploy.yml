@@ -15,7 +15,6 @@ jobs:
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           version: 1.66.0
-          # KUNCI UTAMA: Memaksa runner menggunakan MagicDNS untuk resolve nama host Tailscale
           hostname-as-dns-search-domain: true
 
       - name: Setup SSH Key and Known Hosts
@@ -24,16 +23,16 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           
-          # Gunakan nama mesin persis seperti yang tertera di panel Tailscale Anda
-          ssh-keyscan -H homelab-homelab-1 >> ~/.ssh/known_hosts
-          ssh-keyscan -H homelab-homelab-2 >> ~/.ssh/known_hosts
+          # Gunakan FQDN lengkap (.ts.net) agar DNS global Tailscale langsung mengenali tanpa trik search domain
+          ssh-keyscan -H homelab-homelab-1.tailnet-ed0c1.ts.net >> ~/.ssh/known_hosts
+          ssh-keyscan -H homelab-homelab-2.tailnet-ed0c1.ts.net >> ~/.ssh/known_hosts
 
       - name: Execute Pull on Homelab-1
         env:
           ALERT_API_KEY: ${{ secrets.ALERT_API_KEY }}
         run: |
-          # SSH menggunakan hostname lokal Tailscale
-          ssh -i ~/.ssh/id_rsa root@homelab-homelab-1 << EOF
+          # SSH menggunakan FQDN lengkap
+          ssh -i ~/.ssh/id_rsa root@homelab-homelab-1.tailnet-ed0c1.ts.net << EOF
             cd /root/homelab-infrastructure
             git fetch --all
             git reset --hard origin/main
@@ -49,8 +48,8 @@ jobs:
         env:
           ALERT_API_KEY: ${{ secrets.ALERT_API_KEY }}
         run: |
-          # SSH menggunakan hostname lokal Tailscale
-          ssh -i ~/.ssh/id_rsa root@homelab-homelab-2 << EOF
+          # SSH menggunakan FQDN lengkap
+          ssh -i ~/.ssh/id_rsa root@homelab-homelab-2.tailnet-ed0c1.ts.net << EOF
             cd /root/homelab-infrastructure
             git fetch --all
             git reset --hard origin/main
