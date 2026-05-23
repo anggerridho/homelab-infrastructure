@@ -26,10 +26,9 @@ jobs:
       - name: Setup SSH Key and Known Hosts
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          cat <<< "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
           
-          # Tunggu dan verifikasi koneksi Tailscale
           echo "Memastikan koneksi Tailscale..."
           while true; do
             tailscale_status="$(tailscale status | grep 'linux' | grep 'homelab')"
@@ -39,24 +38,10 @@ jobs:
           ssh-keyscan -T 10 -H ${{ secrets.HOST_1_IP }} >> ~/.ssh/known_hosts || true
           ssh-keyscan -T 10 -H ${{ secrets.HOST_2_IP }} >> ~/.ssh/known_hosts || true
 
-      - name: Setup SSH Key and Known Hosts
-        run: |
-          mkdir -p ~/.ssh
-          # Gunakan cat untuk menghindari hilangnya newline, dan simpan sebagai id_ed25519
-          cat <<< "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
-          
-          echo "Memastikan koneksi Tailscale..."
-          tailscale status | grep -E 'homelab|linux'
-          
-          ssh-keyscan -T 5 -H ${{ secrets.HOST_1_IP }} >> ~/.ssh/known_hosts || true
-          ssh-keyscan -T 5 -H ${{ secrets.HOST_2_IP }} >> ~/.ssh/known_hosts || true
-
       - name: Execute Pull on Homelab-1
         env:
           ALERT_API_KEY: ${{ secrets.ALERT_API_KEY }}
         run: |
-          # Ubah parameter -i menjadi id_ed25519
           ssh -i ~/.ssh/id_ed25519 root@${{ secrets.HOST_1_IP }} << EOF
             cd /root/homelab-infrastructure
             git fetch --all
@@ -67,4 +52,20 @@ jobs:
               -H "x-api-key: \$ALERT_API_KEY" \
               -H "Content-Type: application/json" \
               -d '{"text": "✅ Sinkronisasi CI/CD Github ke Homelab-1 Berhasil!", "type": "INFO"}'
+          EOF
+
+      - name: Execute Pull on Homelab-2
+        env:
+          ALERT_API_KEY: ${{ secrets.ALERT_API_KEY }}
+        run: |
+          ssh -i ~/.ssh/id_ed25519 root@${{ secrets.HOST_2_IP }} << EOF
+            cd /root/homelab-infrastructure
+            git fetch --all
+            git reset --hard origin/main
+            git pull origin main
+            
+            curl -s -X POST http://localhost:3001/api/alert \
+              -H "x-api-key: \$ALERT_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{"text": "✅ Sinkronisasi CI/CD Github ke Homelab-2 Berhasil!", "type": "INFO"}'
           EOF
