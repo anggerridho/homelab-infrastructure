@@ -32,7 +32,7 @@ jobs:
           
           # Tunggu dan verifikasi koneksi Tailscale
           echo "Memastikan koneksi Tailscale..."
-          tailscale status
+          tailscale status | grep -E 'homelab|linux'
           
           ssh-keyscan -T 5 -H ${{ secrets.HOST_1_IP }} >> ~/.ssh/known_hosts || true
           ssh-keyscan -T 5 -H ${{ secrets.HOST_2_IP }} >> ~/.ssh/known_hosts || true
