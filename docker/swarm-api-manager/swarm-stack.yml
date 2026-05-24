@@ -12,6 +12,10 @@ services:
       - .env
     networks:
       - net
+    ports:
+      - target: 3001
+        published: 3001
+        mode: ingress
     deploy:
       mode: replicated
       replicas: 1
