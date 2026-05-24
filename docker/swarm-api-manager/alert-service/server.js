@@ -16,7 +16,7 @@ const getTimestamp = () => `[${new Date().toISOString().replace('T', ' ').split(
 
 // === LISTENER PERINTAH DARI TELEGRAM ===
 
-// 1. Perintah Start (Contoh di chat: /start_tailscale atau /start_tailscale 120)
+// 1. Perintah Start Tailscale (Contoh di chat: /start_tailscale atau /start_tailscale 120)
 bot.onText(/\/start_tailscale(?: (.+))?/, async (msg, match) => {
     const chatId = msg.chat.id;
     // KEAMANAN: Pastikan hanya Chat ID Anda yang bisa mengeksekusi!
@@ -35,7 +35,7 @@ bot.onText(/\/start_tailscale(?: (.+))?/, async (msg, match) => {
     }
 });
 
-// 2. Perintah Stop Manual (Contoh di chat: /stop_tailscale)
+// 2. Perintah Stop Manual Tailscale (Contoh di chat: /stop_tailscale)
 bot.onText(/\/stop_tailscale/, async (msg) => {
     const chatId = msg.chat.id;
     if (chatId.toString() !== TELEGRAM_CHAT_ID) return;
@@ -47,6 +47,38 @@ bot.onText(/\/stop_tailscale/, async (msg) => {
         bot.sendMessage(chatId, `✅ ${data.message}`);
     } catch (err) {
         bot.sendMessage(chatId, `❌ Gagal mematikan: ${err.message}`);
+    }
+});
+
+// 3. Perintah Start Samba (Contoh di chat: /start_samba atau /start_samba 120)
+bot.onText(/\/start_samba(?: (.+))?/, async (msg, match) => {
+    const chatId = msg.chat.id;
+    if (chatId.toString() !== TELEGRAM_CHAT_ID) return;
+
+    const minutes = match[1] ? match[1] : 60; // Default 60 menit
+    bot.sendMessage(chatId, `⏳ Sedang menyalakan Samba (${minutes} Menit)...`);
+
+    try {
+        const response = await fetch(`http://api-manager:3000/api/samba/start?api_key=${API_KEY}&minutes=${minutes}`);
+        const data = await response.json();
+        bot.sendMessage(chatId, `✅ ${data.message}`);
+    } catch (err) {
+        bot.sendMessage(chatId, `❌ Gagal menyalakan Samba: ${err.message}`);
+    }
+});
+
+// 4. Perintah Stop Manual Samba (Contoh di chat: /stop_samba)
+bot.onText(/\/stop_samba/, async (msg) => {
+    const chatId = msg.chat.id;
+    if (chatId.toString() !== TELEGRAM_CHAT_ID) return;
+
+    bot.sendMessage(chatId, `⏳ Mematikan Samba secara manual...`);
+    try {
+        const response = await fetch(`http://api-manager:3000/api/samba/stop?api_key=${API_KEY}`);
+        const data = await response.json();
+        bot.sendMessage(chatId, `✅ ${data.message}`);
+    } catch (err) {
+        bot.sendMessage(chatId, `❌ Gagal mematikan Samba: ${err.message}`);
     }
 });
 

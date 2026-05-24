@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   alert-service:
-    image: local-alert-service:0.1
+    image: local-alert-service:0.2
     environment:
       - API_KEY=${API_KEY}
       - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
@@ -24,10 +24,11 @@ services:
           - node.role == manager
 
   api-manager:
-    image: local-api-manager:0.4
+    image: local-api-manager:0.6
     environment:
       - API_KEY=${API_KEY}
       - STOP_COMMAND=docker service rm homelab_tailscale
+      - SAMBA_STOP_COMMAND=docker service rm homelab_samba
       - HOUSEKEEPING_CMD=find /housekeeping -type f -name "*.log" -delete
       - TZ=Asia/Jakarta
       - ALERT_SERVICE_URL=http://alert-service:3001/api/alert
@@ -40,6 +41,7 @@ services:
       - /root/homelab-infrastructure/docker/tailscale:/data:ro
       - /var/log:/housekeeping
       - /root/homelab-infrastructure/state:/state
+      - /root/homelab-infrastructure/docker/samba:/samba:ro
     deploy:
       mode: replicated
       replicas: 1
