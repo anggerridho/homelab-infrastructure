@@ -17,11 +17,11 @@ services:
 
   vaultwarden-backup:
     image: registry.localhostaddr.biz.id/ttionya/vaultwarden-backup:latest
+    #entrypoint: ["tail", "-f", "/dev/null"]
     volumes:
       # Mount folder data yang sama sebagai sumber baca
       - /mnt/disk1/vaultwarden/data:/data
-      # Mount folder baru untuk menyimpan hasil backup (archive zip)
-      - /mnt/disk1/vaultwarden/backups:/backup
+      - /mnt/disk1/vaultwarden/config:/config
     env_file:
       - .env
     networks:
