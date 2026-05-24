@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   tailscale:
-    image: tailscale/tailscale:latest
+    image: registry.localhostaddr.biz.id/tailscale/tailscale:latest
     # Menggunakan template swarm untuk nama unik
     hostname: "homelab-{{.Node.Hostname}}"
     cap_add:
