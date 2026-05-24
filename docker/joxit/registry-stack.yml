@@ -1,0 +1,52 @@
+version: "3.10"
+
+services:
+  registry:
+    image: registry:2
+    networks:
+      - net
+    ports:
+      # Port Registry API
+      - target: 5000
+        published: 5000
+        protocol: tcp
+        mode: ingress
+    environment:
+      REGISTRY_STORAGE_DELETE_ENABLED: "true"
+    volumes:
+      # Pastikan folder ini sudah kamu buat di homelab-2
+      - /mnt/disk1/registry/data:/var/lib/registry
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab-1
+      restart_policy:
+        condition: on-failure
+
+  registry-ui:
+    # Gunakan tag main untuk versi V2 yang sudah ada Nginx proxy-nya
+    image: joxit/docker-registry-ui:main
+    networks:
+      - net
+    ports:
+      # Port Web Dashboard
+      - target: 80
+        published: 8080
+        protocol: tcp
+        mode: ingress
+    environment:
+      # Konfigurasi spesifik untuk V2
+      - SINGLE_REGISTRY=true
+      - NGINX_PROXY_PASS_URL=http://registry:5000
+      - DELETE_IMAGES=true
+      - REGISTRY_TITLE=Homelab Private Registry
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab-1
+      restart_policy:
+        condition: on-failure
+
+networks:
+  net:
+    external: true
