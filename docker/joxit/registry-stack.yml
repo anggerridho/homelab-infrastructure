@@ -2,7 +2,7 @@ version: "3.10"
 
 services:
   registry:
-    image: registry:2
+    image: registry.localhostaddr.biz.id/registry:2
     networks:
       - net
     ports:
@@ -22,10 +22,18 @@ services:
           - node.hostname == homelab-1
       restart_policy:
         condition: on-failure
+      labels:
+        - "traefik.enable=true"
+        # Tentukan domain untuk push/pull
+        - "traefik.http.routers.registry.rule=Host(`registry.localhostaddr.biz.id`)"
+        - "traefik.http.routers.registry.entrypoints=web" # Sesuaikan dengan nama entrypoint HTTP di Traefikmu
+        - "traefik.http.services.registry.loadbalancer.server.port=5000"
+        # Wajib di Swarm jika container menggunakan nama network eksternal
+        - "traefik.docker.network=net"
 
   registry-ui:
     # Gunakan tag main untuk versi V2 yang sudah ada Nginx proxy-nya
-    image: joxit/docker-registry-ui:main
+    image: registry.localhostaddr.biz.id/joxit/docker-registry-ui:main
     networks:
       - net
     ports:
@@ -46,6 +54,13 @@ services:
           - node.hostname == homelab-1
       restart_policy:
         condition: on-failure
+      labels:
+        - "traefik.enable=true"
+        # Tentukan domain untuk mengakses Dashboard Web
+        - "traefik.http.routers.registry-ui.rule=Host(`registry-ui.localhostaddr.biz.id`)"
+        - "traefik.http.routers.registry-ui.entrypoints=web"
+        - "traefik.http.services.registry-ui.loadbalancer.server.port=80"
+        - "traefik.docker.network=net"
 
 networks:
   net:

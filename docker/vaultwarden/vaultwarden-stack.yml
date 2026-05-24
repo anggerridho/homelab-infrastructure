@@ -2,7 +2,8 @@ version: "3.10"
 
 services:
   vaultwarden:
-    image: vaultwarden/server:latest
+    # image: vaultwarden/server:latest
+    image: registry.localhostaddr.biz.id/vaultwarden/server:latest
     networks:
       - net
     volumes:
@@ -13,6 +14,23 @@ services:
       placement:
         constraints:
           - node.hostname == homelab-1
+
+  vaultwarden-backup:
+    image: registry.localhostaddr.biz.id/ttionya/vaultwarden-backup:latest
+    volumes:
+      # Mount folder data yang sama sebagai sumber baca
+      - /mnt/disk1/vaultwarden/data:/data
+      # Mount folder baru untuk menyimpan hasil backup (archive zip)
+      - /mnt/disk1/vaultwarden/backups:/backup
+    env_file:
+      - .env
+    networks:
+      - net
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab-1
+
 networks:
   net:
     external: true

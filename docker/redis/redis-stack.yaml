@@ -3,7 +3,8 @@ version: "3.10"
 services:
   redis:
     # Menggunakan Alpine untuk menghindari masalah library glibc
-    image: redis:7.0-alpine
+    # image: redis:7.0-alpine
+    image: registry.localhostaddr.biz.id/redis:7.0-alpine
     # String format biasanya lebih 'safe' daripada array format di beberapa parser Swarm
     command: redis-server --save "" --appendonly no
     ports:

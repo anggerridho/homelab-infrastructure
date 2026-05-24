@@ -1,0 +1,49 @@
+version: "3.10"
+
+services:
+  traefik:
+    # image: traefik:v3.0 # Menggunakan versi terbaru yang stabil
+    image: registry.localhostaddr.biz.id/traefik:v3.0
+    command:
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--entrypoints.web.address=:80"
+
+      # --- TAMBAHKAN 3 BARIS INI UNTUK MENGHAPUS LIMIT 60 DETIK ---
+      - "--entrypoints.web.transport.respondingTimeouts.readTimeout=0"
+      - "--entrypoints.web.transport.respondingTimeouts.writeTimeout=0"
+      - "--entrypoints.web.transport.respondingTimeouts.idleTimeout=0"
+
+      # --- INI YANG DIUBAH UNTUK TRAEFIK V3 ---
+      # Mengaktifkan endpoint Swarm secara eksplisit
+      - "--providers.swarm.endpoint=unix:///var/run/docker.sock"
+      # Mencegah container tanpa label diekspos
+      - "--providers.swarm.exposedByDefault=false"
+      # Menentukan network default untuk routing
+      - "--providers.swarm.network=net"
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 8080
+        published: 8888
+        protocol: tcp
+        mode: ingress
+    volumes:
+      # Wajib di Swarm: Traefik butuh akses ke socket Docker untuk membaca label service
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - net
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+          # Pastikan Traefik berjalan di homelab-1, menjauhi AdGuard di homelab-2
+          - node.hostname == homelab-1
+      restart_policy:
+        condition: on-failure
+
+networks:
+  net:
+    external: true

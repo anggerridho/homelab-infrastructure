@@ -2,11 +2,11 @@ version: "3.10"
 
 services:
   samba:
-    image: dperson/samba:latest
-    environment:
-      - USER=${SAMBA_CREDENTIALS}
+    image: registry.localhostaddr.biz.id/dperson/samba:latest
     env_file:
       - .env
+    networks:
+      - net
     ports:
       - target: 139
         published: 139
@@ -31,3 +31,7 @@ services:
       placement:
         constraints:
           - node.role == manager
+
+networks:
+  net:
+    external: true

@@ -2,7 +2,8 @@ version: "3.10"
 
 services:
   influxdb:
-    image: influxdb:1.8
+    # image: influxdb:1.8
+    image: registry.localhostaddr.biz.id/influxdb:1.8
     ports:
       - target: 8086
         published: 8086
@@ -19,7 +20,7 @@ services:
           - node.hostname == homelab-2
 
   grafana:
-    image: grafana/grafana:latest
+    image: registry.localhostaddr.biz.id/grafana/grafana:latest
     ports:
       - target: 3000
         published: 3030

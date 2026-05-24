@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   alert-service:
-    image: local-alert-service:0.2
+    # image: local-alert-service:0.2
+    image: registry.localhostaddr.biz.id/alert-service:0.2
     environment:
       - API_KEY=${API_KEY}
       - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
@@ -24,7 +25,8 @@ services:
           - node.role == manager
 
   api-manager:
-    image: local-api-manager:0.6
+    # image: local-api-manager:0.6
+    image: registry.localhostaddr.biz.id/api-manager:0.6
     environment:
       - API_KEY=${API_KEY}
       - STOP_COMMAND=docker service rm homelab_tailscale

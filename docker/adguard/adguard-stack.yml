@@ -1,7 +1,8 @@
 version: "3.10"
 services:
   adguardhome:
-    image: adguard/adguardhome
+    # image: adguard/adguardhome
+    image: registry.localhostaddr.biz.id/adguard/adguardhome:latest
     networks:
       - net
     ports:
