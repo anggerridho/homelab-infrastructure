@@ -12,4 +12,4 @@ ${HOMELAB}/terminate.sh -t 10 sshpass -p "$(echo ${MIKROTIK_PSSWD} | base64 -d)"
 
 echo "[$(date)] VPN Offline dan rute ALTO telah dibersihkan dari MikroTik." >> /var/log/vpn_status.log
 
-${HOMELAB}/check_vpn_kantor.sh
+${HOMELAB}/homelab-1/check_vpn_kantor.sh

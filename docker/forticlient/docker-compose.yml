@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  openfortivpn:
+    image: openfortivpn:latest
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/ppp:/dev/ppp"
+    volumes:
+      - ./configs/config:/etc/openfortivpn/config:ro
+    env_file:
+      - .env
+    network_mode: "host"

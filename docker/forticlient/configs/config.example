@@ -1,0 +1,6 @@
+### configuration file for openfortivpn, see man openfortivpn(1) ###
+
+host = XX.XX.XX.XX
+port = XXXXX
+username = XXXXX
+trusted-cert = XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

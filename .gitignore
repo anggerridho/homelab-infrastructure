@@ -34,6 +34,7 @@ configs/mikrotik_config_backup/
 scripts/vault.sh
 scripts/homelab-1/get-secrets.sh
 scripts/homelab-1/auto-unseal.sh
+docker/forticlient/configs/config
 state/
 
 # Abaikan semua file .env di folder manapun
