@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   openfortivpn:
-    image: openfortivpn:latest
+    image: registry.localhostaddr.biz.id/openfortivpn:latest
     cap_add:
       - NET_ADMIN
     devices:
