@@ -18,7 +18,9 @@ ROS_CMD="/ip route remove [find comment~\"^ALTO\"]; "
 for SUBNET in $DYNAMIC_ROUTES; do
     CLEAN_IP="${SUBNET%/*}"
     COMMENT="ALTO-${CLEAN_IP}"
-    ROS_CMD+="/ip route add dst-address=$SUBNET gateway=$STB_IP comment=\"$COMMENT\"; "
+
+    # Perhatikan penambahan routing-mark="Route_Kantor"
+    ROS_CMD+="/ip route add dst-address=$SUBNET gateway=$STB_IP routing-mark=\"Route_Kantor\" comment=\"$COMMENT\"; "
 done
 
 echo "Mensinkronisasi rute ke MikroTik (via SSH Batch)..."
