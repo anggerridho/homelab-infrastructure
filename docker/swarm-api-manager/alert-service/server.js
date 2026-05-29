@@ -82,6 +82,52 @@ bot.onText(/\/stop_samba/, async (msg) => {
     }
 });
 
+// --- 5. Perintah Start 9router ---
+bot.onText(/\/start_9router(?: (.+))?/, async (msg, match) => {
+    const chatId = msg.chat.id;
+    if (chatId.toString() !== TELEGRAM_CHAT_ID) return;
+    const minutes = match[1] ? match[1] : 60;
+    bot.sendMessage(chatId, `⏳ Sedang menyalakan 9router (${minutes} Menit)...`);
+    try {
+        const response = await fetch(`http://api-manager:3000/api/9router/start?api_key=${API_KEY}&minutes=${minutes}`);
+        const data = await response.json();
+        bot.sendMessage(chatId, `✅ ${data.message}`);
+    } catch (err) { bot.sendMessage(chatId, `❌ Gagal: ${err.message}`); }
+});
+
+bot.onText(/\/stop_9router/, async (msg) => {
+    const chatId = msg.chat.id;
+    if (chatId.toString() !== TELEGRAM_CHAT_ID) return;
+    try {
+        const response = await fetch(`http://api-manager:3000/api/9router/stop?api_key=${API_KEY}`);
+        const data = await response.json();
+        bot.sendMessage(chatId, `✅ ${data.message}`);
+    } catch (err) {}
+});
+
+// --- 6. Perintah Start Forticlient ---
+bot.onText(/\/start_forticlient(?: (.+))?/, async (msg, match) => {
+    const chatId = msg.chat.id;
+    if (chatId.toString() !== TELEGRAM_CHAT_ID) return;
+    const minutes = match[1] ? match[1] : 60;
+    bot.sendMessage(chatId, `⏳ Sedang menyalakan Forticlient (${minutes} Menit)...`);
+    try {
+        const response = await fetch(`http://api-manager:3000/api/forticlient/start?api_key=${API_KEY}&minutes=${minutes}`);
+        const data = await response.json();
+        bot.sendMessage(chatId, `✅ ${data.message}`);
+    } catch (err) { bot.sendMessage(chatId, `❌ Gagal: ${err.message}`); }
+});
+
+bot.onText(/\/stop_forticlient/, async (msg) => {
+    const chatId = msg.chat.id;
+    if (chatId.toString() !== TELEGRAM_CHAT_ID) return;
+    try {
+        const response = await fetch(`http://api-manager:3000/api/forticlient/stop?api_key=${API_KEY}`);
+        const data = await response.json();
+        bot.sendMessage(chatId, `✅ ${data.message}`);
+    } catch (err) {}
+});
+
 // === ENDPOINT ALERT UNTUK DARI LUAR ===
 app.use((req, res, next) => {
     const key = req.headers['x-api-key'] || req.query.api_key;

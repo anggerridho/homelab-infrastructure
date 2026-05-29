@@ -1,5 +1,5 @@
 FROM node:20-alpine
-RUN apk add --no-cache docker-cli
+RUN apk add --no-cache docker-cli docker-cli-compose
 WORKDIR /app
 RUN npm init -y && npm install express
 COPY server.js .

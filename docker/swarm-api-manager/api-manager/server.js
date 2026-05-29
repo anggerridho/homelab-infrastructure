@@ -8,21 +8,22 @@ const API_KEY = process.env.API_KEY;
 const ALERT_SERVICE_URL = process.env.ALERT_SERVICE_URL || 'http://alert-service:3001/api/alert';
 
 // --- VARIABEL STATE & TIMER ---
-const STATE_FILE = '/state/tailscale_timer.json'; // Lokasi file ingatan Tailscale
-const SAMBA_STATE_FILE = '/state/samba_timer.json'; // Lokasi file ingatan Samba
+const STATE_FILE = '/state/tailscale_timer.json'; 
+const SAMBA_STATE_FILE = '/state/samba_timer.json'; 
+const ROUTER9_STATE_FILE = '/state/9router_timer.json';
+const FORTICLIENT_STATE_FILE = '/state/forticlient_timer.json';
 
 let tailscaleTimer = null;
 let sambaTimer = null;
+let router9Timer = null;
+let forticlientTimer = null;
 
 // --- OVERRIDE LOG UNTUK HIT ALERT SERVICE ---
 const originalLog = console.log;
 const originalError = console.error;
 
-const getTimestamp = () => {
-    return `[${new Date().toISOString().replace('T', ' ').split('.')[0]}]`;
-};
+const getTimestamp = () => `[${new Date().toISOString().replace('T', ' ').split('.')[0]}]`;
 
-// Fungsi helper hit alert-service internal
 const forwardToAlertService = (text, type) => {
     fetch(`${ALERT_SERVICE_URL}?api_key=${API_KEY}`, {
         method: 'POST',
@@ -35,84 +36,72 @@ const forwardToAlertService = (text, type) => {
 
 console.log = function () {
     const args = Array.from(arguments);
-    const msg = args.join(' ');
     originalLog.apply(console, [getTimestamp(), ...args]);
-    forwardToAlertService(msg, 'LOG');
+    forwardToAlertService(args.join(' '), 'LOG');
 };
 
 console.error = function () {
     const args = Array.from(arguments);
-    const msg = args.join(' ');
     originalError.apply(console, [getTimestamp(), ...args]);
-    forwardToAlertService(msg, 'ERROR');
+    forwardToAlertService(args.join(' '), 'ERROR');
 };
-// --- END OVERRIDE ---
 
 const app = express();
-
-// Tambahkan ini agar req.body?.minutes bisa terbaca jika via POST
 app.use(express.json()); 
 
-// Middleware Auth
 app.use((req, res, next) => {
     const key = req.headers['x-api-key'] || req.query.api_key;
-    if (!key || key !== API_KEY) {
-        return res.status(401).json({ error: 'Unauthorized' });
-    }
+    if (!key || key !== API_KEY) return res.status(401).json({ error: 'Unauthorized' });
     next();
 });
 
-// Helper command eksekusi
 const runCommand = (cmd) => {
     return new Promise((resolve, reject) => {
         exec(cmd, (error, stdout, stderr) => {
             if (error) {
                 console.error(`Command failed: ${cmd}\n${stderr}`);
                 reject({ error: error.message, stderr });
-            } else {
-                resolve(stdout.trim());
-            }
+            } else resolve(stdout.trim());
         });
     });
 };
 
 // ==========================================
-// LOGIKA TAILSCALE
+// FUNGSI HELPER UNIVERSAL UNTUK SEMUA SERVICE
 // ==========================================
-
-const executeStop = async (reason) => {
-    try {
-        console.log(`Menghentikan Tailscale (${reason})...`);
-        await runCommand(process.env.STOP_COMMAND || 'docker service scale homelab_tailscale=0');
-        console.log('Tailscale berhasil dihentikan.');
-        
-        if (fs.existsSync(STATE_FILE)) fs.unlinkSync(STATE_FILE);
-    } catch (err) {
-        console.error('Gagal saat mencoba menghentikan Tailscale.');
-    }
-};
-
-const checkPreviousStateOnStartup = () => {
-    if (fs.existsSync(STATE_FILE)) {
+const checkStateOnStartup = (stateFile, timerRef, stopFunction, serviceName) => {
+    if (fs.existsSync(stateFile)) {
         try {
-            const data = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+            const data = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
             if (!data.stopTime) return;
 
             const now = Date.now();
             if (data.stopTime > now) {
                 const remainingMs = data.stopTime - now;
                 const remainingMinutes = Math.round(remainingMs / 60000);
-                
-                console.log(`[RECOVERY] Menemukan jadwal auto-stop Tailscale. Melanjutkan sisa waktu: ${remainingMinutes} menit.`);
-                tailscaleTimer = setTimeout(() => executeStop('auto-stop dilanjutkan pasca-restart'), remainingMs);
+                console.log(`[RECOVERY] Jadwal auto-stop ${serviceName} dilanjutkan: ${remainingMinutes} menit.`);
+                return setTimeout(() => stopFunction('auto-stop dilanjutkan'), remainingMs);
             } else {
-                console.log(`[RECOVERY] Jadwal auto-stop Tailscale sudah terlewat selama server offline. Menghentikan sekarang.`);
-                executeStop('auto-stop terlewat pasca-restart');
+                console.log(`[RECOVERY] Jadwal auto-stop ${serviceName} sudah terlewat. Menghentikan sekarang.`);
+                stopFunction('auto-stop terlewat pasca-restart');
             }
         } catch (err) {
-            originalError('Gagal membaca state file Tailscale:', err);
+            originalError(`Gagal membaca state file ${serviceName}:`, err);
         }
     }
+    return null;
+};
+
+// ==========================================
+// 1. TAILSCALE
+// ==========================================
+const executeTailscaleStop = async (reason) => {
+    try {
+        console.log(`Menghentikan Tailscale (${reason})...`);
+        await runCommand(process.env.STOP_COMMAND || 'docker service scale homelab_tailscale=0');
+        console.log('Tailscale dihentikan.');
+        if (fs.existsSync(STATE_FILE)) fs.unlinkSync(STATE_FILE);
+    } catch (err) {}
 };
 
 app.get('/api/tailscale/start', async (req, res) => {
@@ -120,80 +109,38 @@ app.get('/api/tailscale/start', async (req, res) => {
         const inputMinutes = req.query.minutes || req.body?.minutes;
         const autoStopMinutes = (inputMinutes && !isNaN(inputMinutes)) ? parseInt(inputMinutes, 10) : 60;
 
-        const deployCmd = "cd /data && export $(grep -v '^#' .env | xargs) && docker stack deploy -c tailscale-stack.yaml homelab";
-        await runCommand(deployCmd);
-        
-        if (tailscaleTimer) {
-            clearTimeout(tailscaleTimer);
-            console.log('Timer auto-stop Tailscale diperbarui.');
-        }
+        await runCommand("cd /data && export $(grep -v '^#' .env | xargs) && docker stack deploy -c tailscale-stack.yaml homelab");
+        if (tailscaleTimer) clearTimeout(tailscaleTimer);
         
         const timeoutMs = autoStopMinutes * 60 * 1000;
-        const targetStopTime = Date.now() + timeoutMs;
-        fs.writeFileSync(STATE_FILE, JSON.stringify({ stopTime: targetStopTime }));
+        fs.writeFileSync(STATE_FILE, JSON.stringify({ stopTime: Date.now() + timeoutMs }));
+        tailscaleTimer = setTimeout(() => executeTailscaleStop('auto-stop'), timeoutMs);
 
-        tailscaleTimer = setTimeout(() => executeStop('auto-stop'), timeoutMs);
-
-        console.log(`Tailscale started. Will auto-stop in ${autoStopMinutes} minutes.`);
-        res.json({ message: `Tailscale started. Will auto-stop in ${autoStopMinutes} minutes.` });
+        console.log(`Tailscale started. Auto-stop in ${autoStopMinutes} minutes.`);
+        res.json({ message: `Tailscale started. Auto-stop in ${autoStopMinutes} minutes.` });
     } catch (err) {
-        originalError('Error detail pada tailscale start:', err);
         res.status(500).json({ error: 'Failed to start Tailscale' });
     }
 });
 
 app.get('/api/tailscale/stop', async (req, res) => {
     try {
-        if (tailscaleTimer) {
-            clearTimeout(tailscaleTimer);
-            tailscaleTimer = null;
-        }
-        await executeStop('manual stop dari endpoint');
+        if (tailscaleTimer) { clearTimeout(tailscaleTimer); tailscaleTimer = null; }
+        await executeTailscaleStop('manual stop');
         res.json({ message: 'Tailscale stopped manually.' });
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to stop Tailscale' });
-    }
+    } catch (err) { res.status(500).json({ error: 'Failed' }); }
 });
 
 // ==========================================
-// LOGIKA SAMBA
+// 2. SAMBA
 // ==========================================
-
 const executeSambaStop = async (reason) => {
     try {
         console.log(`Menghentikan Samba (${reason})...`);
-        // SEKARANG DINAMIS: Membaca SAMBA_STOP_COMMAND dari env, fallback ke perintah scale
-        const stopCmd = process.env.SAMBA_STOP_COMMAND || 'docker service scale homelab_samba=0';
-        await runCommand(stopCmd);
-        console.log('Samba berhasil dihentikan.');
-        
+        await runCommand(process.env.SAMBA_STOP_COMMAND || 'docker service scale homelab_samba=0');
+        console.log('Samba dihentikan.');
         if (fs.existsSync(SAMBA_STATE_FILE)) fs.unlinkSync(SAMBA_STATE_FILE);
-    } catch (err) {
-        console.error('Gagal saat mencoba menghentikan Samba.');
-    }
-};
-
-const checkSambaStateOnStartup = () => {
-    if (fs.existsSync(SAMBA_STATE_FILE)) {
-        try {
-            const data = JSON.parse(fs.readFileSync(SAMBA_STATE_FILE, 'utf8'));
-            if (!data.stopTime) return;
-
-            const now = Date.now();
-            if (data.stopTime > now) {
-                const remainingMs = data.stopTime - now;
-                const remainingMinutes = Math.round(remainingMs / 60000);
-                
-                console.log(`[RECOVERY] Menemukan jadwal auto-stop Samba. Melanjutkan: ${remainingMinutes} menit.`);
-                sambaTimer = setTimeout(() => executeSambaStop('auto-stop dilanjutkan'), remainingMs);
-            } else {
-                console.log(`[RECOVERY] Jadwal auto-stop Samba sudah terlewat. Menghentikan sekarang.`);
-                executeSambaStop('auto-stop terlewat pasca-restart');
-            }
-        } catch (err) {
-            originalError('Gagal membaca state file Samba:', err);
-        }
-    }
+    } catch (err) {}
 };
 
 app.get('/api/samba/start', async (req, res) => {
@@ -201,65 +148,117 @@ app.get('/api/samba/start', async (req, res) => {
         const inputMinutes = req.query.minutes || req.body?.minutes;
         const autoStopMinutes = (inputMinutes && !isNaN(inputMinutes)) ? parseInt(inputMinutes, 10) : 60;
 
-        // Pindah ke folder samba dan eksekusi deploy.sh
-        const deployCmd = "cd /samba && sh deploy.sh";
-        await runCommand(deployCmd);
-        
-        if (sambaTimer) {
-            clearTimeout(sambaTimer);
-            console.log('Timer auto-stop Samba diperbarui.');
-        }
+        await runCommand("cd /samba && sh deploy.sh");
+        if (sambaTimer) clearTimeout(sambaTimer);
         
         const timeoutMs = autoStopMinutes * 60 * 1000;
-        const targetStopTime = Date.now() + timeoutMs;
-        fs.writeFileSync(SAMBA_STATE_FILE, JSON.stringify({ stopTime: targetStopTime }));
-
+        fs.writeFileSync(SAMBA_STATE_FILE, JSON.stringify({ stopTime: Date.now() + timeoutMs }));
         sambaTimer = setTimeout(() => executeSambaStop('auto-stop'), timeoutMs);
 
-        console.log(`Samba started. Will auto-stop in ${autoStopMinutes} minutes.`);
-        res.json({ message: `Samba started. Will auto-stop in ${autoStopMinutes} minutes.` });
-    } catch (err) {
-        originalError('Error detail pada samba start:', err);
-        res.status(500).json({ error: 'Failed to start Samba' });
-    }
+        console.log(`Samba started. Auto-stop in ${autoStopMinutes} minutes.`);
+        res.json({ message: `Samba started. Auto-stop in ${autoStopMinutes} minutes.` });
+    } catch (err) { res.status(500).json({ error: 'Failed' }); }
 });
 
 app.get('/api/samba/stop', async (req, res) => {
     try {
-        if (sambaTimer) {
-            clearTimeout(sambaTimer);
-            sambaTimer = null;
-        }
-        await executeSambaStop('manual stop dari endpoint');
+        if (sambaTimer) { clearTimeout(sambaTimer); sambaTimer = null; }
+        await executeSambaStop('manual stop');
         res.json({ message: 'Samba stopped manually.' });
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to stop Samba' });
-    }
+    } catch (err) { res.status(500).json({ error: 'Failed' }); }
 });
 
 // ==========================================
-// HOUSEKEEPING
+// 3. 9ROUTER
 // ==========================================
+const executeRouter9Stop = async (reason) => {
+    try {
+        console.log(`Menghentikan 9router (${reason})...`);
+        await runCommand(process.env.ROUTER9_STOP_COMMAND || 'docker service scale homelab_9router=0');
+        console.log('9router dihentikan.');
+        if (fs.existsSync(ROUTER9_STATE_FILE)) fs.unlinkSync(ROUTER9_STATE_FILE);
+    } catch (err) {}
+};
 
+app.get('/api/9router/start', async (req, res) => {
+    try {
+        const inputMinutes = req.query.minutes || req.body?.minutes;
+        const autoStopMinutes = (inputMinutes && !isNaN(inputMinutes)) ? parseInt(inputMinutes, 10) : 60;
+
+        await runCommand("cd /9router && sh deploy.sh");
+        if (router9Timer) clearTimeout(router9Timer);
+        
+        const timeoutMs = autoStopMinutes * 60 * 1000;
+        fs.writeFileSync(ROUTER9_STATE_FILE, JSON.stringify({ stopTime: Date.now() + timeoutMs }));
+        router9Timer = setTimeout(() => executeRouter9Stop('auto-stop'), timeoutMs);
+
+        console.log(`9router started. Auto-stop in ${autoStopMinutes} minutes.`);
+        res.json({ message: `9router started. Auto-stop in ${autoStopMinutes} minutes.` });
+    } catch (err) { res.status(500).json({ error: 'Failed' }); }
+});
+
+app.get('/api/9router/stop', async (req, res) => {
+    try {
+        if (router9Timer) { clearTimeout(router9Timer); router9Timer = null; }
+        await executeRouter9Stop('manual stop');
+        res.json({ message: '9router stopped manually.' });
+    } catch (err) { res.status(500).json({ error: 'Failed' }); }
+});
+
+// ==========================================
+// 4. FORTICLIENT
+// ==========================================
+const executeForticlientStop = async (reason) => {
+    try {
+        console.log(`Menghentikan Forticlient (${reason})...`);
+        await runCommand(process.env.FORTICLIENT_STOP_COMMAND || 'cd /forticlient && docker-compose down');
+        console.log('Forticlient dihentikan.');
+        if (fs.existsSync(FORTICLIENT_STATE_FILE)) fs.unlinkSync(FORTICLIENT_STATE_FILE);
+    } catch (err) {}
+};
+
+app.get('/api/forticlient/start', async (req, res) => {
+    try {
+        const inputMinutes = req.query.minutes || req.body?.minutes;
+        const autoStopMinutes = (inputMinutes && !isNaN(inputMinutes)) ? parseInt(inputMinutes, 10) : 60;
+
+        await runCommand("cd /forticlient && sh deploy.sh");
+        if (forticlientTimer) clearTimeout(forticlientTimer);
+        
+        const timeoutMs = autoStopMinutes * 60 * 1000;
+        fs.writeFileSync(FORTICLIENT_STATE_FILE, JSON.stringify({ stopTime: Date.now() + timeoutMs }));
+        forticlientTimer = setTimeout(() => executeForticlientStop('auto-stop'), timeoutMs);
+
+        console.log(`Forticlient started. Auto-stop in ${autoStopMinutes} minutes.`);
+        res.json({ message: `Forticlient started. Auto-stop in ${autoStopMinutes} minutes.` });
+    } catch (err) { res.status(500).json({ error: 'Failed' }); }
+});
+
+app.get('/api/forticlient/stop', async (req, res) => {
+    try {
+        if (forticlientTimer) { clearTimeout(forticlientTimer); forticlientTimer = null; }
+        await executeForticlientStop('manual stop');
+        res.json({ message: 'Forticlient stopped manually.' });
+    } catch (err) { res.status(500).json({ error: 'Failed' }); }
+});
+
+// ==========================================
+// HOUSEKEEPING & START SERVER
+// ==========================================
 app.get('/api/housekeeping/start', async (req, res) => {
     try {
         console.log('Memulai proses housekeeping...');
-        const cleanCmd = process.env.HOUSEKEEPING_CMD || 'find /housekeeping -type f -mtime +7 -delete';
-        await runCommand(cleanCmd);
-        console.log('Housekeeping selesai.');
+        await runCommand(process.env.HOUSEKEEPING_CMD || 'find /housekeeping -type f -mtime +7 -delete');
         res.json({ message: 'Housekeeping executed.' });
-    } catch (err) {
-        res.status(500).json({ error: 'Failed to execute housekeeping' });
-    }
+    } catch (err) { res.status(500).json({ error: 'Failed' }); }
 });
-
-// ==========================================
-// START SERVER
-// ==========================================
 
 app.listen(PORT, () => {
     originalLog(getTimestamp(), `Swarm API Manager running on port ${PORT}`);
-    // Pengecekan recovery saat aplikasi hidup
-    checkPreviousStateOnStartup();
-    checkSambaStateOnStartup();
+    
+    // Jalankan semua fungsi recovery
+    tailscaleTimer = checkStateOnStartup(STATE_FILE, tailscaleTimer, executeTailscaleStop, 'Tailscale');
+    sambaTimer = checkStateOnStartup(SAMBA_STATE_FILE, sambaTimer, executeSambaStop, 'Samba');
+    router9Timer = checkStateOnStartup(ROUTER9_STATE_FILE, router9Timer, executeRouter9Stop, '9router');
+    forticlientTimer = checkStateOnStartup(FORTICLIENT_STATE_FILE, forticlientTimer, executeForticlientStop, 'Forticlient');
 });
