@@ -51,6 +51,9 @@ jobs:
             # Mengaktifkan file crontab-root.txt menjadi crontab sistem
             crontab scripts/homelab-1/crontab-list.txt
 
+            chmod +x scripts/*.sh
+            chmod +x scripts/*/*.sh
+
             # Gunakan substitusi langsung GitHub Secrets agar tidak lolos saat HereDoc (EOF)
             curl -s -X POST http://localhost:3001/api/alert \
               -H "x-api-key: ${{ secrets.ALERT_API_KEY }}" \
@@ -68,6 +71,9 @@ jobs:
 
             # Mengaktifkan file crontab-root.txt menjadi crontab sistem
             crontab scripts/homelab-2/crontab-list.txt
+
+            chmod +x scripts/*.sh
+            chmod +x scripts/*/*.sh
             
             # Gunakan substitusi langsung GitHub Secrets agar tidak lolos saat HereDoc (EOF)
             curl -s -X POST http://localhost:3001/api/alert \
