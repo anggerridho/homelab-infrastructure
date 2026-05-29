@@ -14,7 +14,7 @@ source ${HOST_LAB}/check_top_user.sh
 source ${HOST_LAB}/check_isp_failover.sh
 source ${HOST_LAB}/check_critical_applications.sh
 source ${HOST_LAB}/check_anomali_speedtest.sh
-source ${HOST_LAB}/check_remote.sh
+source ${HOMELAB}/check_remote.sh
 source ${HOST_LAB}/check_disk.sh
 source ${HOST_LAB}/check_cpu_load_usage_mikrotik.sh
 source ${HOST_LAB}/check_cpu_mem_usage_stb.sh
