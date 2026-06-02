@@ -1,6 +1,6 @@
 version: "3.10"
 services:
-  nine-router:
+  carok-ai:
     image: ghcr.io/decolua/9router:latest
     networks:
       - net

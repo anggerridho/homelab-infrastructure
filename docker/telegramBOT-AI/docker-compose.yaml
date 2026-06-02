@@ -1,0 +1,23 @@
+version: "3.10"
+
+services:
+  bot-ai:
+    # Menggunakan image yang akan kita build manual di langkah selanjutnya
+    image: registry.localhostaddr.biz.id/bot-ai:latest
+    networks:
+      - net
+    env_file:
+      - .env
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          # Opsional: Boleh disamakan dengan node 9Router atau dihapus agar bebas
+          - node.hostname == homelab-1
+      restart_policy:
+        condition: any
+
+networks:
+  net:
+    external: true

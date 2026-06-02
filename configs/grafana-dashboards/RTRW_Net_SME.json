@@ -102,7 +102,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "$tag_provider",
@@ -204,7 +204,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "$tag_isp",
@@ -283,7 +283,7 @@
         "sizing": "manual",
         "valueMode": "color"
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "$tag_user",
@@ -426,7 +426,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -508,7 +508,7 @@
         "sparkline": true,
         "textMode": "auto"
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "$tag_partition",
@@ -679,7 +679,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "Read - $tag_mount",
@@ -793,7 +793,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "MikroTik - CPU",
@@ -928,7 +928,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "$tag_nama ($tag_interface)",
@@ -1025,7 +1025,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -1087,7 +1087,7 @@
         "cellHeight": "sm",
         "showHeader": true
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "$tag_device - $tag_app_name",
@@ -1245,7 +1245,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "RX (Download)",
@@ -1295,7 +1295,7 @@
             "lineWidth": 0,
             "spanNulls": false
           },
-          "displayName": "${__field.labels.app}",
+          "displayName": "${__field.labels.host} - ${__field.labels.app}",
           "mappings": [
             {
               "options": {
@@ -1353,15 +1353,15 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
-          "alias": "$tag_app",
+          "alias": "$tag_host - $tag_app",
           "datasource": {
             "type": "influxdb",
             "uid": "afkrrd93y50jka"
           },
-          "query": "SELECT last(\"status\") FROM \"remote_access\" WHERE $timeFilter GROUP BY time($__interval), \"app\" fill(previous)",
+          "query": "SELECT last(\"status\") FROM \"remote_access\" WHERE $timeFilter GROUP BY time($__interval), \"host\", \"app\" fill(previous)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series"
@@ -1456,7 +1456,7 @@
           "sort": "desc"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "$tag_app",
@@ -1559,7 +1559,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "$tag_app",
@@ -1665,7 +1665,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "$col",
@@ -1747,7 +1747,7 @@
         "sparkline": true,
         "textMode": "auto"
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "datasource": {
@@ -1868,7 +1868,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "CPU Load - $tag_host",
@@ -1969,7 +1969,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "13.0.1",
+      "pluginVersion": "13.0.1+security-01",
       "targets": [
         {
           "alias": "$tag_host - $col",
@@ -2011,5 +2011,5 @@
   "timezone": "browser",
   "title": "RTRW Net/SME",
   "uid": "ad6bqgt",
-  "version": 25
+  "version": 27
 }

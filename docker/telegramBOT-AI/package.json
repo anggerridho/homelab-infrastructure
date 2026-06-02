@@ -1,0 +1,7 @@
+{
+  "name": "telegram-9router-bot",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.65.0",
+    "openai": "^4.28.0"
+  }
+}

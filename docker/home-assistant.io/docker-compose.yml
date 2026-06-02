@@ -1,0 +1,15 @@
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: "registry.localhostaddr.biz.id/home-assistant/home-assistant:stable"
+    volumes:
+      - /mnt/disk/homeassistant/config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
