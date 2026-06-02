@@ -30,7 +30,7 @@ cek_vpn_kantor() {
 
         # Tembak ke InfluxDB
         curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
-        --data-binary "remote_access,app=${APP_NAME} status=${STATUS_CODE}" > /dev/null 2>&1
+        --data-binary "remote_access,host=$(hostname),app=${APP_NAME} status=${STATUS_CODE}" > /dev/null 2>&1
 
         # Update memori Redis dengan status terbaru
         redis-cli -h ${REDIS_HOST} SET "influx_last_status_${APP_NAME}" "$STATUS_CODE" > /dev/null 2>&1

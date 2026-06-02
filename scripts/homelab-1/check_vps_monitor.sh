@@ -19,5 +19,5 @@ fi
 
 # Tembak data ke InfluxDB STB (Measurement: remote_access, Tag: app=vps_api)
 curl -s -i -XPOST "$INFLUX_URL" \
---data-binary "remote_access,app=vps_api status=${STATUS_VAL}" > /dev/null 2>&1
+--data-binary "remote_access,host=$(hostname),app=vps_api status=${STATUS_VAL}" > /dev/null 2>&1
 }
