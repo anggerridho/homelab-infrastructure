@@ -3,10 +3,13 @@
 cek_vpn_kantor() {
     APP_NAME="openfortivpn"
     REDIS_KEY="lock_remote_${APP_NAME}"
+    STATE_KEY="state_${APP_NAME}"
     STATUS_CODE=0
     ERROR_DETAIL=""
     REDIS_HOST="${REDIS_HOST:-127.0.0.1}"
-    LAST_INFLUX_STATUS=$(redis-cli -h ${REDIS_HOST} GET "influx_last_status_${APP_NAME}" | tr -d '\r\n')
+    
+    # Gunakan --raw agar output bersih dari Redis tanpa perlu memotong newline manual
+    LAST_INFLUX_STATUS=$(redis-cli -h ${REDIS_HOST} --raw GET "influx_last_status_${APP_NAME}")
     MINUTE_NOW=$(date +%M)
 
     # 1. CEK STATUS INTERFACE PPP0
@@ -20,6 +23,7 @@ cek_vpn_kantor() {
         else
             ERROR_DETAIL="VPN Offline (Gangguan/Unscheduled)"
         fi
+        ${HOMELAB}/homelab-1/disconnect_vpn.sh
     fi
 
     # 2. INTEGRASI GRAFANA (INFLUXDB)
@@ -28,47 +32,66 @@ cek_vpn_kantor() {
     # 2. ATAU setiap kelipatan 5 menit (Heartbeat agar Grafana fill(previous) tidak error)
     if [ "$STATUS_CODE" != "$LAST_INFLUX_STATUS" ] || [ $((10#$MINUTE_NOW % 5)) -eq 0 ]; then
 
-        # Tembak ke InfluxDB
+        # Tembak ke InfluxDB (Sudah menggunakan tag host)
         curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
         --data-binary "remote_access,host=$(hostname),app=${APP_NAME} status=${STATUS_CODE}" > /dev/null 2>&1
 
         # Update memori Redis dengan status terbaru
         redis-cli -h ${REDIS_HOST} SET "influx_last_status_${APP_NAME}" "$STATUS_CODE" > /dev/null 2>&1
     fi
-    # (Catatan: 10#$MINUTE_NOW digunakan agar bash tidak menganggap angka seperti 08 atau 09 sebagai bilangan oktal yang salah)
 
     # 3. LOGIKA REDIS & TELEGRAM ALERT (STATE MACHINE)
+    IS_LOCKED=$(redis-cli -h ${REDIS_HOST} --raw GET $REDIS_KEY)
+    CURRENT_STATE=$(redis-cli -h ${REDIS_HOST} --raw GET $STATE_KEY)
+
     if [ "$STATUS_CODE" -eq 0 ]; then
-        # Jika Offline (0), cek lock. Gunakan tr untuk membuang spasi/newline tersembunyi
-        IS_LOCKED=$(redis-cli -h ${REDIS_HOST} GET $REDIS_KEY | tr -d '\r\n')
-    
+        # JIKA OFFLINE (0)
+        
         if [ "$IS_LOCKED" != "1" ]; then
-            # LOCK DULU SEBELUM KIRIM TELEGRAM (Menghindari hang)
-            redis-cli -h ${REDIS_HOST} SET $REDIS_KEY "1" > /dev/null 2>&1
-            echo "[ALERT] ${APP_NAME} Down! Redis Lock aktif."
-            
-            # Eksekusi Telegram (Jika ini hang/gagal, Redis sudah terlanjur di-lock, sehingga aman dari spam)
-            MSG="[$(date +'%Y%m%d_%H:%M:%S')] - 🚨 ALERT: ${ERROR_DETAIL} | STB"
-            TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
+            if [ -z "$CURRENT_STATE" ]; then
+                # KONDISI 1: Redis baru restart / STB habis reboot (state kosong)
+                echo "[INIT] ${APP_NAME} Down saat boot. Alert di-skip."
+                
+                # Langsung lock dan set state DOWN tanpa kirim Telegram
+                redis-cli -h ${REDIS_HOST} SET $STATE_KEY "DOWN" > /dev/null 2>&1
+                redis-cli -h ${REDIS_HOST} SET $REDIS_KEY "1" > /dev/null 2>&1
+            else
+                # KONDISI 2: Transisi murni (sebelumnya UP, sekarang DOWN)
+                # LOCK DULU SEBELUM KIRIM TELEGRAM (Menghindari hang)
+                redis-cli -h ${REDIS_HOST} SET $REDIS_KEY "1" > /dev/null 2>&1
+                redis-cli -h ${REDIS_HOST} SET $STATE_KEY "DOWN" > /dev/null 2>&1
+                echo "[ALERT] ${APP_NAME} Down! Redis Lock aktif."
+                
+                # Eksekusi Telegram
+                MSG="[$(date +'%Y%m%d_%H:%M:%S')] - 🚨 ALERT: ${ERROR_DETAIL} | STB"
+                TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
+            fi
         else
             # Silent mode
             echo "[HECTIC] ${APP_NAME} Down. (Masa Lock Telegram)" > /dev/null 2>&1
         fi
     
     else
-        # Jika Online (1)
-        IS_LOCKED=$(redis-cli -h ${REDIS_HOST} GET $REDIS_KEY | tr -d '\r\n')
-    
-        if [ "$IS_LOCKED" == "1" ]; then
+        # JIKA ONLINE (1)
+        
+        if [ "$CURRENT_STATE" == "DOWN" ]; then
+            # KONDISI: Recovery (sebelumnya DOWN, sekarang UP)
             # HAPUS LOCK DULU
             redis-cli -h ${REDIS_HOST} DEL $REDIS_KEY > /dev/null 2>&1
+            redis-cli -h ${REDIS_HOST} SET $STATE_KEY "UP" > /dev/null 2>&1
             echo "[RECOVERY] ${APP_NAME} UP kembali! Lock dihapus."
             
             # Baru kirim Telegram
             MSG="[$(date +'%Y%m%d_%H:%M:%S')] - ✅ RECOVERY SUCCESS: ${APP_NAME} is back Online! | STB"
             TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
         else
-            echo "[NORMAL] ${APP_NAME} is Online."
+            if [ -z "$CURRENT_STATE" ]; then
+                # KONDISI: STB baru boot dan VPN langsung sukses terhubung
+                redis-cli -h ${REDIS_HOST} SET $STATE_KEY "UP" > /dev/null 2>&1
+                echo "[NORMAL] ${APP_NAME} is Online sejak boot."
+            else
+                echo "[NORMAL] ${APP_NAME} is Online." > /dev/null 2>&1
+            fi
         fi
     fi
 }

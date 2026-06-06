@@ -4,13 +4,16 @@ PATH=/usr/bin
 HOMELAB="/root/homelab-infrastructure/scripts"
 source ${HOMELAB}/vault.sh && vault
 
-# Flashdisk 32GB
-umount -l /dev/sda1
-mount /dev/sda1 /mnt/disk1
+systemctl stop docker docker.socket containerd; sleep 3
+
+${HOMELAB}/homelab-2/auto-mount.sh
 
 # Restart Docker
-service docker restart
+if [ -d "/mnt/disk1/adguard" ]; then
+  systemctl restart docker docker.socket containerd
+fi
 
-IPADDR="$(ifconfig eth0 | grep "inet " | awk '{print $2}')"
+#IPADDR="$(ifconfig eth0 | grep "inet " | awk '{print $2}')"
+IPADDR="192.168.10.4"
 MSG="[$(date +'%Y%m%d %H:%M:%S')] - IPAddr:${IPADDR} LABRADOR has just come back to life."
 TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh #| tee -ai /root/startup.log

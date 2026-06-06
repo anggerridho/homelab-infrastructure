@@ -9,7 +9,7 @@ for loopDisk in ${listDisk}; do
     # telegram_send | tee -ai need-reboot.log
     TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh #| tee -ai need-reboot.log
     dmesg -T > dmesg.log
-    /usr/sbin/reboot
+    /root/homelab-infrastructure/scripts/homelab-1/reboot.sh
   else
     touch /tmp/healthy_system.temp
   fi

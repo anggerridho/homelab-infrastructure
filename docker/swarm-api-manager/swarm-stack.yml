@@ -3,7 +3,7 @@ version: '3.8'
 services:
   alert-service:
     # image: local-alert-service:0.2
-    image: registry.localhostaddr.biz.id/alert-service:0.3
+    image: registry.localhostaddr.biz.id/alert-service:0.4
     environment:
       - API_KEY=${API_KEY}
       - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
@@ -26,7 +26,7 @@ services:
 
   api-manager:
     # image: local-api-manager:0.6
-    image: registry.localhostaddr.biz.id/api-manager:0.7
+    image: registry.localhostaddr.biz.id/api-manager:0.8
     environment:
       - API_KEY=${API_KEY}
       - STOP_COMMAND=docker service rm homelab_tailscale
@@ -44,6 +44,8 @@ services:
       - /var/log:/housekeeping
       - /root/homelab-infrastructure/state:/state
       - /root/homelab-infrastructure/docker/samba:/samba:ro
+      - /root/homelab-infrastructure/docker/forticlient:/forticlient:ro
+      - /root/homelab-infrastructure/docker/carokAI:/9router:ro
     deploy:
       mode: replicated
       replicas: 1

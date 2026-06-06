@@ -110,12 +110,23 @@ bot.onText(/\/start_forticlient(?: (.+))?/, async (msg, match) => {
     const chatId = msg.chat.id;
     if (chatId.toString() !== TELEGRAM_CHAT_ID) return;
     const minutes = match[1] ? match[1] : 60;
-    bot.sendMessage(chatId, `⏳ Sedang menyalakan Forticlient (${minutes} Menit)...`);
+    
+    // Ubah pesan awal agar Anda tahu bot sedang melakukan verifikasi
+    bot.sendMessage(chatId, `⏳ Sedang menyalakan Forticlient (${minutes} Menit)...\n_(Verifikasi koneksi butuh ~8 detik)_`, { parse_mode: 'Markdown' });
+    
     try {
         const response = await fetch(`http://api-manager:3000/api/forticlient/start?api_key=${API_KEY}&minutes=${minutes}`);
         const data = await response.json();
-        bot.sendMessage(chatId, `✅ ${data.message}`);
-    } catch (err) { bot.sendMessage(chatId, `❌ Gagal: ${err.message}`); }
+        
+        // Pengecekan Error: Jika api-manager membalas dengan JSON berisi 'error'
+        if (data.error) {
+            bot.sendMessage(chatId, `❌ **GAGAL:**\n${data.error}`, { parse_mode: 'Markdown' });
+        } else {
+            bot.sendMessage(chatId, `✅ ${data.message}`);
+        }
+    } catch (err) { 
+        bot.sendMessage(chatId, `❌ Gagal: ${err.message}`); 
+    }
 });
 
 bot.onText(/\/stop_forticlient/, async (msg) => {

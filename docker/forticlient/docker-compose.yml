@@ -8,7 +8,7 @@ services:
     devices:
       - "/dev/ppp:/dev/ppp"
     volumes:
-      - ./configs/config:/etc/openfortivpn/config:ro
+      - /root/homelab-infrastructure/docker/forticlient/configs/config:/etc/openfortivpn/config:ro
     env_file:
       - .env
     network_mode: "host"

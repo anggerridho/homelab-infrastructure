@@ -222,7 +222,27 @@ app.get('/api/forticlient/start', async (req, res) => {
         const inputMinutes = req.query.minutes || req.body?.minutes;
         const autoStopMinutes = (inputMinutes && !isNaN(inputMinutes)) ? parseInt(inputMinutes, 10) : 60;
 
+        // 1. Eksekusi script deploy (docker-compose up -d)
         await runCommand("cd /forticlient && sh deploy.sh");
+        
+        // 2. Beri jeda 8 detik agar VPN punya waktu untuk autentikasi
+        console.log('Menunggu 8 detik untuk verifikasi koneksi FortiClient...');
+        await new Promise(resolve => setTimeout(resolve, 8000));
+        
+        // 3. Baca 20 baris log terakhir dari container forticlient
+        const logs = await runCommand("cd /forticlient && docker-compose logs --tail=20");
+        
+        // 4. Analisa apakah ada indikasi gagal di log
+        if (logs.includes("Could not authenticate") || logs.includes("ERROR:") || logs.includes("Logged out.")) {
+            console.log('Koneksi VPN FortiClient Gagal! Melakukan roll-back (stop)...');
+            // Langsung eksekusi fungsi stop bawaan
+            await executeForticlientStop('Koneksi VPN Gagal');
+            
+            // Kembalikan response error agar Telegram tahu ini gagal
+            return res.status(500).json({ error: 'Autentikasi VPN Gagal (Cek kredensial/OTP). Container telah otomatis dihentikan.' });
+        }
+
+        // Jika sukses (tidak ada pesan error di log), lanjutkan pasang timer
         if (forticlientTimer) clearTimeout(forticlientTimer);
         
         const timeoutMs = autoStopMinutes * 60 * 1000;
@@ -231,7 +251,9 @@ app.get('/api/forticlient/start', async (req, res) => {
 
         console.log(`Forticlient started. Auto-stop in ${autoStopMinutes} minutes.`);
         res.json({ message: `Forticlient started. Auto-stop in ${autoStopMinutes} minutes.` });
-    } catch (err) { res.status(500).json({ error: 'Failed' }); }
+    } catch (err) { 
+        res.status(500).json({ error: 'Gagal mengeksekusi script start Forticlient' }); 
+    }
 });
 
 app.get('/api/forticlient/stop', async (req, res) => {

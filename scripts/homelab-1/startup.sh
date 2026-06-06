@@ -2,16 +2,14 @@
 HOMELAB="/root/homelab-infrastructure/scripts"
 source ${HOMELAB}/vault.sh && vault
 
-# HDD 1TB
-umount -l /dev/sda1
-mount -t ntfs3 -o defaults,noatime,uid=1000,gid=1000,dmask=000,fmask=000,iocharset=utf8 /dev/sda1 /mnt/disk2/
+systemctl stop docker docker.socket containerd; sleep 3
 
-# SSD 128GB
-umount -l /dev/sdb1
-mount /dev/sdb1 /mnt/disk1
+${HOMELAB}/homelab-1/auto-mount.sh
 
 # Restart Docker
-service docker restart
+if [ -d "/mnt/disk1/vaultwarden" ]; then
+  systemctl restart docker docker.socket containerd
+fi
 
 IPADDR="$(ifconfig eth0 | grep "inet " | awk '{print $2}')"
 MSG="[$(date +'%Y%m%d %H:%M:%S')] - IPAddr:${IPADDR} LABRADOR has just come back to life."
@@ -35,5 +33,7 @@ iptables -I FORWARD 1 -i tailscale0 -o ppp0 -j ACCEPT
 iptables -I FORWARD 1 -i ppp0 -o tailscale0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 
 echo "[$(date)] Tailscale & VPN Routing Override Executed" #>> /var/log/homelab_startup.log
+
+${HOMELAB}/homelab-1/disconnect_vpn.sh
 
 #${HOMELAB}/auto-unseal.sh

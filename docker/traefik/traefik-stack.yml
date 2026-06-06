@@ -3,7 +3,7 @@ version: "3.10"
 services:
   traefik:
     # image: traefik:v3.0 # Menggunakan versi terbaru yang stabil
-    image: registry.localhostaddr.biz.id/traefik:v3.0
+    image: traefik:v3.0
     command:
       - "--api.insecure=true"
       - "--api.dashboard=true"
