@@ -2,8 +2,8 @@ version: "3.10"
 
 services:
   registry:
-    #image: registry.localhostaddr.biz.id/registry:2
-    image: registry:2
+    image: registry.localhostaddr.biz.id/registry:2
+    #image: registry:2
     networks:
       - net
     ports:
@@ -34,8 +34,8 @@ services:
 
   registry-ui:
     # Gunakan tag main untuk versi V2 yang sudah ada Nginx proxy-nya
-    #image: registry.localhostaddr.biz.id/joxit/docker-registry-ui:main
-    image: joxit/docker-registry-ui:main
+    image: registry.localhostaddr.biz.id/joxit/docker-registry-ui:main
+    #image: joxit/docker-registry-ui:main
     networks:
       - net
     ports:
