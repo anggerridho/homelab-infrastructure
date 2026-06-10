@@ -23,6 +23,7 @@ services:
     volumes:
       - /mnt/disk1/adguard/work:/opt/adguardhome/work
       - /mnt/disk1/adguard/conf:/opt/adguardhome/conf
+      - /mnt/disk1/adguard/ssl:/opt/adguardhome/ssl
     deploy:
       placement:
         constraints:

@@ -2,4 +2,5 @@ HOST_LAB="/root/homelab-infrastructure/scripts/homelab-2"
 
 */5 * * * * ${HOST_LAB}/watchdog.sh #>> /var/log/watchdog.log 2>&1
 @reboot ${HOST_LAB}/startup.sh >> /var/log/startup.log 2>&1
-57 5 * * * /usr/sbin/reboot
+57 5 * * * ${HOST_LAB}/reboot.sh
+0 2 1 * * ${HOST_LAB}/adguardSSL.sh
