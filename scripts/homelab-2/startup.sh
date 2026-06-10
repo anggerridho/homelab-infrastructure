@@ -1,6 +1,4 @@
 #!/bin/bash
-PATH=/usr/bin
-
 HOMELAB="/root/homelab-infrastructure/scripts"
 source ${HOMELAB}/vault.sh && vault
 
