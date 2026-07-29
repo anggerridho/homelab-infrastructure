@@ -1,0 +1,1138 @@
+[Wed Jun 24 13:21:29 2026] Booting Linux on physical CPU 0x0000000000 [0x410fd034]
+[Wed Jun 24 13:21:29 2026] Linux version 6.6.63-current-meson64 (build@armbian) (aarch64-linux-gnu-gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #1 SMP PREEMPT Fri Nov 22 14:38:37 UTC 2024
+[Wed Jun 24 13:21:29 2026] Machine model: Amlogic Meson GXL (S905X) P212 Development Board
+[Wed Jun 24 13:21:29 2026] efi: UEFI not found.
+[Wed Jun 24 13:21:29 2026] Reserved memory: created CMA memory pool at 0x000000006a800000, size 256 MiB
+[Wed Jun 24 13:21:29 2026] OF: reserved mem: initialized node linux,cma, compatible id shared-dma-pool
+[Wed Jun 24 13:21:29 2026] OF: reserved mem: 0x000000006a800000..0x000000007a7fffff (262144 KiB) map reusable linux,cma
+[Wed Jun 24 13:21:29 2026] OF: reserved mem: 0x0000000000000000..0x0000000000ffffff (16384 KiB) nomap non-reusable hwrom@0
+[Wed Jun 24 13:21:29 2026] OF: reserved mem: 0x0000000005000000..0x00000000052fffff (3072 KiB) nomap non-reusable secmon@5000000
+[Wed Jun 24 13:21:29 2026] OF: reserved mem: 0x0000000005300000..0x00000000072fffff (32768 KiB) nomap non-reusable secmon@5300000
+[Wed Jun 24 13:21:29 2026] OF: reserved mem: 0x0000000010000000..0x00000000101fffff (2048 KiB) nomap non-reusable secmon@10000000
+[Wed Jun 24 13:21:29 2026] NUMA: No NUMA configuration found
+[Wed Jun 24 13:21:29 2026] NUMA: Faking a node at [mem 0x0000000000000000-0x000000007fe5afff]
+[Wed Jun 24 13:21:29 2026] NUMA: NODE_DATA [mem 0x7fa37940-0x7fa39fff]
+[Wed Jun 24 13:21:29 2026] Zone ranges:
+[Wed Jun 24 13:21:29 2026]   DMA      [mem 0x0000000000000000-0x000000007fe5afff]
+[Wed Jun 24 13:21:29 2026]   DMA32    empty
+[Wed Jun 24 13:21:29 2026]   Normal   empty
+[Wed Jun 24 13:21:29 2026] Movable zone start for each node
+[Wed Jun 24 13:21:29 2026] Early memory node ranges
+[Wed Jun 24 13:21:29 2026]   node   0: [mem 0x0000000000000000-0x0000000000ffffff]
+[Wed Jun 24 13:21:29 2026]   node   0: [mem 0x0000000001000000-0x0000000004ffffff]
+[Wed Jun 24 13:21:29 2026]   node   0: [mem 0x0000000005000000-0x00000000072fffff]
+[Wed Jun 24 13:21:29 2026]   node   0: [mem 0x0000000007300000-0x000000000fffffff]
+[Wed Jun 24 13:21:29 2026]   node   0: [mem 0x0000000010000000-0x00000000101fffff]
+[Wed Jun 24 13:21:29 2026]   node   0: [mem 0x0000000010200000-0x000000007fe5afff]
+[Wed Jun 24 13:21:29 2026] Initmem setup node 0 [mem 0x0000000000000000-0x000000007fe5afff]
+[Wed Jun 24 13:21:29 2026] On node 0, zone DMA: 421 pages in unavailable ranges
+[Wed Jun 24 13:21:29 2026] psci: probing for conduit method from DT.
+[Wed Jun 24 13:21:29 2026] psci: PSCIv0.2 detected in firmware.
+[Wed Jun 24 13:21:29 2026] psci: Using standard PSCI v0.2 function IDs
+[Wed Jun 24 13:21:29 2026] psci: Trusted OS migration not required
+[Wed Jun 24 13:21:29 2026] percpu: Embedded 22 pages/cpu s51432 r8192 d30488 u90112
+[Wed Jun 24 13:21:29 2026] pcpu-alloc: s51432 r8192 d30488 u90112 alloc=22*4096
+[Wed Jun 24 13:21:29 2026] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 
+[Wed Jun 24 13:21:29 2026] Detected VIPT I-cache on CPU0
+[Wed Jun 24 13:21:29 2026] CPU features: detected: ARM erratum 845719
+[Wed Jun 24 13:21:29 2026] alternatives: applying boot alternatives
+[Wed Jun 24 13:21:29 2026] Kernel command line: root=LABEL=ROOT_EMMC rootflags=data=writeback console=ttyAML0,115200n8 console=tty0 rw no_console_suspend consoleblank=0 fsck.fix=yes fsck.repair=yes net.ifnames=0 splash plymouth.ignore-serial-consoles
+[Wed Jun 24 13:21:29 2026] Unknown kernel command line parameters "splash", will be passed to user space.
+[Wed Jun 24 13:21:29 2026] Dentry cache hash table entries: 262144 (order: 9, 2097152 bytes, linear)
+[Wed Jun 24 13:21:29 2026] Inode-cache hash table entries: 131072 (order: 8, 1048576 bytes, linear)
+[Wed Jun 24 13:21:29 2026] Fallback order for Node 0: 0 
+[Wed Jun 24 13:21:29 2026] Built 1 zonelists, mobility grouping on.  Total pages: 515681
+[Wed Jun 24 13:21:29 2026] Policy zone: DMA
+[Wed Jun 24 13:21:29 2026] mem auto-init: stack:off, heap alloc:on, heap free:off
+[Wed Jun 24 13:21:29 2026] software IO TLB: SWIOTLB bounce buffer size adjusted to 2MB
+[Wed Jun 24 13:21:29 2026] software IO TLB: area num 4.
+[Wed Jun 24 13:21:29 2026] software IO TLB: mapped [mem 0x000000007d4a8000-0x000000007d6a8000] (2MB)
+[Wed Jun 24 13:21:29 2026] Memory: 1687396K/2095468K available (16192K kernel code, 1698K rwdata, 4964K rodata, 3776K init, 606K bss, 145928K reserved, 262144K cma-reserved)
+[Wed Jun 24 13:21:29 2026] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[Wed Jun 24 13:21:29 2026] rcu: Preemptible hierarchical RCU implementation.
+[Wed Jun 24 13:21:29 2026] rcu: 	RCU event tracing is enabled.
+[Wed Jun 24 13:21:29 2026] rcu: 	RCU restricting CPUs from NR_CPUS=256 to nr_cpu_ids=4.
+[Wed Jun 24 13:21:29 2026] 	Trampoline variant of Tasks RCU enabled.
+[Wed Jun 24 13:21:29 2026] 	Tracing variant of Tasks RCU enabled.
+[Wed Jun 24 13:21:29 2026] rcu: RCU calculated value of scheduler-enlistment delay is 25 jiffies.
+[Wed Jun 24 13:21:29 2026] rcu: Adjusting geometry for rcu_fanout_leaf=16, nr_cpu_ids=4
+[Wed Jun 24 13:21:29 2026] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[Wed Jun 24 13:21:29 2026] Root IRQ handler: gic_handle_irq
+[Wed Jun 24 13:21:29 2026] GIC: Using split EOI/Deactivate mode
+[Wed Jun 24 13:21:29 2026] rcu: srcu_init: Setting srcu_struct sizes based on contention.
+[Wed Jun 24 13:21:29 2026] arch_timer: cp15 timer(s) running at 24.00MHz (phys).
+[Wed Jun 24 13:21:29 2026] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x588fe9dc0, max_idle_ns: 440795202592 ns
+[Wed Jun 24 13:21:29 2026] sched_clock: 56 bits at 24MHz, resolution 41ns, wraps every 4398046511097ns
+[Wed Jun 24 13:21:29 2026] Console: colour dummy device 80x25
+[Wed Jun 24 13:21:29 2026] printk: console [tty0] enabled
+[Wed Jun 24 13:21:29 2026] Calibrating delay loop (skipped), value calculated using timer frequency.. 48.00 BogoMIPS (lpj=96000)
+[Wed Jun 24 13:21:29 2026] pid_max: default: 32768 minimum: 301
+[Wed Jun 24 13:21:29 2026] LSM: initializing lsm=capability,yama,apparmor,integrity
+[Wed Jun 24 13:21:29 2026] Yama: becoming mindful.
+[Wed Jun 24 13:21:29 2026] AppArmor: AppArmor initialized
+[Wed Jun 24 13:21:29 2026] Mount-cache hash table entries: 4096 (order: 3, 32768 bytes, linear)
+[Wed Jun 24 13:21:29 2026] Mountpoint-cache hash table entries: 4096 (order: 3, 32768 bytes, linear)
+[Wed Jun 24 13:21:29 2026] RCU Tasks: Setting shift to 2 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=4.
+[Wed Jun 24 13:21:29 2026] RCU Tasks Trace: Setting shift to 2 and lim to 1 rcu_task_cb_adjust=1 rcu_task_cpu_ids=4.
+[Wed Jun 24 13:21:29 2026] rcu: Hierarchical SRCU implementation.
+[Wed Jun 24 13:21:29 2026] rcu: 	Max phase no-delay instances is 1000.
+[Wed Jun 24 13:21:29 2026] EFI services will not be available.
+[Wed Jun 24 13:21:29 2026] smp: Bringing up secondary CPUs ...
+[Wed Jun 24 13:21:29 2026] Detected VIPT I-cache on CPU1
+[Wed Jun 24 13:21:29 2026] CPU1: Booted secondary processor 0x0000000001 [0x410fd034]
+[Wed Jun 24 13:21:29 2026] Detected VIPT I-cache on CPU2
+[Wed Jun 24 13:21:29 2026] CPU2: Booted secondary processor 0x0000000002 [0x410fd034]
+[Wed Jun 24 13:21:29 2026] Detected VIPT I-cache on CPU3
+[Wed Jun 24 13:21:29 2026] CPU3: Booted secondary processor 0x0000000003 [0x410fd034]
+[Wed Jun 24 13:21:29 2026] smp: Brought up 1 node, 4 CPUs
+[Wed Jun 24 13:21:29 2026] SMP: Total of 4 processors activated.
+[Wed Jun 24 13:21:29 2026] CPU features: detected: 32-bit EL0 Support
+[Wed Jun 24 13:21:29 2026] CPU features: detected: 32-bit EL1 Support
+[Wed Jun 24 13:21:29 2026] CPU features: detected: CRC32 instructions
+[Wed Jun 24 13:21:29 2026] CPU: All CPU(s) started at EL2
+[Wed Jun 24 13:21:29 2026] alternatives: applying system-wide alternatives
+[Wed Jun 24 13:21:29 2026] devtmpfs: initialized
+[Wed Jun 24 13:21:29 2026] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+[Wed Jun 24 13:21:29 2026] futex hash table entries: 1024 (order: 4, 65536 bytes, linear)
+[Wed Jun 24 13:21:29 2026] pinctrl core: initialized pinctrl subsystem
+[Wed Jun 24 13:21:29 2026] DMI not present or invalid.
+[Wed Jun 24 13:21:29 2026] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[Wed Jun 24 13:21:29 2026] DMA: preallocated 256 KiB GFP_KERNEL pool for atomic allocations
+[Wed Jun 24 13:21:29 2026] DMA: preallocated 256 KiB GFP_KERNEL|GFP_DMA pool for atomic allocations
+[Wed Jun 24 13:21:29 2026] DMA: preallocated 256 KiB GFP_KERNEL|GFP_DMA32 pool for atomic allocations
+[Wed Jun 24 13:21:29 2026] audit: initializing netlink subsys (disabled)
+[Wed Jun 24 13:21:29 2026] audit: type=2000 audit(0.024:1): state=initialized audit_enabled=0 res=1
+[Wed Jun 24 13:21:29 2026] thermal_sys: Registered thermal governor 'fair_share'
+[Wed Jun 24 13:21:29 2026] thermal_sys: Registered thermal governor 'bang_bang'
+[Wed Jun 24 13:21:29 2026] thermal_sys: Registered thermal governor 'step_wise'
+[Wed Jun 24 13:21:29 2026] thermal_sys: Registered thermal governor 'user_space'
+[Wed Jun 24 13:21:29 2026] cpuidle: using governor menu
+[Wed Jun 24 13:21:29 2026] hw-breakpoint: found 6 breakpoint and 4 watchpoint registers.
+[Wed Jun 24 13:21:29 2026] ASID allocator initialised with 65536 entries
+[Wed Jun 24 13:21:29 2026] Serial: AMBA PL011 UART driver
+[Wed Jun 24 13:21:29 2026] platform d0100000.vpu: Fixed dependency cycle(s) with /soc/hdmi-tx@c883a000
+[Wed Jun 24 13:21:29 2026] platform d0100000.vpu: Fixed dependency cycle(s) with /soc/hdmi-tx@c883a000
+[Wed Jun 24 13:21:29 2026] platform c883a000.hdmi-tx: Fixed dependency cycle(s) with /soc/vpu@d0100000
+[Wed Jun 24 13:21:29 2026] platform d0100000.vpu: Fixed dependency cycle(s) with /cvbs-connector
+[Wed Jun 24 13:21:29 2026] platform cvbs-connector: Fixed dependency cycle(s) with /soc/vpu@d0100000
+[Wed Jun 24 13:21:29 2026] platform c883a000.hdmi-tx: Fixed dependency cycle(s) with /hdmi-connector
+[Wed Jun 24 13:21:29 2026] platform hdmi-connector: Fixed dependency cycle(s) with /soc/hdmi-tx@c883a000
+[Wed Jun 24 13:21:29 2026] Modules: 25904 pages in range for non-PLT usage
+[Wed Jun 24 13:21:29 2026] Modules: 517424 pages in range for PLT usage
+[Wed Jun 24 13:21:29 2026] HugeTLB: registered 1.00 GiB page size, pre-allocated 0 pages
+[Wed Jun 24 13:21:29 2026] HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+[Wed Jun 24 13:21:29 2026] HugeTLB: registered 32.0 MiB page size, pre-allocated 0 pages
+[Wed Jun 24 13:21:29 2026] HugeTLB: 0 KiB vmemmap can be freed for a 32.0 MiB page
+[Wed Jun 24 13:21:29 2026] HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+[Wed Jun 24 13:21:29 2026] HugeTLB: 0 KiB vmemmap can be freed for a 2.00 MiB page
+[Wed Jun 24 13:21:29 2026] HugeTLB: registered 64.0 KiB page size, pre-allocated 0 pages
+[Wed Jun 24 13:21:29 2026] HugeTLB: 0 KiB vmemmap can be freed for a 64.0 KiB page
+[Wed Jun 24 13:21:29 2026] cryptd: max_cpu_qlen set to 1000
+[Wed Jun 24 13:21:29 2026] raid6: neonx8   gen()  2148 MB/s
+[Wed Jun 24 13:21:29 2026] raid6: neonx4   gen()  2203 MB/s
+[Wed Jun 24 13:21:29 2026] raid6: neonx2   gen()  2094 MB/s
+[Wed Jun 24 13:21:29 2026] raid6: neonx1   gen()  1794 MB/s
+[Wed Jun 24 13:21:29 2026] raid6: int64x8  gen()  1366 MB/s
+[Wed Jun 24 13:21:29 2026] raid6: int64x4  gen()  1606 MB/s
+[Wed Jun 24 13:21:29 2026] raid6: int64x2  gen()  1403 MB/s
+[Wed Jun 24 13:21:29 2026] raid6: int64x1  gen()  1037 MB/s
+[Wed Jun 24 13:21:29 2026] raid6: using algorithm neonx4 gen() 2203 MB/s
+[Wed Jun 24 13:21:29 2026] raid6: .... xor() 1558 MB/s, rmw enabled
+[Wed Jun 24 13:21:29 2026] raid6: using neon recovery algorithm
+[Wed Jun 24 13:21:29 2026] ACPI: Interpreter disabled.
+[Wed Jun 24 13:21:29 2026] iommu: Default domain type: Translated
+[Wed Jun 24 13:21:29 2026] iommu: DMA domain TLB invalidation policy: strict mode
+[Wed Jun 24 13:21:29 2026] SCSI subsystem initialized
+[Wed Jun 24 13:21:29 2026] usbcore: registered new interface driver usbfs
+[Wed Jun 24 13:21:29 2026] usbcore: registered new interface driver hub
+[Wed Jun 24 13:21:29 2026] usbcore: registered new device driver usb
+[Wed Jun 24 13:21:29 2026] pps_core: LinuxPPS API ver. 1 registered
+[Wed Jun 24 13:21:29 2026] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[Wed Jun 24 13:21:29 2026] PTP clock support registered
+[Wed Jun 24 13:21:29 2026] EDAC MC: Ver: 3.0.0
+[Wed Jun 24 13:21:29 2026] scmi_core: SCMI protocol bus registered
+[Wed Jun 24 13:21:29 2026] NetLabel: Initializing
+[Wed Jun 24 13:21:29 2026] NetLabel:  domain hash size = 128
+[Wed Jun 24 13:21:29 2026] NetLabel:  protocols = UNLABELED CIPSOv4 CALIPSO
+[Wed Jun 24 13:21:29 2026] NetLabel:  unlabeled traffic allowed by default
+[Wed Jun 24 13:21:29 2026] mctp: management component transport protocol core
+[Wed Jun 24 13:21:29 2026] NET: Registered PF_MCTP protocol family
+[Wed Jun 24 13:21:29 2026] vgaarb: loaded
+[Wed Jun 24 13:21:29 2026] clocksource: Switched to clocksource arch_sys_counter
+[Wed Jun 24 13:21:29 2026] VFS: Disk quotas dquot_6.6.0
+[Wed Jun 24 13:21:29 2026] VFS: Dquot-cache hash table entries: 512 (order 0, 4096 bytes)
+[Wed Jun 24 13:21:29 2026] AppArmor: AppArmor Filesystem Enabled
+[Wed Jun 24 13:21:29 2026] pnp: PnP ACPI: disabled
+[Wed Jun 24 13:21:29 2026] NET: Registered PF_INET protocol family
+[Wed Jun 24 13:21:29 2026] IP idents hash table entries: 32768 (order: 6, 262144 bytes, linear)
+[Wed Jun 24 13:21:29 2026] tcp_listen_portaddr_hash hash table entries: 1024 (order: 2, 16384 bytes, linear)
+[Wed Jun 24 13:21:29 2026] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[Wed Jun 24 13:21:29 2026] TCP established hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[Wed Jun 24 13:21:29 2026] TCP bind hash table entries: 16384 (order: 7, 524288 bytes, linear)
+[Wed Jun 24 13:21:29 2026] TCP: Hash tables configured (established 16384 bind 16384)
+[Wed Jun 24 13:21:29 2026] MPTCP token hash table entries: 2048 (order: 3, 49152 bytes, linear)
+[Wed Jun 24 13:21:29 2026] UDP hash table entries: 1024 (order: 3, 32768 bytes, linear)
+[Wed Jun 24 13:21:29 2026] UDP-Lite hash table entries: 1024 (order: 3, 32768 bytes, linear)
+[Wed Jun 24 13:21:29 2026] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[Wed Jun 24 13:21:29 2026] PCI: CLS 0 bytes, default 64
+[Wed Jun 24 13:21:29 2026] Trying to unpack rootfs image as initramfs...
+[Wed Jun 24 13:21:29 2026] kvm [1]: IPA Size Limit: 40 bits
+[Wed Jun 24 13:21:29 2026] kvm [1]: vgic interrupt IRQ9
+[Wed Jun 24 13:21:29 2026] kvm [1]: Hyp mode initialized successfully
+[Wed Jun 24 13:21:29 2026] Initialise system trusted keyrings
+[Wed Jun 24 13:21:29 2026] Key type blacklist registered
+[Wed Jun 24 13:21:29 2026] workingset: timestamp_bits=44 max_order=19 bucket_order=0
+[Wed Jun 24 13:21:29 2026] zbud: loaded
+[Wed Jun 24 13:21:29 2026] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[Wed Jun 24 13:21:29 2026] fuse: init (API version 7.39)
+[Wed Jun 24 13:21:29 2026] integrity: Platform Keyring initialized
+[Wed Jun 24 13:21:29 2026] xor: measuring software checksum speed
+[Wed Jun 24 13:21:29 2026]    8regs           :  2517 MB/sec
+[Wed Jun 24 13:21:29 2026]    32regs          :  2474 MB/sec
+[Wed Jun 24 13:21:29 2026]    arm64_neon      :  2335 MB/sec
+[Wed Jun 24 13:21:29 2026] xor: using function: 8regs (2517 MB/sec)
+[Wed Jun 24 13:21:29 2026] Key type asymmetric registered
+[Wed Jun 24 13:21:29 2026] Asymmetric key parser 'x509' registered
+[Wed Jun 24 13:21:29 2026] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 244)
+[Wed Jun 24 13:21:29 2026] io scheduler mq-deadline registered
+[Wed Jun 24 13:21:29 2026] io scheduler kyber registered
+[Wed Jun 24 13:21:29 2026] io scheduler bfq registered
+[Wed Jun 24 13:21:29 2026] irq_meson_gpio: 110 to 8 gpio interrupt mux initialized
+[Wed Jun 24 13:21:29 2026] EINJ: ACPI disabled.
+[Wed Jun 24 13:21:29 2026] soc soc0: Amlogic Meson GXL (S905X) Revision 21:c (84:2) Detected
+[Wed Jun 24 13:21:29 2026] Serial: 8250/16550 driver, 8 ports, IRQ sharing disabled
+[Wed Jun 24 13:21:30 2026] Serial: AMBA driver
+[Wed Jun 24 13:21:30 2026] c11084c0.serial: ttyAML6 at MMIO 0xc11084c0 (irq = 14, base_baud = 1500000) is a meson_uart
+[Wed Jun 24 13:21:30 2026] serial serial0: tty port ttyAML6 registered
+[Wed Jun 24 13:21:30 2026] c81004c0.serial: ttyAML0 at MMIO 0xc81004c0 (irq = 15, base_baud = 1500000) is a meson_uart
+[Wed Jun 24 13:21:30 2026] printk: console [ttyAML0] enabled
+[Wed Jun 24 13:21:30 2026] Freeing initrd memory: 21644K
+[Wed Jun 24 13:21:31 2026] loop: module loaded
+[Wed Jun 24 13:21:31 2026] tun: Universal TUN/TAP device driver, 1.6
+[Wed Jun 24 13:21:31 2026] thunder_xcv, ver 1.0
+[Wed Jun 24 13:21:31 2026] thunder_bgx, ver 1.0
+[Wed Jun 24 13:21:31 2026] nicpf, ver 1.0
+[Wed Jun 24 13:21:31 2026] e1000e: Intel(R) PRO/1000 Network Driver
+[Wed Jun 24 13:21:31 2026] e1000e: Copyright(c) 1999 - 2015 Intel Corporation.
+[Wed Jun 24 13:21:31 2026] igb: Intel(R) Gigabit Ethernet Network Driver
+[Wed Jun 24 13:21:31 2026] igb: Copyright (c) 2007-2014 Intel Corporation.
+[Wed Jun 24 13:21:31 2026] igbvf: Intel(R) Gigabit Virtual Function Network Driver
+[Wed Jun 24 13:21:31 2026] igbvf: Copyright (c) 2009 - 2012 Intel Corporation.
+[Wed Jun 24 13:21:31 2026] sky2: driver version 1.30
+[Wed Jun 24 13:21:31 2026] VFIO - User Level meta-driver version: 0.3
+[Wed Jun 24 13:21:31 2026] usbcore: registered new interface driver usb-storage
+[Wed Jun 24 13:21:31 2026] mousedev: PS/2 mouse device common for all mice
+[Wed Jun 24 13:21:31 2026] i2c_dev: i2c /dev entries driver
+[Wed Jun 24 13:21:31 2026] sdhci: Secure Digital Host Controller Interface driver
+[Wed Jun 24 13:21:31 2026] sdhci: Copyright(c) Pierre Ossman
+[Wed Jun 24 13:21:31 2026] Synopsys Designware Multimedia Card Interface Driver
+[Wed Jun 24 13:21:31 2026] sdhci-pltfm: SDHCI platform and OF driver helper
+[Wed Jun 24 13:21:31 2026] meson-gx-mmc d0072000.mmc: Got CD GPIO
+[Wed Jun 24 13:21:31 2026] meson-gx-mmc d0074000.mmc: allocated mmc-pwrseq
+[Wed Jun 24 13:21:31 2026] ledtrig-cpu: registered to indicate activity on CPUs
+[Wed Jun 24 13:21:31 2026] meson-sm: secure-monitor enabled
+[Wed Jun 24 13:21:31 2026] gxl-crypto c883e000.crypto: will run requests pump with realtime priority
+[Wed Jun 24 13:21:31 2026] gxl-crypto c883e000.crypto: will run requests pump with realtime priority
+[Wed Jun 24 13:21:31 2026] hid: raw HID events driver (C) Jiri Kosina
+[Wed Jun 24 13:21:31 2026] usbcore: registered new interface driver usbhid
+[Wed Jun 24 13:21:31 2026] gpio irq setup: hwirq: 0x3A irqfirst: 0x34 irqlast: 0x3A pin[48]
+[Wed Jun 24 13:21:31 2026] usbhid: USB HID core driver
+[Wed Jun 24 13:21:31 2026] genirq: Setting trigger mode 3 for irq 20 failed (meson_gpio_irq_set_type+0x0/0x60)
+[Wed Jun 24 13:21:31 2026] platform-mhu c883c404.mailbox: Platform MHU Mailbox registered
+[Wed Jun 24 13:21:31 2026] hw perfevents: enabled with armv8_cortex_a53 PMU driver, 7 counters available
+[Wed Jun 24 13:21:31 2026] NET: Registered PF_INET6 protocol family
+[Wed Jun 24 13:21:31 2026] Segment Routing with IPv6
+[Wed Jun 24 13:21:31 2026] In-situ OAM (IOAM) with IPv6
+[Wed Jun 24 13:21:31 2026] NET: Registered PF_PACKET protocol family
+[Wed Jun 24 13:21:31 2026] 8021q: 802.1Q VLAN Support v1.8
+[Wed Jun 24 13:21:31 2026] Key type dns_resolver registered
+[Wed Jun 24 13:21:31 2026] registered taskstats version 1
+[Wed Jun 24 13:21:31 2026] Loading compiled-in X.509 certificates
+[Wed Jun 24 13:21:31 2026] zswap: loaded using pool zstd/zbud
+[Wed Jun 24 13:21:31 2026] Key type .fscrypt registered
+[Wed Jun 24 13:21:31 2026] Key type fscrypt-provisioning registered
+[Wed Jun 24 13:21:31 2026] mmc1: new HS200 MMC card at address 0001
+[Wed Jun 24 13:21:31 2026] Btrfs loaded, zoned=yes, fsverity=yes
+[Wed Jun 24 13:21:31 2026] mmcblk1: mmc1:0001 8GTF4R 7.28 GiB
+[Wed Jun 24 13:21:31 2026] Key type encrypted registered
+[Wed Jun 24 13:21:31 2026]  mmcblk1: p1 p2
+[Wed Jun 24 13:21:31 2026] AppArmor: AppArmor sha1 policy hashing enabled
+[Wed Jun 24 13:21:31 2026] mmcblk1boot0: mmc1:0001 8GTF4R 4.00 MiB
+[Wed Jun 24 13:21:31 2026] mmcblk1boot1: mmc1:0001 8GTF4R 4.00 MiB
+[Wed Jun 24 13:21:31 2026] mmcblk1rpmb: mmc1:0001 8GTF4R 512 KiB, chardev (241:0)
+[Wed Jun 24 13:21:31 2026] meson-drm d0100000.vpu: Queued 2 outputs on vpu
+[Wed Jun 24 13:21:31 2026] meson-dw-hdmi c883a000.hdmi-tx: Detected HDMI TX controller v2.01a with HDCP (meson_dw_hdmi_phy)
+[Wed Jun 24 13:21:31 2026] meson-dw-hdmi c883a000.hdmi-tx: registered DesignWare HDMI I2C bus driver
+[Wed Jun 24 13:21:31 2026] meson-drm d0100000.vpu: bound c883a000.hdmi-tx (ops 0xffff80008110a758)
+[Wed Jun 24 13:21:31 2026] [drm] Initialized meson 1.0.0 20161109 for d0100000.vpu on minor 0
+[Wed Jun 24 13:21:31 2026] Console: switching to colour frame buffer device 90x36
+[Wed Jun 24 13:21:31 2026] meson-drm d0100000.vpu: [drm] fb0: mesondrmfb frame buffer device
+[Wed Jun 24 13:21:31 2026] scpi_protocol scpi: SCP Protocol legacy pre-1.0 firmware
+[Wed Jun 24 13:21:31 2026] meson-gx-mmc d0070000.mmc: allocated mmc-pwrseq
+[Wed Jun 24 13:21:31 2026] dwc3-meson-g12a d0078080.usb: USB2 ports: 2
+[Wed Jun 24 13:21:31 2026] dwc3-meson-g12a d0078080.usb: USB3 ports: 0
+[Wed Jun 24 13:21:31 2026] meson-gx-mmc d0070000.mmc: card claims to support voltages below defined range
+[Wed Jun 24 13:21:31 2026] mmc2: new high speed SDIO card at address 0001
+[Wed Jun 24 13:21:32 2026] dwc2 c9100000.usb: supply vusb_d not found, using dummy regulator
+[Wed Jun 24 13:21:32 2026] dwc2 c9100000.usb: supply vusb_a not found, using dummy regulator
+[Wed Jun 24 13:21:32 2026] dwc2 c9100000.usb: EPs: 7, dedicated fifos, 712 entries in SPRAM
+[Wed Jun 24 13:21:32 2026] xhci-hcd xhci-hcd.1.auto: xHCI Host Controller
+[Wed Jun 24 13:21:32 2026] xhci-hcd xhci-hcd.1.auto: new USB bus registered, assigned bus number 1
+[Wed Jun 24 13:21:32 2026] xhci-hcd xhci-hcd.1.auto: USB3 root hub has no ports
+[Wed Jun 24 13:21:32 2026] xhci-hcd xhci-hcd.1.auto: hcc params 0x0228f664 hci version 0x100 quirks 0x0000008002000010
+[Wed Jun 24 13:21:32 2026] xhci-hcd xhci-hcd.1.auto: irq 32, io mem 0xc9000000
+[Wed Jun 24 13:21:32 2026] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 6.06
+[Wed Jun 24 13:21:32 2026] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[Wed Jun 24 13:21:32 2026] usb usb1: Product: xHCI Host Controller
+[Wed Jun 24 13:21:32 2026] usb usb1: Manufacturer: Linux 6.6.63-current-meson64 xhci-hcd
+[Wed Jun 24 13:21:32 2026] usb usb1: SerialNumber: xhci-hcd.1.auto
+[Wed Jun 24 13:21:32 2026] hub 1-0:1.0: USB hub found
+[Wed Jun 24 13:21:32 2026] hub 1-0:1.0: 2 ports detected
+[Wed Jun 24 13:21:32 2026] clk: Disabling unused clocks
+[Wed Jun 24 13:21:32 2026] Freeing unused kernel memory: 3776K
+[Wed Jun 24 13:21:32 2026] Run /init as init process
+[Wed Jun 24 13:21:32 2026]   with arguments:
+[Wed Jun 24 13:21:32 2026]     /init
+[Wed Jun 24 13:21:32 2026]     splash
+[Wed Jun 24 13:21:32 2026]   with environment:
+[Wed Jun 24 13:21:32 2026]     HOME=/
+[Wed Jun 24 13:21:32 2026]     TERM=linux
+[Wed Jun 24 13:21:32 2026] usb 1-1: new high-speed USB device number 2 using xhci-hcd
+[Wed Jun 24 13:21:32 2026] usb 1-1: New USB device found, idVendor=13fd, idProduct=0840, bcdDevice= 1.14
+[Wed Jun 24 13:21:32 2026] usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[Wed Jun 24 13:21:32 2026] usb 1-1: Product: External
+[Wed Jun 24 13:21:32 2026] usb 1-1: Manufacturer: Generic
+[Wed Jun 24 13:21:32 2026] usb 1-1: SerialNumber: 583652455443595A54202020
+[Wed Jun 24 13:21:32 2026] usb-storage 1-1:1.0: USB Mass Storage device detected
+[Wed Jun 24 13:21:32 2026] scsi host0: usb-storage 1-1:1.0
+[Wed Jun 24 13:21:32 2026] usbcore: registered new interface driver uas
+[Wed Jun 24 13:21:32 2026] [drm] Initialized simpledrm 1.0.0 20200625 for 7fe5b000.framebuffer on minor 1
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: IRQ eth_wake_irq not found
+[Wed Jun 24 13:21:32 2026] usb 1-2: new high-speed USB device number 3 using xhci-hcd
+[Wed Jun 24 13:21:32 2026] random: crng init done
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: IRQ eth_lpi not found
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: PTP uses main clock
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: User ID: 0x11, Synopsys ID: 0x37
+[Wed Jun 24 13:21:32 2026] meson-vrtc c81000a8.rtc: registered as rtc0
+[Wed Jun 24 13:21:32 2026] meson-vrtc c81000a8.rtc: setting system clock to 1970-01-01T00:00:03 UTC (3)
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: 	DWMAC1000
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: DMA HW capability register supported
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: RX Checksum Offload Engine supported
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: COE Type 2
+[Wed Jun 24 13:21:32 2026] simple-framebuffer 7fe5b000.framebuffer: [drm] fb1: simpledrmdrmfb frame buffer device
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: TX Checksum insertion supported
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: Wake-Up On Lan supported
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: Normal descriptors
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: Ring mode enabled
+[Wed Jun 24 13:21:32 2026] meson8b-dwmac c9410000.ethernet: Enable RX Mitigation via HW Watchdog Timer
+[Wed Jun 24 13:21:33 2026] usb 1-2: New USB device found, idVendor=214b, idProduct=7260, bcdDevice= 1.00
+[Wed Jun 24 13:21:33 2026] usb 1-2: New USB device strings: Mfr=0, Product=1, SerialNumber=0
+[Wed Jun 24 13:21:33 2026] usb 1-2: Product: USB2.0 HUB
+[Wed Jun 24 13:21:33 2026] hub 1-2:1.0: USB hub found
+[Wed Jun 24 13:21:33 2026] hub 1-2:1.0: 4 ports detected
+[Wed Jun 24 13:21:33 2026] usb 1-2.2: new high-speed USB device number 4 using xhci-hcd
+[Wed Jun 24 13:21:33 2026] usb 1-2.2: New USB device found, idVendor=0bc2, idProduct=ab24, bcdDevice= 1.00
+[Wed Jun 24 13:21:33 2026] usb 1-2.2: New USB device strings: Mfr=2, Product=3, SerialNumber=1
+[Wed Jun 24 13:21:33 2026] usb 1-2.2: Product: BUP Slim GD
+[Wed Jun 24 13:21:33 2026] usb 1-2.2: Manufacturer: Seagate
+[Wed Jun 24 13:21:33 2026] usb 1-2.2: SerialNumber: NA9MFKGL
+[Wed Jun 24 13:21:33 2026] scsi host1: uas
+[Wed Jun 24 13:21:33 2026] scsi 1:0:0:0: Direct-Access     Seagate  BUP Slim GD      0304 PQ: 0 ANSI: 6
+[Wed Jun 24 13:21:33 2026] scsi 0:0:0:0: Direct-Access     Generic  External         1.14 PQ: 0 ANSI: 4
+[Wed Jun 24 13:21:33 2026] sd 0:0:0:0: [sdb] 976773167 512-byte logical blocks: (500 GB/466 GiB)
+[Wed Jun 24 13:21:33 2026] sd 0:0:0:0: [sdb] Write Protect is off
+[Wed Jun 24 13:21:33 2026] sd 0:0:0:0: [sdb] Mode Sense: 23 00 00 00
+[Wed Jun 24 13:21:33 2026] sd 0:0:0:0: [sdb] No Caching mode page found
+[Wed Jun 24 13:21:33 2026] sd 0:0:0:0: [sdb] Assuming drive cache: write through
+[Wed Jun 24 13:21:33 2026] EXT4-fs (mmcblk1p2): mounted filesystem 17a69026-132b-4211-b611-e92cd50accef r/w with writeback data mode. Quota mode: none.
+[Wed Jun 24 13:21:33 2026]  sdb: sdb1
+[Wed Jun 24 13:21:33 2026] sd 0:0:0:0: [sdb] Attached SCSI disk
+[Wed Jun 24 13:21:34 2026] systemd[1]: System time before build time, advancing clock.
+[Wed Jun 24 13:21:35 2026] sd 1:0:0:0: [sda] 1953525167 512-byte logical blocks: (1.00 TB/932 GiB)
+[Wed Jun 24 13:21:35 2026] sd 1:0:0:0: [sda] 4096-byte physical blocks
+[Wed Jun 24 13:21:35 2026] sd 1:0:0:0: [sda] Write Protect is off
+[Wed Jun 24 13:21:35 2026] sd 1:0:0:0: [sda] Mode Sense: 4f 00 00 00
+[Wed Jun 24 13:21:35 2026] sd 1:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+[Wed Jun 24 13:21:35 2026] sd 1:0:0:0: [sda] Preferred minimum I/O size 4096 bytes
+[Wed Jun 24 13:21:35 2026] sd 1:0:0:0: [sda] Optimal transfer size 33553920 bytes not a multiple of preferred minimum block size (4096 bytes)
+[Wed Jun 24 13:21:35 2026]  sda: sda1
+[Wed Jun 24 13:21:35 2026] sd 1:0:0:0: [sda] Attached SCSI disk
+[Wed Jun 24 13:21:35 2026] systemd[1]: Inserted module 'autofs4'
+[Wed Jun 24 13:21:35 2026] systemd[1]: systemd 255.4-1ubuntu8.4 running in system mode (+PAM +AUDIT +SELINUX +APPARMOR +IMA +SMACK +SECCOMP +GCRYPT -GNUTLS +OPENSSL +ACL +BLKID +CURL +ELFUTILS +FIDO2 +IDN2 -IDN +IPTC +KMOD +LIBCRYPTSETUP +LIBFDISK +PCRE2 -PWQUALITY +P11KIT +QRENCODE +TPM2 +BZIP2 +LZ4 +XZ +ZLIB +ZSTD -BPF_FRAMEWORK -XKBCOMMON +UTMP +SYSVINIT default-hierarchy=unified)
+[Wed Jun 24 13:21:35 2026] systemd[1]: Detected architecture arm64.
+[Wed Jun 24 13:21:35 2026] systemd[1]: Hostname set to <homelab-1>.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Configuration file /run/systemd/system/netplan-ovs-cleanup.service is marked world-inaccessible. This has no effect as configuration data is accessible via APIs without restrictions. Proceeding anyway.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Queued start job for default target graphical.target.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Created slice system-modprobe.slice - Slice /system/modprobe.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Created slice system-serial\x2dgetty.slice - Slice /system/serial-getty.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Created slice system-systemd\x2dfsck.slice - Slice /system/systemd-fsck.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Created slice user.slice - User and Session Slice.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Started systemd-ask-password-wall.path - Forward Password Requests to Wall Directory Watch.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Set up automount proc-sys-fs-binfmt_misc.automount - Arbitrary Executable File Formats File System Automount Point.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Expecting device dev-disk-by\x2dlabel-BOOT_EMMC.device - /dev/disk/by-label/BOOT_EMMC...
+[Wed Jun 24 13:21:36 2026] systemd[1]: Expecting device dev-ttyAML0.device - /dev/ttyAML0...
+[Wed Jun 24 13:21:36 2026] systemd[1]: Reached target integritysetup.target - Local Integrity Protected Volumes.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Reached target slices.target - Slice Units.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Reached target time-set.target - System Time Set.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Reached target veritysetup.target - Local Verity Protected Volumes.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Listening on rpcbind.socket - RPCbind Server Activation Socket.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Listening on syslog.socket - Syslog Socket.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Listening on systemd-fsckd.socket - fsck to fsckd communication Socket.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Listening on systemd-initctl.socket - initctl Compatibility Named Pipe.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Listening on systemd-journald-dev-log.socket - Journal Socket (/dev/log).
+[Wed Jun 24 13:21:36 2026] systemd[1]: Listening on systemd-journald.socket - Journal Socket.
+[Wed Jun 24 13:21:36 2026] systemd[1]: systemd-pcrextend.socket - TPM2 PCR Extension (Varlink) was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[Wed Jun 24 13:21:36 2026] systemd[1]: Listening on systemd-udevd-control.socket - udev Control Socket.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Listening on systemd-udevd-kernel.socket - udev Kernel Socket.
+[Wed Jun 24 13:21:36 2026] systemd[1]: Mounting dev-hugepages.mount - Huge Pages File System...
+[Wed Jun 24 13:21:36 2026] systemd[1]: Mounting dev-mqueue.mount - POSIX Message Queue File System...
+[Wed Jun 24 13:21:36 2026] systemd[1]: Mounting sys-kernel-debug.mount - Kernel Debug File System...
+[Wed Jun 24 13:21:36 2026] systemd[1]: sys-kernel-tracing.mount - Kernel Trace File System was skipped because of an unmet condition check (ConditionPathExists=/sys/kernel/tracing).
+[Wed Jun 24 13:21:36 2026] systemd[1]: auth-rpcgss-module.service - Kernel Module supporting RPCSEC_GSS was skipped because of an unmet condition check (ConditionPathExists=/etc/krb5.keytab).
+[Wed Jun 24 13:21:36 2026] systemd[1]: Starting fake-hwclock-load.service - Restore the current clock...
+[Wed Jun 24 13:21:36 2026] systemd[1]: Starting keyboard-setup.service - Set the console keyboard layout...
+[Wed Jun 24 13:21:36 2026] systemd[1]: Starting kmod-static-nodes.service - Create List of Static Device Nodes...
+[Wed Jun 24 13:21:36 2026] (-hwclock)[1116]: fake-hwclock-load.service: Referenced but unset environment variable evaluates to an empty string: FORCE
+[Wed Jun 24 13:21:36 2026] systemd[1]: Starting modprobe@configfs.service - Load Kernel Module configfs...
+[Wed Jun 24 13:21:36 2026] systemd[1]: Starting modprobe@dm_mod.service - Load Kernel Module dm_mod...
+[Wed Jun 24 13:21:36 2026] systemd[1]: Starting modprobe@drm.service - Load Kernel Module drm...
+[Wed Jun 24 13:21:36 2026] systemd[1]: Starting modprobe@efi_pstore.service - Load Kernel Module efi_pstore...
+[Wed Jun 24 13:21:36 2026] systemd[1]: Starting modprobe@fuse.service - Load Kernel Module fuse...
+[Wed Jun 24 13:21:36 2026] systemd[1]: Starting modprobe@loop.service - Load Kernel Module loop...
+[Wed Jun 24 13:21:36 2026] systemd[1]: systemd-fsck-root.service - File System Check on Root Device was skipped because of an unmet condition check (ConditionPathExists=!/run/initramfs/fsck-root).
+[Wed Jun 24 13:21:36 2026] systemd[1]: Starting systemd-modules-load.service - Load Kernel Modules...
+[Wed Jun 24 13:21:36 2026] systemd[1]: systemd-pcrmachine.service - TPM2 PCR Machine ID Measurement was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[Wed Jun 24 13:21:36 2026] device-mapper: uevent: version 1.0.3
+[Wed Jun 24 13:21:36 2026] device-mapper: ioctl: 4.48.0-ioctl (2023-03-01) initialised: dm-devel@redhat.com
+[Wed Jun 24 13:21:36 2026] systemd[1]: Starting systemd-remount-fs.service - Remount Root and Kernel File Systems...
+[Wed Jun 24 13:21:36 2026] systemd[1]: systemd-tpm2-setup-early.service - TPM2 SRK Setup (Early) was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[Wed Jun 24 13:21:36 2026] systemd[1]: Starting systemd-udev-trigger.service - Coldplug All udev Devices...
+[Wed Jun 24 13:21:37 2026] systemd[1]: Mounted dev-hugepages.mount - Huge Pages File System.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Mounted dev-mqueue.mount - POSIX Message Queue File System.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Mounted sys-kernel-debug.mount - Kernel Debug File System.
+[Wed Jun 24 13:21:37 2026] systemd[1]: fake-hwclock-load.service: Deactivated successfully.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished fake-hwclock-load.service - Restore the current clock.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished kmod-static-nodes.service - Create List of Static Device Nodes.
+[Wed Jun 24 13:21:37 2026] EXT4-fs (mmcblk1p2): re-mounted 17a69026-132b-4211-b611-e92cd50accef r/w. Quota mode: none.
+[Wed Jun 24 13:21:37 2026] systemd[1]: modprobe@configfs.service: Deactivated successfully.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished modprobe@configfs.service - Load Kernel Module configfs.
+[Wed Jun 24 13:21:37 2026] systemd[1]: modprobe@dm_mod.service: Deactivated successfully.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished modprobe@dm_mod.service - Load Kernel Module dm_mod.
+[Wed Jun 24 13:21:37 2026] systemd[1]: modprobe@drm.service: Deactivated successfully.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished modprobe@drm.service - Load Kernel Module drm.
+[Wed Jun 24 13:21:37 2026] systemd[1]: modprobe@efi_pstore.service: Deactivated successfully.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished modprobe@efi_pstore.service - Load Kernel Module efi_pstore.
+[Wed Jun 24 13:21:37 2026] systemd[1]: modprobe@fuse.service: Deactivated successfully.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished modprobe@fuse.service - Load Kernel Module fuse.
+[Wed Jun 24 13:21:37 2026] systemd[1]: modprobe@loop.service: Deactivated successfully.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished modprobe@loop.service - Load Kernel Module loop.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished systemd-modules-load.service - Load Kernel Modules.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished systemd-remount-fs.service - Remount Root and Kernel File Systems.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Activating swap swapfile.swap - /swapfile...
+[Wed Jun 24 13:21:37 2026] systemd[1]: Mounting sys-fs-fuse-connections.mount - FUSE Control File System...
+[Wed Jun 24 13:21:37 2026] systemd[1]: Mounting sys-kernel-config.mount - Kernel Configuration File System...
+[Wed Jun 24 13:21:37 2026] systemd[1]: systemd-hwdb-update.service - Rebuild Hardware Database was skipped because of an unmet condition check (ConditionNeedsUpdate=/etc).
+[Wed Jun 24 13:21:37 2026] systemd[1]: systemd-pstore.service - Platform Persistent Storage Archival was skipped because of an unmet condition check (ConditionDirectoryNotEmpty=/sys/fs/pstore).
+[Wed Jun 24 13:21:37 2026] systemd[1]: Starting systemd-random-seed.service - Load/Save OS Random Seed...
+[Wed Jun 24 13:21:37 2026] systemd[1]: systemd-repart.service - Repartition Root Disk was skipped because no trigger condition checks were met.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Starting systemd-sysctl.service - Apply Kernel Variables...
+[Wed Jun 24 13:21:37 2026] systemd[1]: Starting systemd-tmpfiles-setup-dev-early.service - Create Static Device Nodes in /dev gracefully...
+[Wed Jun 24 13:21:37 2026] systemd[1]: systemd-tpm2-setup.service - TPM2 SRK Setup was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished keyboard-setup.service - Set the console keyboard layout.
+[Wed Jun 24 13:21:37 2026] systemd[1]: swapfile.swap: Swap process exited, code=exited, status=255/EXCEPTION
+[Wed Jun 24 13:21:37 2026] systemd[1]: swapfile.swap: Failed with result 'exit-code'.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Failed to activate swap swapfile.swap - /swapfile.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Dependency failed for swap.target - Swaps.
+[Wed Jun 24 13:21:37 2026] systemd[1]: swap.target: Job swap.target/start failed with result 'dependency'.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Mounted sys-fs-fuse-connections.mount - FUSE Control File System.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Mounted sys-kernel-config.mount - Kernel Configuration File System.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished systemd-random-seed.service - Load/Save OS Random Seed.
+[Wed Jun 24 13:21:37 2026] systemd[1]: first-boot-complete.target - First Boot Complete was skipped because of an unmet condition check (ConditionFirstBoot=yes).
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished systemd-sysctl.service - Apply Kernel Variables.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished systemd-tmpfiles-setup-dev-early.service - Create Static Device Nodes in /dev gracefully.
+[Wed Jun 24 13:21:37 2026] systemd[1]: systemd-sysusers.service - Create System Users was skipped because no trigger condition checks were met.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Starting systemd-tmpfiles-setup-dev.service - Create Static Device Nodes in /dev...
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished systemd-tmpfiles-setup-dev.service - Create Static Device Nodes in /dev.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Reached target local-fs-pre.target - Preparation for Local File Systems.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Mounting tmp.mount - /tmp...
+[Wed Jun 24 13:21:37 2026] systemd[1]: Starting systemd-udevd.service - Rule-based Manager for Device Events and Files...
+[Wed Jun 24 13:21:37 2026] systemd[1]: Mounted tmp.mount - /tmp.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Finished systemd-udev-trigger.service - Coldplug All udev Devices.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Started systemd-udevd.service - Rule-based Manager for Device Events and Files.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Starting plymouth-start.service - Show Plymouth Boot Screen...
+[Wed Jun 24 13:21:37 2026] systemd[1]: Started plymouth-start.service - Show Plymouth Boot Screen.
+[Wed Jun 24 13:21:37 2026] systemd[1]: systemd-ask-password-console.path - Dispatch Password Requests to Console Directory Watch was skipped because of an unmet condition check (ConditionPathExists=!/run/plymouth/pid).
+[Wed Jun 24 13:21:37 2026] systemd[1]: Started systemd-ask-password-plymouth.path - Forward Password Requests to Plymouth Directory Watch.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Reached target cryptsetup.target - Local Encrypted Volumes.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Reached target paths.target - Path Units.
+[Wed Jun 24 13:21:37 2026] systemd[1]: Found device dev-ttyAML0.device - /dev/ttyAML0.
+[Wed Jun 24 13:21:37 2026] sd 1:0:0:0: Attached scsi generic sg0 type 0
+[Wed Jun 24 13:21:37 2026] sd 0:0:0:0: Attached scsi generic sg1 type 0
+[Wed Jun 24 13:21:38 2026] systemd[1]: Found device dev-disk-by\x2dlabel-BOOT_EMMC.device - /dev/disk/by-label/BOOT_EMMC.
+[Wed Jun 24 13:21:38 2026] systemd[1]: Starting systemd-fsck@dev-disk-by\x2dlabel-BOOT_EMMC.service - File System Check on /dev/disk/by-label/BOOT_EMMC...
+[Wed Jun 24 13:21:38 2026] systemd[1]: Started systemd-fsckd.service - File System Check Daemon to report status.
+[Wed Jun 24 13:21:38 2026] systemd[1]: Finished systemd-fsck@dev-disk-by\x2dlabel-BOOT_EMMC.service - File System Check on /dev/disk/by-label/BOOT_EMMC.
+[Wed Jun 24 13:21:38 2026] systemd[1]: Mounting boot.mount - /boot...
+[Wed Jun 24 13:21:38 2026] mc: Linux media interface: v0.10
+[Wed Jun 24 13:21:38 2026] Registered IR keymap rc-empty
+[Wed Jun 24 13:21:38 2026] rc rc0: meson-ir as /devices/platform/soc/c8100000.bus/c8100580.ir/rc/rc0
+[Wed Jun 24 13:21:38 2026] rc rc0: lirc_dev: driver meson-ir registered at minor = 0, raw IR receiver, no transmitter
+[Wed Jun 24 13:21:38 2026] input: meson-ir as /devices/platform/soc/c8100000.bus/c8100580.ir/rc/rc0/input0
+[Wed Jun 24 13:21:38 2026] meson-ir c8100580.ir: receiver initialized
+[Wed Jun 24 13:21:38 2026] videodev: Linux video capture interface: v2.00
+[Wed Jun 24 13:21:38 2026] systemd[1]: Mounted boot.mount - /boot.
+[Wed Jun 24 13:21:38 2026] systemd[1]: Reached target local-fs.target - Local File Systems.
+[Wed Jun 24 13:21:38 2026] systemd[1]: Listening on systemd-sysext.socket - System Extension Image Management (Varlink).
+[Wed Jun 24 13:21:38 2026] systemd[1]: Starting apparmor.service - Load AppArmor profiles...
+[Wed Jun 24 13:21:38 2026] systemd[1]: Starting armbian-zram-config.service - Armbian ZRAM config...
+[Wed Jun 24 13:21:38 2026] systemd[1]: Starting console-setup.service - Set console font and keymap...
+[Wed Jun 24 13:21:38 2026] systemd[1]: ldconfig.service - Rebuild Dynamic Linker Cache was skipped because no trigger condition checks were met.
+[Wed Jun 24 13:21:38 2026] systemd[1]: Starting netfilter-persistent.service - netfilter persistent configuration...
+[Wed Jun 24 13:21:38 2026] systemd[1]: Starting plymouth-read-write.service - Tell Plymouth To Write Out Runtime Data...
+[Wed Jun 24 13:21:38 2026] systemd[1]: Starting systemd-binfmt.service - Set Up Additional Binary Formats...
+[Wed Jun 24 13:21:38 2026] systemd[1]: systemd-machine-id-commit.service - Commit a transient machine-id on disk was skipped because of an unmet condition check (ConditionPathIsMountPoint=/etc/machine-id).
+[Wed Jun 24 13:21:38 2026] systemd[1]: Finished console-setup.service - Set console font and keymap.
+[Wed Jun 24 13:21:38 2026] meson_vdec: module is from the staging directory, the quality is unknown, you have been warned.
+[Wed Jun 24 13:21:38 2026] Bluetooth: Core ver 2.22
+[Wed Jun 24 13:21:38 2026] NET: Registered PF_BLUETOOTH protocol family
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI device and connection manager initialized
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI socket layer initialized
+[Wed Jun 24 13:21:38 2026] Bluetooth: L2CAP socket layer initialized
+[Wed Jun 24 13:21:38 2026] Bluetooth: SCO socket layer initialized
+[Wed Jun 24 13:21:38 2026] systemd[1]: Received SIGRTMIN+20 from PID 1041 (plymouthd).
+[Wed Jun 24 13:21:38 2026] systemd[1]: Finished plymouth-read-write.service - Tell Plymouth To Write Out Runtime Data.
+[Wed Jun 24 13:21:38 2026] systemd[1]: proc-sys-fs-binfmt_misc.automount: Got automount request for /proc/sys/fs/binfmt_misc, triggered by 1221 (systemd-binfmt)
+[Wed Jun 24 13:21:38 2026] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+[Wed Jun 24 13:21:38 2026] Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+[Wed Jun 24 13:21:38 2026] Loaded X.509 cert 'wens: 61c038651aabdcf94bd0ac7ff06c7248db18c600'
+[Wed Jun 24 13:21:38 2026] lima d00c0000.gpu: gp - mali450 version major 0 minor 0
+[Wed Jun 24 13:21:38 2026] lima d00c0000.gpu: pp0 - mali450 version major 0 minor 0
+[Wed Jun 24 13:21:38 2026] lima d00c0000.gpu: pp1 - mali450 version major 0 minor 0
+[Wed Jun 24 13:21:38 2026] lima d00c0000.gpu: pp2 - mali450 version major 0 minor 0
+[Wed Jun 24 13:21:38 2026] lima d00c0000.gpu: l2 cache 8K, 4-way, 64byte cache line, 128bit external bus
+[Wed Jun 24 13:21:38 2026] lima d00c0000.gpu: l2 cache 64K, 4-way, 64byte cache line, 128bit external bus
+[Wed Jun 24 13:21:38 2026] systemd[1]: Mounting proc-sys-fs-binfmt_misc.mount - Arbitrary Executable File Formats File System...
+[Wed Jun 24 13:21:38 2026] lima d00c0000.gpu: bus rate = 166666667
+[Wed Jun 24 13:21:38 2026] lima d00c0000.gpu: mod rate = 24000000
+[Wed Jun 24 13:21:38 2026] lima d00c0000.gpu: error -ENODEV: _opp_set_regulators: no regulator (mali) found
+[Wed Jun 24 13:21:38 2026] systemd[1]: Reached target usb-gadget.target - Hardware activated USB gadget.
+[Wed Jun 24 13:21:38 2026] systemd[1]: Mounted proc-sys-fs-binfmt_misc.mount - Arbitrary Executable File Formats File System.
+[Wed Jun 24 13:21:38 2026] systemd[1]: Finished systemd-binfmt.service - Set Up Additional Binary Formats.
+[Wed Jun 24 13:21:38 2026] [drm] Initialized lima 1.1.0 20191231 for d00c0000.gpu on minor 2
+[Wed Jun 24 13:21:38 2026] audit: type=1400 audit(1782282067.928:2): apparmor="STATUS" operation="profile_load" profile="unconfined" name="Discord" pid=1251 comm="apparmor_parser"
+[Wed Jun 24 13:21:38 2026] audit: type=1400 audit(1782282067.928:3): apparmor="STATUS" operation="profile_load" profile="unconfined" name="QtWebEngineProcess" pid=1254 comm="apparmor_parser"
+[Wed Jun 24 13:21:38 2026] audit: type=1400 audit(1782282067.932:4): apparmor="STATUS" operation="profile_load" profile="unconfined" name=4D6F6E676F444220436F6D70617373 pid=1253 comm="apparmor_parser"
+[Wed Jun 24 13:21:38 2026] audit: type=1400 audit(1782282067.932:5): apparmor="STATUS" operation="profile_load" profile="unconfined" name="1password" pid=1250 comm="apparmor_parser"
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI UART driver ver 2.3
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI UART protocol H4 registered
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI UART protocol BCSP registered
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI UART protocol LL registered
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI UART protocol ATH3K registered
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI UART protocol Three-wire (H5) registered
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI UART protocol Intel registered
+[Wed Jun 24 13:21:38 2026] audit: type=1400 audit(1782282067.948:6): apparmor="STATUS" operation="profile_load" profile="unconfined" name="balena-etcher" pid=1284 comm="apparmor_parser"
+[Wed Jun 24 13:21:38 2026] hci_uart_bcm serial0-0: supply vbat not found, using dummy regulator
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI UART protocol Broadcom registered
+[Wed Jun 24 13:21:38 2026] hci_uart_bcm serial0-0: supply vddio not found, using dummy regulator
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI UART protocol QCA registered
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI UART protocol AG6XX registered
+[Wed Jun 24 13:21:38 2026] Bluetooth: HCI UART protocol Marvell registered
+[Wed Jun 24 13:21:38 2026] audit: type=1400 audit(1782282067.960:7): apparmor="STATUS" operation="profile_load" profile="unconfined" name="busybox" pid=1289 comm="apparmor_parser"
+[Wed Jun 24 13:21:38 2026] audit: type=1400 audit(1782282067.964:8): apparmor="STATUS" operation="profile_load" profile="unconfined" name="brave" pid=1286 comm="apparmor_parser"
+[Wed Jun 24 13:21:38 2026] audit: type=1400 audit(1782282068.008:9): apparmor="STATUS" operation="profile_load" profile="unconfined" name="buildah" pid=1288 comm="apparmor_parser"
+[Wed Jun 24 13:21:38 2026] audit: type=1400 audit(1782282068.008:10): apparmor="STATUS" operation="profile_load" profile="unconfined" name="cam" pid=1290 comm="apparmor_parser"
+[Wed Jun 24 13:21:38 2026] audit: type=1400 audit(1782282068.032:11): apparmor="STATUS" operation="profile_load" profile="unconfined" name="ch-run" pid=1293 comm="apparmor_parser"
+[Wed Jun 24 13:21:38 2026] zram: Added device: zram0
+[Wed Jun 24 13:21:38 2026] zram: Added device: zram1
+[Wed Jun 24 13:21:38 2026] zram: Added device: zram2
+[Wed Jun 24 13:21:39 2026] zram0: detected capacity change from 0 to 1974960
+[Wed Jun 24 13:21:39 2026] Adding 987476k swap on /dev/zram0.  Priority:5 extents:1 across:987476k SS
+[Wed Jun 24 13:21:39 2026] systemd[1]: Finished netfilter-persistent.service - netfilter persistent configuration.
+[Wed Jun 24 13:21:39 2026] systemd[1]: Reached target network-pre.target - Preparation for Network.
+[Wed Jun 24 13:21:39 2026] systemd[1]: Listening on systemd-rfkill.socket - Load/Save RF Kill Switch Status /dev/rfkill Watch.
+[Wed Jun 24 13:21:39 2026] zram1: detected capacity change from 0 to 102400
+[Wed Jun 24 13:21:39 2026] systemd[1]: Starting systemd-rfkill.service - Load/Save RF Kill Switch Status...
+[Wed Jun 24 13:21:39 2026] systemd[1]: Finished apparmor.service - Load AppArmor profiles.
+[Wed Jun 24 13:21:39 2026] systemd[1]: Finished armbian-zram-config.service - Armbian ZRAM config.
+[Wed Jun 24 13:21:39 2026] systemd[1]: Starting armbian-ramlog.service - Armbian memory supported logging...
+[Wed Jun 24 13:21:39 2026] systemd[1]: Started systemd-rfkill.service - Load/Save RF Kill Switch Status.
+[Wed Jun 24 13:21:39 2026] systemd[1]: Reached target bluetooth.target - Bluetooth Support.
+[Wed Jun 24 13:21:39 2026] EXT4-fs (zram1): mounted filesystem 9b67e1aa-2625-44cf-a71f-ac340fdf8a61 r/w without journal. Quota mode: none.
+[Wed Jun 24 13:21:39 2026] systemd[1]: systemd-ask-password-console.path - Dispatch Password Requests to Console Directory Watch was skipped because of an unmet condition check (ConditionPathExists=!/run/plymouth/pid).
+[Wed Jun 24 13:21:39 2026] systemd[1]: Activating swap swapfile.swap - /swapfile...
+[Wed Jun 24 13:21:39 2026] systemd[1]: sys-kernel-tracing.mount - Kernel Trace File System was skipped because of an unmet condition check (ConditionPathExists=/sys/kernel/tracing).
+[Wed Jun 24 13:21:39 2026] systemd[1]: Starting fake-hwclock-load.service - Restore the current clock...
+[Wed Jun 24 13:21:39 2026] systemd[1]: ldconfig.service - Rebuild Dynamic Linker Cache was skipped because no trigger condition checks were met.
+[Wed Jun 24 13:21:39 2026] systemd[1]: Starting modprobe@dm_mod.service - Load Kernel Module dm_mod...
+[Wed Jun 24 13:21:39 2026] systemd[1]: Starting modprobe@efi_pstore.service - Load Kernel Module efi_pstore...
+[Wed Jun 24 13:21:39 2026] (-hwclock)[1505]: fake-hwclock-load.service: Referenced but unset environment variable evaluates to an empty string: FORCE
+[Wed Jun 24 13:21:39 2026] systemd[1]: Starting modprobe@loop.service - Load Kernel Module loop...
+[Wed Jun 24 13:21:39 2026] systemd[1]: systemd-hwdb-update.service - Rebuild Hardware Database was skipped because of an unmet condition check (ConditionNeedsUpdate=/etc).
+[Wed Jun 24 13:21:39 2026] systemd[1]: systemd-machine-id-commit.service - Commit a transient machine-id on disk was skipped because of an unmet condition check (ConditionPathIsMountPoint=/etc/machine-id).
+[Wed Jun 24 13:21:39 2026] systemd[1]: systemd-pcrmachine.service - TPM2 PCR Machine ID Measurement was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[Wed Jun 24 13:21:39 2026] systemd[1]: systemd-sysusers.service - Create System Users was skipped because no trigger condition checks were met.
+[Wed Jun 24 13:21:39 2026] systemd[1]: systemd-tpm2-setup-early.service - TPM2 SRK Setup (Early) was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[Wed Jun 24 13:21:39 2026] systemd[1]: systemd-tpm2-setup.service - TPM2 SRK Setup was skipped because of an unmet condition check (ConditionSecurity=measured-uki).
+[Wed Jun 24 13:21:39 2026] systemd[1]: swapfile.swap: Swap process exited, code=exited, status=255/EXCEPTION
+[Wed Jun 24 13:21:39 2026] systemd[1]: swapfile.swap: Failed with result 'exit-code'.
+[Wed Jun 24 13:21:39 2026] systemd[1]: Failed to activate swap swapfile.swap - /swapfile.
+[Wed Jun 24 13:21:39 2026] systemd[1]: Dependency failed for swap.target - Swaps.
+[Wed Jun 24 13:21:39 2026] systemd[1]: swap.target: Job swap.target/start failed with result 'dependency'.
+[Wed Jun 24 13:21:39 2026] systemd[1]: modprobe@dm_mod.service: Deactivated successfully.
+[Wed Jun 24 13:21:39 2026] systemd[1]: Finished modprobe@dm_mod.service - Load Kernel Module dm_mod.
+[Wed Jun 24 13:21:39 2026] systemd[1]: fake-hwclock-load.service: Deactivated successfully.
+[Wed Jun 24 13:21:39 2026] systemd[1]: Finished fake-hwclock-load.service - Restore the current clock.
+[Wed Jun 24 13:21:40 2026] systemd[1]: modprobe@efi_pstore.service: Deactivated successfully.
+[Wed Jun 24 13:21:40 2026] systemd[1]: Finished modprobe@efi_pstore.service - Load Kernel Module efi_pstore.
+[Wed Jun 24 13:21:40 2026] systemd[1]: modprobe@loop.service: Deactivated successfully.
+[Wed Jun 24 13:21:40 2026] systemd[1]: Finished modprobe@loop.service - Load Kernel Module loop.
+[Wed Jun 24 13:21:40 2026] systemd[1]: systemd-pstore.service - Platform Persistent Storage Archival was skipped because of an unmet condition check (ConditionDirectoryNotEmpty=/sys/fs/pstore).
+[Wed Jun 24 13:21:40 2026] systemd[1]: systemd-repart.service - Repartition Root Disk was skipped because no trigger condition checks were met.
+[Wed Jun 24 13:21:40 2026] systemd[1]: Finished armbian-ramlog.service - Armbian memory supported logging.
+[Wed Jun 24 13:21:40 2026] systemd[1]: Starting systemd-journald.service - Journal Service...
+[Wed Jun 24 13:21:40 2026] systemd-journald[1540]: Collecting audit messages is disabled.
+[Wed Jun 24 13:21:40 2026] systemd[1]: Started systemd-journald.service - Journal Service.
+[Wed Jun 24 13:21:40 2026] systemd-journald[1540]: Received client request to flush runtime journal.
+[Wed Jun 24 13:21:41 2026] Bluetooth: hci0: command 0xfc18 tx timeout
+[Wed Jun 24 13:21:41 2026] Bluetooth: hci0: BCM: failed to write update baudrate (-110)
+[Wed Jun 24 13:21:41 2026] Bluetooth: hci0: Failed to set baudrate
+[Wed Jun 24 13:21:41 2026] RPC: Registered named UNIX socket transport module.
+[Wed Jun 24 13:21:41 2026] RPC: Registered udp transport module.
+[Wed Jun 24 13:21:41 2026] RPC: Registered tcp transport module.
+[Wed Jun 24 13:21:41 2026] RPC: Registered tcp-with-tls transport module.
+[Wed Jun 24 13:21:41 2026] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[Wed Jun 24 13:21:43 2026] Bluetooth: hci0: command 0xfc18 tx timeout
+[Wed Jun 24 13:21:43 2026] Bluetooth: hci0: BCM: Reset failed (-110)
+[Wed Jun 24 13:21:45 2026] meson8b-dwmac c9410000.ethernet eth0: Register MEM_TYPE_PAGE_POOL RxQ-0
+[Wed Jun 24 13:21:45 2026] meson8b-dwmac c9410000.ethernet eth0: PHY [mdio_mux-0.1:08] driver [Meson GXL Internal PHY] (irq=34)
+[Wed Jun 24 13:21:45 2026] meson8b-dwmac c9410000.ethernet eth0: No Safety Features support found
+[Wed Jun 24 13:21:45 2026] meson8b-dwmac c9410000.ethernet eth0: PTP not supported by HW
+[Wed Jun 24 13:21:45 2026] meson8b-dwmac c9410000.ethernet eth0: configuring for phy/rmii link mode
+[Wed Jun 24 13:21:47 2026] meson8b-dwmac c9410000.ethernet eth0: Link is Up - 100Mbps/Full - flow control rx/tx
+[Wed Jun 24 13:21:47 2026] EXT4-fs (sdb1): recovery complete
+[Wed Jun 24 13:21:47 2026] EXT4-fs (sdb1): mounted filesystem 38e1270f-7960-43e7-addc-1863d3f9e884 r/w with ordered data mode. Quota mode: none.
+[Wed Jun 24 13:21:48 2026] kauditd_printk_skb: 100 callbacks suppressed
+[Wed Jun 24 13:21:48 2026] audit: type=1400 audit(1782282078.112:112): apparmor="STATUS" operation="profile_load" profile="unconfined" name="docker-default" pid=2412 comm="apparmor_parser"
+[Wed Jun 24 13:21:58 2026] Initializing XFRM netlink socket
+[Wed Jun 24 13:22:00 2026] bridge: filtering via arp/ip/ip6tables is no longer available by default. Update your scripts to load br_netfilter if you need this.
+[Wed Jun 24 13:22:00 2026] Bridge firewalling registered
+[Wed Jun 24 13:22:14 2026] br0: renamed from ov-001000-svy85
+[Wed Jun 24 13:22:14 2026] vxlan0: renamed from vx-001000-svy85
+[Wed Jun 24 13:22:14 2026] br0: port 1(vxlan0) entered blocking state
+[Wed Jun 24 13:22:14 2026] br0: port 1(vxlan0) entered disabled state
+[Wed Jun 24 13:22:14 2026] vxlan0: entered allmulticast mode
+[Wed Jun 24 13:22:14 2026] vxlan0: entered promiscuous mode
+[Wed Jun 24 13:22:14 2026] br0: port 1(vxlan0) entered blocking state
+[Wed Jun 24 13:22:14 2026] br0: port 1(vxlan0) entered forwarding state
+[Wed Jun 24 13:22:14 2026] veth0: renamed from vethcb58dab
+[Wed Jun 24 13:22:14 2026] br0: port 2(veth0) entered blocking state
+[Wed Jun 24 13:22:14 2026] br0: port 2(veth0) entered disabled state
+[Wed Jun 24 13:22:14 2026] veth0: entered allmulticast mode
+[Wed Jun 24 13:22:14 2026] veth0: entered promiscuous mode
+[Wed Jun 24 13:22:14 2026] br0: port 2(veth0) entered blocking state
+[Wed Jun 24 13:22:14 2026] br0: port 2(veth0) entered forwarding state
+[Wed Jun 24 13:22:15 2026] br0: renamed from ov-001001-1hsh8
+[Wed Jun 24 13:22:15 2026] eth0: renamed from vethdedf3fa
+[Wed Jun 24 13:22:15 2026] vxlan0: renamed from vx-001001-1hsh8
+[Wed Jun 24 13:22:15 2026] br0: port 1(vxlan0) entered blocking state
+[Wed Jun 24 13:22:15 2026] br0: port 1(vxlan0) entered disabled state
+[Wed Jun 24 13:22:15 2026] vxlan0: entered allmulticast mode
+[Wed Jun 24 13:22:15 2026] vxlan0: entered promiscuous mode
+[Wed Jun 24 13:22:15 2026] docker_gwbridge: port 1(veth329d2ff) entered blocking state
+[Wed Jun 24 13:22:15 2026] docker_gwbridge: port 1(veth329d2ff) entered disabled state
+[Wed Jun 24 13:22:15 2026] veth329d2ff: entered allmulticast mode
+[Wed Jun 24 13:22:15 2026] veth329d2ff: entered promiscuous mode
+[Wed Jun 24 13:22:15 2026] docker_gwbridge: port 1(veth329d2ff) entered blocking state
+[Wed Jun 24 13:22:15 2026] docker_gwbridge: port 1(veth329d2ff) entered forwarding state
+[Wed Jun 24 13:22:15 2026] br0: port 1(vxlan0) entered blocking state
+[Wed Jun 24 13:22:15 2026] br0: port 1(vxlan0) entered forwarding state
+[Wed Jun 24 13:22:15 2026] docker_gwbridge: port 1(veth329d2ff) entered disabled state
+[Wed Jun 24 13:22:15 2026] eth1: renamed from veth2be840c
+[Wed Jun 24 13:22:15 2026] docker_gwbridge: port 1(veth329d2ff) entered blocking state
+[Wed Jun 24 13:22:15 2026] docker_gwbridge: port 1(veth329d2ff) entered forwarding state
+[Wed Jun 24 13:22:15 2026] veth0: renamed from veth743af33
+[Wed Jun 24 13:22:15 2026] br0: port 2(veth0) entered blocking state
+[Wed Jun 24 13:22:15 2026] br0: port 2(veth0) entered disabled state
+[Wed Jun 24 13:22:15 2026] veth0: entered allmulticast mode
+[Wed Jun 24 13:22:15 2026] veth0: entered promiscuous mode
+[Wed Jun 24 13:22:15 2026] br0: port 2(veth0) entered blocking state
+[Wed Jun 24 13:22:15 2026] br0: port 2(veth0) entered forwarding state
+[Wed Jun 24 13:22:15 2026] eth0: renamed from vethb3992b2
+[Wed Jun 24 13:22:17 2026] br0: port 2(veth0) entered disabled state
+[Wed Jun 24 13:22:17 2026] br0: port 1(vxlan0) entered disabled state
+[Wed Jun 24 13:22:17 2026] ov-001001-1hsh8: renamed from br0
+[Wed Jun 24 13:22:17 2026] veth0: left allmulticast mode
+[Wed Jun 24 13:22:17 2026] veth0: left promiscuous mode
+[Wed Jun 24 13:22:17 2026] ov-001001-1hsh8: port 2(veth0) entered disabled state
+[Wed Jun 24 13:22:17 2026] vxlan0: left allmulticast mode
+[Wed Jun 24 13:22:17 2026] vxlan0: left promiscuous mode
+[Wed Jun 24 13:22:17 2026] ov-001001-1hsh8: port 1(vxlan0) entered disabled state
+[Wed Jun 24 13:22:17 2026] vx-001001-1hsh8: renamed from vxlan0
+[Wed Jun 24 13:22:17 2026] veth743af33: renamed from veth0
+[Wed Jun 24 13:22:17 2026] vethb3992b2: renamed from eth0
+[Wed Jun 24 13:22:21 2026] veth1: renamed from veth70b7fa9
+[Wed Jun 24 13:22:21 2026] br0: port 3(veth1) entered blocking state
+[Wed Jun 24 13:22:21 2026] br0: port 3(veth1) entered disabled state
+[Wed Jun 24 13:22:21 2026] veth1: entered allmulticast mode
+[Wed Jun 24 13:22:21 2026] veth1: entered promiscuous mode
+[Wed Jun 24 13:22:21 2026] veth2: renamed from vethc9e5c32
+[Wed Jun 24 13:22:21 2026] br0: port 4(veth2) entered blocking state
+[Wed Jun 24 13:22:21 2026] br0: port 4(veth2) entered disabled state
+[Wed Jun 24 13:22:21 2026] veth2: entered allmulticast mode
+[Wed Jun 24 13:22:21 2026] veth2: entered promiscuous mode
+[Wed Jun 24 13:22:21 2026] br0: port 4(veth2) entered blocking state
+[Wed Jun 24 13:22:21 2026] br0: port 4(veth2) entered forwarding state
+[Wed Jun 24 13:22:21 2026] eth0: renamed from veth82a70a1
+[Wed Jun 24 13:22:21 2026] br0: port 4(veth2) entered disabled state
+[Wed Jun 24 13:22:21 2026] br0: port 3(veth1) entered blocking state
+[Wed Jun 24 13:22:21 2026] br0: port 3(veth1) entered forwarding state
+[Wed Jun 24 13:22:21 2026] eth0: renamed from veth411bf3e
+[Wed Jun 24 13:22:21 2026] br0: port 4(veth2) entered blocking state
+[Wed Jun 24 13:22:21 2026] br0: port 4(veth2) entered forwarding state
+[Wed Jun 24 13:22:22 2026] docker_gwbridge: port 2(vethdbe95f5) entered blocking state
+[Wed Jun 24 13:22:22 2026] docker_gwbridge: port 2(vethdbe95f5) entered disabled state
+[Wed Jun 24 13:22:22 2026] vethdbe95f5: entered allmulticast mode
+[Wed Jun 24 13:22:22 2026] vethdbe95f5: entered promiscuous mode
+[Wed Jun 24 13:22:22 2026] docker_gwbridge: port 2(vethdbe95f5) entered blocking state
+[Wed Jun 24 13:22:22 2026] docker_gwbridge: port 2(vethdbe95f5) entered forwarding state
+[Wed Jun 24 13:22:22 2026] br0: renamed from ov-001001-1hsh8
+[Wed Jun 24 13:22:22 2026] eth1: renamed from vethfa1f218
+[Wed Jun 24 13:22:22 2026] docker_gwbridge: port 3(veth016f5a7) entered blocking state
+[Wed Jun 24 13:22:22 2026] docker_gwbridge: port 3(veth016f5a7) entered disabled state
+[Wed Jun 24 13:22:22 2026] veth016f5a7: entered allmulticast mode
+[Wed Jun 24 13:22:22 2026] veth016f5a7: entered promiscuous mode
+[Wed Jun 24 13:22:22 2026] vxlan0: renamed from vx-001001-1hsh8
+[Wed Jun 24 13:22:22 2026] eth1: renamed from vethf351aad
+[Wed Jun 24 13:22:22 2026] br0: port 1(vxlan0) entered blocking state
+[Wed Jun 24 13:22:22 2026] br0: port 1(vxlan0) entered disabled state
+[Wed Jun 24 13:22:22 2026] vxlan0: entered allmulticast mode
+[Wed Jun 24 13:22:22 2026] vxlan0: entered promiscuous mode
+[Wed Jun 24 13:22:22 2026] br0: port 1(vxlan0) entered blocking state
+[Wed Jun 24 13:22:22 2026] br0: port 1(vxlan0) entered forwarding state
+[Wed Jun 24 13:22:22 2026] docker_gwbridge: port 3(veth016f5a7) entered blocking state
+[Wed Jun 24 13:22:22 2026] docker_gwbridge: port 3(veth016f5a7) entered forwarding state
+[Wed Jun 24 13:22:22 2026] veth0: renamed from veth8e2304d
+[Wed Jun 24 13:22:22 2026] br0: port 2(veth0) entered blocking state
+[Wed Jun 24 13:22:22 2026] br0: port 2(veth0) entered disabled state
+[Wed Jun 24 13:22:22 2026] veth0: entered allmulticast mode
+[Wed Jun 24 13:22:22 2026] veth0: entered promiscuous mode
+[Wed Jun 24 13:22:22 2026] br0: port 2(veth0) entered blocking state
+[Wed Jun 24 13:22:22 2026] br0: port 2(veth0) entered forwarding state
+[Wed Jun 24 13:22:22 2026] eth0: renamed from veth88288bf
+[Wed Jun 24 13:22:22 2026] veth1: renamed from veth50bb0a0
+[Wed Jun 24 13:22:22 2026] br0: port 3(veth1) entered blocking state
+[Wed Jun 24 13:22:22 2026] br0: port 3(veth1) entered disabled state
+[Wed Jun 24 13:22:22 2026] veth1: entered allmulticast mode
+[Wed Jun 24 13:22:22 2026] veth1: entered promiscuous mode
+[Wed Jun 24 13:22:22 2026] br0: port 3(veth1) entered blocking state
+[Wed Jun 24 13:22:22 2026] br0: port 3(veth1) entered forwarding state
+[Wed Jun 24 13:22:22 2026] veth2: renamed from vethc3c7de1
+[Wed Jun 24 13:22:22 2026] br0: port 4(veth2) entered blocking state
+[Wed Jun 24 13:22:22 2026] br0: port 4(veth2) entered disabled state
+[Wed Jun 24 13:22:22 2026] veth2: entered allmulticast mode
+[Wed Jun 24 13:22:22 2026] veth2: entered promiscuous mode
+[Wed Jun 24 13:22:22 2026] br0: port 4(veth2) entered blocking state
+[Wed Jun 24 13:22:22 2026] br0: port 4(veth2) entered forwarding state
+[Wed Jun 24 13:22:22 2026] eth2: renamed from veth0c81844
+[Wed Jun 24 13:22:22 2026] br0: port 4(veth2) entered disabled state
+[Wed Jun 24 13:22:22 2026] eth2: renamed from vethf23f5d0
+[Wed Jun 24 13:22:22 2026] br0: port 4(veth2) entered blocking state
+[Wed Jun 24 13:22:22 2026] br0: port 4(veth2) entered forwarding state
+[Wed Jun 24 13:22:23 2026] IPVS: Registered protocols (TCP, UDP, SCTP, AH, ESP)
+[Wed Jun 24 13:22:23 2026] IPVS: Connection hash table configured (size=4096, memory=32Kbytes)
+[Wed Jun 24 13:22:23 2026] IPVS: Each connection entry needs 288 bytes at least
+[Wed Jun 24 13:22:23 2026] IPVS: ipvs loaded.
+[Wed Jun 24 13:22:23 2026] veth3: renamed from veth009d7ee
+[Wed Jun 24 13:22:23 2026] br0: port 5(veth3) entered blocking state
+[Wed Jun 24 13:22:23 2026] br0: port 5(veth3) entered disabled state
+[Wed Jun 24 13:22:23 2026] veth3: entered allmulticast mode
+[Wed Jun 24 13:22:23 2026] veth3: entered promiscuous mode
+[Wed Jun 24 13:22:23 2026] IPVS: [rr] scheduler registered.
+[Wed Jun 24 13:22:23 2026] br0: port 5(veth3) entered blocking state
+[Wed Jun 24 13:22:23 2026] br0: port 5(veth3) entered forwarding state
+[Wed Jun 24 13:22:23 2026] IPVS: starting estimator thread 0...
+[Wed Jun 24 13:22:23 2026] IPVS: using max 5760 ests per chain, 288000 per kthread
+[Wed Jun 24 13:22:23 2026] IPVS: starting estimator thread 0...
+[Wed Jun 24 13:22:23 2026] IPVS: using max 5328 ests per chain, 266400 per kthread
+[Wed Jun 24 13:22:23 2026] veth4: renamed from veth05599ab
+[Wed Jun 24 13:22:23 2026] br0: port 6(veth4) entered blocking state
+[Wed Jun 24 13:22:23 2026] br0: port 6(veth4) entered disabled state
+[Wed Jun 24 13:22:23 2026] veth4: entered allmulticast mode
+[Wed Jun 24 13:22:23 2026] veth4: entered promiscuous mode
+[Wed Jun 24 13:22:23 2026] br0: port 6(veth4) entered blocking state
+[Wed Jun 24 13:22:23 2026] br0: port 6(veth4) entered forwarding state
+[Wed Jun 24 13:22:24 2026] veth5: renamed from veth2a27108
+[Wed Jun 24 13:22:24 2026] br0: port 7(veth5) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 7(veth5) entered disabled state
+[Wed Jun 24 13:22:24 2026] veth5: entered allmulticast mode
+[Wed Jun 24 13:22:24 2026] veth5: entered promiscuous mode
+[Wed Jun 24 13:22:24 2026] br0: port 7(veth5) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 7(veth5) entered forwarding state
+[Wed Jun 24 13:22:24 2026] veth6: renamed from veth7aa11d1
+[Wed Jun 24 13:22:24 2026] br0: port 8(veth6) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 8(veth6) entered disabled state
+[Wed Jun 24 13:22:24 2026] veth6: entered allmulticast mode
+[Wed Jun 24 13:22:24 2026] veth6: entered promiscuous mode
+[Wed Jun 24 13:22:24 2026] br0: port 8(veth6) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 8(veth6) entered forwarding state
+[Wed Jun 24 13:22:24 2026] veth3: renamed from veth988ff38
+[Wed Jun 24 13:22:24 2026] br0: port 5(veth3) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 5(veth3) entered disabled state
+[Wed Jun 24 13:22:24 2026] veth3: entered allmulticast mode
+[Wed Jun 24 13:22:24 2026] veth3: entered promiscuous mode
+[Wed Jun 24 13:22:24 2026] br0: port 5(veth3) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 5(veth3) entered forwarding state
+[Wed Jun 24 13:22:24 2026] eth0: renamed from veth9db51d5
+[Wed Jun 24 13:22:24 2026] br0: port 5(veth3) entered disabled state
+[Wed Jun 24 13:22:24 2026] br0: port 6(veth4) entered disabled state
+[Wed Jun 24 13:22:24 2026] br0: port 7(veth5) entered disabled state
+[Wed Jun 24 13:22:24 2026] br0: port 8(veth6) entered disabled state
+[Wed Jun 24 13:22:24 2026] br0: port 5(veth3) entered disabled state
+[Wed Jun 24 13:22:24 2026] br0: port 5(veth3) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 5(veth3) entered forwarding state
+[Wed Jun 24 13:22:24 2026] veth4: renamed from veth2dc6723
+[Wed Jun 24 13:22:24 2026] br0: port 6(veth4) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 6(veth4) entered disabled state
+[Wed Jun 24 13:22:24 2026] veth4: entered allmulticast mode
+[Wed Jun 24 13:22:24 2026] veth4: entered promiscuous mode
+[Wed Jun 24 13:22:24 2026] veth7: renamed from veth8d2f5df
+[Wed Jun 24 13:22:24 2026] br0: port 9(veth7) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 9(veth7) entered disabled state
+[Wed Jun 24 13:22:24 2026] veth7: entered allmulticast mode
+[Wed Jun 24 13:22:24 2026] veth7: entered promiscuous mode
+[Wed Jun 24 13:22:24 2026] eth0: renamed from veth88ab35c
+[Wed Jun 24 13:22:24 2026] br0: port 6(veth4) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 6(veth4) entered forwarding state
+[Wed Jun 24 13:22:24 2026] docker_gwbridge: port 4(vethccfdf97) entered blocking state
+[Wed Jun 24 13:22:24 2026] docker_gwbridge: port 4(vethccfdf97) entered disabled state
+[Wed Jun 24 13:22:24 2026] vethccfdf97: entered allmulticast mode
+[Wed Jun 24 13:22:24 2026] vethccfdf97: entered promiscuous mode
+[Wed Jun 24 13:22:24 2026] docker_gwbridge: port 4(vethccfdf97) entered blocking state
+[Wed Jun 24 13:22:24 2026] docker_gwbridge: port 4(vethccfdf97) entered forwarding state
+[Wed Jun 24 13:22:24 2026] eth0: renamed from vethbe71471
+[Wed Jun 24 13:22:24 2026] docker_gwbridge: port 4(vethccfdf97) entered disabled state
+[Wed Jun 24 13:22:24 2026] br0: port 8(veth6) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 8(veth6) entered forwarding state
+[Wed Jun 24 13:22:24 2026] eth0: renamed from veth1622bbd
+[Wed Jun 24 13:22:24 2026] br0: port 7(veth5) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 7(veth5) entered forwarding state
+[Wed Jun 24 13:22:24 2026] eth0: renamed from vethf17eb73
+[Wed Jun 24 13:22:24 2026] br0: port 6(veth4) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 6(veth4) entered forwarding state
+[Wed Jun 24 13:22:24 2026] eth0: renamed from vetha34b6ee
+[Wed Jun 24 13:22:24 2026] br0: port 5(veth3) entered blocking state
+[Wed Jun 24 13:22:24 2026] br0: port 5(veth3) entered forwarding state
+[Wed Jun 24 13:22:24 2026] eth0: renamed from veth82e2ac0
+[Wed Jun 24 13:22:25 2026] br0: port 9(veth7) entered blocking state
+[Wed Jun 24 13:22:25 2026] br0: port 9(veth7) entered forwarding state
+[Wed Jun 24 13:22:25 2026] eth1: renamed from veth85b335a
+[Wed Jun 24 13:22:25 2026] docker_gwbridge: port 4(vethccfdf97) entered blocking state
+[Wed Jun 24 13:22:25 2026] docker_gwbridge: port 4(vethccfdf97) entered forwarding state
+[Wed Jun 24 13:22:25 2026] docker_gwbridge: port 5(veth90f2eaa) entered blocking state
+[Wed Jun 24 13:22:25 2026] docker_gwbridge: port 5(veth90f2eaa) entered disabled state
+[Wed Jun 24 13:22:25 2026] veth90f2eaa: entered allmulticast mode
+[Wed Jun 24 13:22:25 2026] veth90f2eaa: entered promiscuous mode
+[Wed Jun 24 13:22:25 2026] docker_gwbridge: port 5(veth90f2eaa) entered blocking state
+[Wed Jun 24 13:22:25 2026] docker_gwbridge: port 5(veth90f2eaa) entered forwarding state
+[Wed Jun 24 13:22:25 2026] docker_gwbridge: port 6(vethb8bdd6e) entered blocking state
+[Wed Jun 24 13:22:25 2026] docker_gwbridge: port 6(vethb8bdd6e) entered disabled state
+[Wed Jun 24 13:22:25 2026] vethb8bdd6e: entered allmulticast mode
+[Wed Jun 24 13:22:25 2026] vethb8bdd6e: entered promiscuous mode
+[Wed Jun 24 13:22:25 2026] docker_gwbridge: port 6(vethb8bdd6e) entered blocking state
+[Wed Jun 24 13:22:25 2026] docker_gwbridge: port 6(vethb8bdd6e) entered forwarding state
+[Wed Jun 24 13:22:26 2026] eth1: renamed from veth7f1072e
+[Wed Jun 24 13:22:26 2026] docker_gwbridge: port 6(vethb8bdd6e) entered disabled state
+[Wed Jun 24 13:22:26 2026] eth1: renamed from veth81b0fd0
+[Wed Jun 24 13:22:26 2026] docker_gwbridge: port 6(vethb8bdd6e) entered blocking state
+[Wed Jun 24 13:22:26 2026] docker_gwbridge: port 6(vethb8bdd6e) entered forwarding state
+[Wed Jun 24 13:22:26 2026] docker_gwbridge: port 7(veth465d27a) entered blocking state
+[Wed Jun 24 13:22:26 2026] docker_gwbridge: port 7(veth465d27a) entered disabled state
+[Wed Jun 24 13:22:26 2026] veth465d27a: entered allmulticast mode
+[Wed Jun 24 13:22:26 2026] veth465d27a: entered promiscuous mode
+[Wed Jun 24 13:22:27 2026] eth1: renamed from veth19a7d70
+[Wed Jun 24 13:22:27 2026] docker_gwbridge: port 7(veth465d27a) entered blocking state
+[Wed Jun 24 13:22:27 2026] docker_gwbridge: port 7(veth465d27a) entered forwarding state
+[Wed Jun 24 13:22:27 2026] docker_gwbridge: port 8(veth45c7104) entered blocking state
+[Wed Jun 24 13:22:27 2026] docker_gwbridge: port 8(veth45c7104) entered disabled state
+[Wed Jun 24 13:22:27 2026] veth45c7104: entered allmulticast mode
+[Wed Jun 24 13:22:27 2026] veth45c7104: entered promiscuous mode
+[Wed Jun 24 13:22:27 2026] docker_gwbridge: port 8(veth45c7104) entered blocking state
+[Wed Jun 24 13:22:27 2026] docker_gwbridge: port 8(veth45c7104) entered forwarding state
+[Wed Jun 24 13:22:27 2026] docker_gwbridge: port 8(veth45c7104) entered disabled state
+[Wed Jun 24 13:22:28 2026] eth1: renamed from vetheacc874
+[Wed Jun 24 13:22:28 2026] docker_gwbridge: port 8(veth45c7104) entered blocking state
+[Wed Jun 24 13:22:28 2026] docker_gwbridge: port 8(veth45c7104) entered forwarding state
+[Wed Jun 24 13:22:28 2026] docker_gwbridge: port 9(veth4e00633) entered blocking state
+[Wed Jun 24 13:22:28 2026] docker_gwbridge: port 9(veth4e00633) entered disabled state
+[Wed Jun 24 13:22:28 2026] veth4e00633: entered allmulticast mode
+[Wed Jun 24 13:22:28 2026] veth4e00633: entered promiscuous mode
+[Wed Jun 24 13:22:28 2026] veth8: renamed from veth945a559
+[Wed Jun 24 13:22:28 2026] br0: port 10(veth8) entered blocking state
+[Wed Jun 24 13:22:28 2026] br0: port 10(veth8) entered disabled state
+[Wed Jun 24 13:22:28 2026] veth8: entered allmulticast mode
+[Wed Jun 24 13:22:28 2026] veth8: entered promiscuous mode
+[Wed Jun 24 13:22:28 2026] br0: port 10(veth8) entered blocking state
+[Wed Jun 24 13:22:28 2026] br0: port 10(veth8) entered forwarding state
+[Wed Jun 24 13:22:29 2026] eth0: renamed from veth5c8cb6a
+[Wed Jun 24 13:22:29 2026] docker_gwbridge: port 10(veth82820cc) entered blocking state
+[Wed Jun 24 13:22:29 2026] docker_gwbridge: port 10(veth82820cc) entered disabled state
+[Wed Jun 24 13:22:29 2026] veth82820cc: entered allmulticast mode
+[Wed Jun 24 13:22:29 2026] veth82820cc: entered promiscuous mode
+[Wed Jun 24 13:22:29 2026] docker_gwbridge: port 10(veth82820cc) entered blocking state
+[Wed Jun 24 13:22:29 2026] docker_gwbridge: port 10(veth82820cc) entered forwarding state
+[Wed Jun 24 13:22:29 2026] docker_gwbridge: port 10(veth82820cc) entered disabled state
+[Wed Jun 24 13:22:29 2026] eth1: renamed from veth9b1fefd
+[Wed Jun 24 13:22:29 2026] docker_gwbridge: port 9(veth4e00633) entered blocking state
+[Wed Jun 24 13:22:29 2026] docker_gwbridge: port 9(veth4e00633) entered forwarding state
+[Wed Jun 24 13:22:30 2026] docker_gwbridge: port 11(vethe9db370) entered blocking state
+[Wed Jun 24 13:22:30 2026] docker_gwbridge: port 11(vethe9db370) entered disabled state
+[Wed Jun 24 13:22:30 2026] vethe9db370: entered allmulticast mode
+[Wed Jun 24 13:22:30 2026] vethe9db370: entered promiscuous mode
+[Wed Jun 24 13:22:30 2026] docker_gwbridge: port 11(vethe9db370) entered blocking state
+[Wed Jun 24 13:22:30 2026] docker_gwbridge: port 11(vethe9db370) entered forwarding state
+[Wed Jun 24 13:22:30 2026] eth1: renamed from veth47626ce
+[Wed Jun 24 13:22:30 2026] veth9: renamed from veth0e5f7ad
+[Wed Jun 24 13:22:30 2026] docker_gwbridge: port 11(vethe9db370) entered disabled state
+[Wed Jun 24 13:22:30 2026] docker_gwbridge: port 10(veth82820cc) entered blocking state
+[Wed Jun 24 13:22:30 2026] docker_gwbridge: port 10(veth82820cc) entered forwarding state
+[Wed Jun 24 13:22:30 2026] br0: port 11(veth9) entered blocking state
+[Wed Jun 24 13:22:30 2026] br0: port 11(veth9) entered disabled state
+[Wed Jun 24 13:22:30 2026] veth9: entered allmulticast mode
+[Wed Jun 24 13:22:30 2026] veth9: entered promiscuous mode
+[Wed Jun 24 13:22:30 2026] br0: port 11(veth9) entered blocking state
+[Wed Jun 24 13:22:30 2026] br0: port 11(veth9) entered forwarding state
+[Wed Jun 24 13:22:30 2026] br0: port 11(veth9) entered disabled state
+[Wed Jun 24 13:22:30 2026] eth2: renamed from vethea427b6
+[Wed Jun 24 13:22:30 2026] br0: port 11(veth9) entered blocking state
+[Wed Jun 24 13:22:30 2026] br0: port 11(veth9) entered forwarding state
+[Wed Jun 24 13:22:31 2026] eth1: renamed from veth288e01f
+[Wed Jun 24 13:22:31 2026] docker_gwbridge: port 11(vethe9db370) entered blocking state
+[Wed Jun 24 13:22:31 2026] docker_gwbridge: port 11(vethe9db370) entered forwarding state
+[Wed Jun 24 13:22:31 2026] veth10: renamed from veth7d2cb60
+[Wed Jun 24 13:22:31 2026] br0: port 12(veth10) entered blocking state
+[Wed Jun 24 13:22:31 2026] br0: port 12(veth10) entered disabled state
+[Wed Jun 24 13:22:31 2026] veth10: entered allmulticast mode
+[Wed Jun 24 13:22:31 2026] veth10: entered promiscuous mode
+[Wed Jun 24 13:22:31 2026] eth2: renamed from vethc45a0f7
+[Wed Jun 24 13:22:31 2026] br0: port 12(veth10) entered blocking state
+[Wed Jun 24 13:22:31 2026] br0: port 12(veth10) entered forwarding state
+[Wed Jun 24 13:23:38 2026] usb 1-1: USB disconnect, device number 2
+[Wed Jun 24 13:23:38 2026] sd 0:0:0:0: [sdb] tag#0 UNKNOWN(0x2003) Result: hostbyte=0x07 driverbyte=DRIVER_OK cmd_age=0s
+[Wed Jun 24 13:23:38 2026] sd 0:0:0:0: [sdb] tag#0 CDB: opcode=0x28 28 00 29 b1 7f d0 00 00 88 00
+[Wed Jun 24 13:23:38 2026] I/O error, dev sdb, sector 699498448 op 0x0:(READ) flags 0x80700 phys_seg 5 prio class 2
+[Wed Jun 24 13:23:38 2026] device offline error, dev sdb, sector 699498576 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[Wed Jun 24 13:23:38 2026] device offline error, dev sdb, sector 487836216 op 0x1:(WRITE) flags 0x9800 phys_seg 5 prio class 2
+[Wed Jun 24 13:23:38 2026] Aborting journal on device sdb1-8.
+[Wed Jun 24 13:23:38 2026] device offline error, dev sdb, sector 683788096 op 0x0:(READ) flags 0x3000 phys_seg 1 prio class 2
+[Wed Jun 24 13:23:38 2026] EXT4-fs error (device sdb1): __ext4_find_entry:1683: inode #21391462: comm node: reading directory lblock 0
+[Wed Jun 24 13:23:38 2026] device offline error, dev sdb, sector 700165016 op 0x0:(READ) flags 0x80700 phys_seg 7 prio class 2
+[Wed Jun 24 13:23:38 2026] device offline error, dev sdb, sector 2048 op 0x1:(WRITE) flags 0x3800 phys_seg 1 prio class 2
+[Wed Jun 24 13:23:38 2026] Buffer I/O error on dev sdb1, logical block 0, lost sync page write
+[Wed Jun 24 13:23:38 2026] EXT4-fs (sdb1): I/O error while writing superblock
+[Wed Jun 24 13:23:38 2026] device offline error, dev sdb, sector 700165104 op 0x0:(READ) flags 0x0 phys_seg 1 prio class 2
+[Wed Jun 24 13:23:38 2026] device offline error, dev sdb, sector 684257512 op 0x0:(READ) flags 0x80700 phys_seg 3 prio class 2
+[Wed Jun 24 13:23:38 2026] device offline error, dev sdb, sector 486803456 op 0x1:(WRITE) flags 0x9800 phys_seg 1 prio class 2
+[Wed Jun 24 13:23:38 2026] Buffer I/O error on dev sdb1, logical block 60850176, lost sync page write
+[Wed Jun 24 13:23:38 2026] JBD2: I/O error when updating journal superblock for sdb1-8.
+[Wed Jun 24 13:23:38 2026] device offline error, dev sdb, sector 683788096 op 0x0:(READ) flags 0x3000 phys_seg 1 prio class 2
+[Wed Jun 24 13:23:38 2026] EXT4-fs error (device sdb1): __ext4_find_entry:1683: inode #21391462: comm node: reading directory lblock 0
+[Wed Jun 24 13:23:38 2026] EXT4-fs error (device sdb1): ext4_journal_check_start:84: comm curl: Detected aborted journal
+[Wed Jun 24 13:23:38 2026] EXT4-fs error (device sdb1): ext4_journal_check_start:84: comm rclone: Detected aborted journal
+[Wed Jun 24 13:23:38 2026] Buffer I/O error on dev sdb1, logical block 0, lost sync page write
+[Wed Jun 24 13:23:38 2026] EXT4-fs (sdb1): I/O error while writing superblock
+[Wed Jun 24 13:23:38 2026] EXT4-fs (sdb1): Remounting filesystem read-only
+[Wed Jun 24 13:23:38 2026] Buffer I/O error on dev sdb1, logical block 0, lost sync page write
+[Wed Jun 24 13:23:38 2026] EXT4-fs (sdb1): I/O error while writing superblock
+[Wed Jun 24 13:23:38 2026] EXT4-fs (sdb1): previous I/O error to superblock detected
+[Wed Jun 24 13:23:38 2026] Buffer I/O error on dev sdb1, logical block 0, lost sync page write
+[Wed Jun 24 13:23:38 2026] EXT4-fs (sdb1): I/O error while writing superblock
+[Wed Jun 24 13:23:38 2026] EXT4-fs (sdb1): Remounting filesystem read-only
+[Wed Jun 24 13:23:38 2026] br0: port 5(veth3) entered disabled state
+[Wed Jun 24 13:23:38 2026] veth9db51d5: renamed from eth0
+[Wed Jun 24 13:23:39 2026] br0: port 9(veth7) entered disabled state
+[Wed Jun 24 13:23:39 2026] veth82e2ac0: renamed from eth0
+[Wed Jun 24 13:23:39 2026] veth88ab35c: renamed from eth0
+[Wed Jun 24 13:23:39 2026] br0: port 6(veth4) entered disabled state
+[Wed Jun 24 13:23:39 2026] veth85b335a: renamed from eth1
+[Wed Jun 24 13:23:39 2026] docker_gwbridge: port 4(vethccfdf97) entered disabled state
+[Wed Jun 24 13:23:39 2026] docker_gwbridge: port 10(veth82820cc) entered disabled state
+[Wed Jun 24 13:23:39 2026] br0: port 5(veth3) entered disabled state
+[Wed Jun 24 13:23:39 2026] veth3 (unregistering): left allmulticast mode
+[Wed Jun 24 13:23:39 2026] veth3 (unregistering): left promiscuous mode
+[Wed Jun 24 13:23:39 2026] br0: port 5(veth3) entered disabled state
+[Wed Jun 24 13:23:39 2026] veth47626ce: renamed from eth1
+[Wed Jun 24 13:23:39 2026] veth7f1072e: renamed from eth1
+[Wed Jun 24 13:23:39 2026] br0: port 8(veth6) entered disabled state
+[Wed Jun 24 13:23:39 2026] docker_gwbridge: port 5(veth90f2eaa) entered disabled state
+[Wed Jun 24 13:23:39 2026] vethbe71471: renamed from eth0
+[Wed Jun 24 13:23:39 2026] br0: port 6(veth4) entered disabled state
+[Wed Jun 24 13:23:39 2026] veth4 (unregistering): left allmulticast mode
+[Wed Jun 24 13:23:39 2026] veth4 (unregistering): left promiscuous mode
+[Wed Jun 24 13:23:39 2026] br0: port 6(veth4) entered disabled state
+[Wed Jun 24 13:23:39 2026] veth411bf3e: renamed from eth0
+[Wed Jun 24 13:23:39 2026] br0: port 9(veth7) entered disabled state
+[Wed Jun 24 13:23:39 2026] veth7 (unregistering): left allmulticast mode
+[Wed Jun 24 13:23:39 2026] veth7 (unregistering): left promiscuous mode
+[Wed Jun 24 13:23:39 2026] br0: port 9(veth7) entered disabled state
+[Wed Jun 24 13:23:39 2026] br0: port 4(veth2) entered disabled state
+[Wed Jun 24 13:23:39 2026] br0: port 4(veth2) entered disabled state
+[Wed Jun 24 13:23:39 2026] veth2 (unregistering): left allmulticast mode
+[Wed Jun 24 13:23:39 2026] veth2 (unregistering): left promiscuous mode
+[Wed Jun 24 13:23:39 2026] br0: port 4(veth2) entered disabled state
+[Wed Jun 24 13:23:39 2026] br0: port 3(veth1) entered disabled state
+[Wed Jun 24 13:23:39 2026] veth82a70a1: renamed from eth0
+[Wed Jun 24 13:23:39 2026] veth19a7d70: renamed from eth1
+[Wed Jun 24 13:23:39 2026] docker_gwbridge: port 7(veth465d27a) entered disabled state
+[Wed Jun 24 13:23:39 2026] br0: port 8(veth6) entered disabled state
+[Wed Jun 24 13:23:39 2026] veth6 (unregistering): left allmulticast mode
+[Wed Jun 24 13:23:39 2026] veth6 (unregistering): left promiscuous mode
+[Wed Jun 24 13:23:39 2026] br0: port 8(veth6) entered disabled state
+[Wed Jun 24 13:23:39 2026] br0: port 3(veth1) entered disabled state
+[Wed Jun 24 13:23:39 2026] veth0c81844: renamed from eth2
+[Wed Jun 24 13:23:39 2026] br0: port 3(veth1) entered disabled state
+[Wed Jun 24 13:23:39 2026] veth1 (unregistering): left allmulticast mode
+[Wed Jun 24 13:23:39 2026] veth1 (unregistering): left promiscuous mode
+[Wed Jun 24 13:23:39 2026] br0: port 3(veth1) entered disabled state
+[Wed Jun 24 13:23:39 2026] br0: port 4(veth2) entered disabled state
+[Wed Jun 24 13:23:39 2026] vethf23f5d0: renamed from eth2
+[Wed Jun 24 13:23:39 2026] docker_gwbridge: port 3(veth016f5a7) entered disabled state
+[Wed Jun 24 13:23:39 2026] vethf351aad: renamed from eth1
+[Wed Jun 24 13:23:40 2026] docker_gwbridge: port 2(vethdbe95f5) entered disabled state
+[Wed Jun 24 13:23:40 2026] vethfa1f218: renamed from eth1
+[Wed Jun 24 13:23:40 2026] br0: port 3(veth1) entered disabled state
+[Wed Jun 24 13:23:40 2026] veth1 (unregistering): left allmulticast mode
+[Wed Jun 24 13:23:40 2026] veth1 (unregistering): left promiscuous mode
+[Wed Jun 24 13:23:40 2026] br0: port 3(veth1) entered disabled state
+[Wed Jun 24 13:23:40 2026] br0: port 4(veth2) entered disabled state
+[Wed Jun 24 13:23:40 2026] veth2 (unregistering): left allmulticast mode
+[Wed Jun 24 13:23:40 2026] veth2 (unregistering): left promiscuous mode
+[Wed Jun 24 13:23:40 2026] br0: port 4(veth2) entered disabled state
+[Wed Jun 24 13:23:40 2026] usb 1-1: new high-speed USB device number 5 using xhci-hcd
+[Wed Jun 24 13:23:40 2026] usb 1-1: New USB device found, idVendor=13fd, idProduct=0840, bcdDevice= 1.14
+[Wed Jun 24 13:23:40 2026] usb 1-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[Wed Jun 24 13:23:40 2026] usb 1-1: Product: External
+[Wed Jun 24 13:23:40 2026] usb 1-1: Manufacturer: Generic
+[Wed Jun 24 13:23:40 2026] usb 1-1: SerialNumber: 583652455443595A54202020
+[Wed Jun 24 13:23:40 2026] usb-storage 1-1:1.0: USB Mass Storage device detected
+[Wed Jun 24 13:23:40 2026] scsi host2: usb-storage 1-1:1.0
+[Wed Jun 24 13:23:41 2026] scsi 2:0:0:0: Direct-Access     Generic  External         1.14 PQ: 0 ANSI: 4
+[Wed Jun 24 13:23:41 2026] sd 2:0:0:0: Attached scsi generic sg1 type 0
+[Wed Jun 24 13:23:41 2026] sd 2:0:0:0: [sdc] 976773167 512-byte logical blocks: (500 GB/466 GiB)
+[Wed Jun 24 13:23:41 2026] sd 2:0:0:0: [sdc] Write Protect is off
+[Wed Jun 24 13:23:41 2026] sd 2:0:0:0: [sdc] Mode Sense: 23 00 00 00
+[Wed Jun 24 13:23:41 2026] sd 2:0:0:0: [sdc] No Caching mode page found
+[Wed Jun 24 13:23:41 2026] sd 2:0:0:0: [sdc] Assuming drive cache: write through
+[Wed Jun 24 13:23:41 2026]  sdc: sdc1
+[Wed Jun 24 13:23:41 2026] sd 2:0:0:0: [sdc] Attached SCSI disk
+[Wed Jun 24 13:23:45 2026] br0: port 7(veth5) entered disabled state
+[Wed Jun 24 13:23:45 2026] veth1622bbd: renamed from eth0
+[Wed Jun 24 13:23:45 2026] docker_gwbridge: port 6(vethb8bdd6e) entered disabled state
+[Wed Jun 24 13:23:45 2026] veth81b0fd0: renamed from eth1
+[Wed Jun 24 13:23:45 2026] br0: port 7(veth5) entered disabled state
+[Wed Jun 24 13:23:45 2026] veth5 (unregistering): left allmulticast mode
+[Wed Jun 24 13:23:45 2026] veth5 (unregistering): left promiscuous mode
+[Wed Jun 24 13:23:45 2026] br0: port 7(veth5) entered disabled state
+[Wed Jun 24 13:25:16 2026] bash (6706): drop_caches: 1
+[Wed Jun 24 13:25:16 2026] bash (6708): drop_caches: 2
+[Wed Jun 24 13:25:16 2026] bash (6710): drop_caches: 3
+[Wed Jun 24 13:30:15 2026] bash (9239): drop_caches: 1
+[Wed Jun 24 13:30:15 2026] bash (9241): drop_caches: 2
+[Wed Jun 24 13:30:15 2026] bash (9243): drop_caches: 3
+[Wed Jun 24 13:35:15 2026] bash (11786): drop_caches: 1
+[Wed Jun 24 13:35:15 2026] bash (11788): drop_caches: 2
+[Wed Jun 24 13:35:15 2026] bash (11790): drop_caches: 3
+[Wed Jun 24 13:40:15 2026] bash (14317): drop_caches: 1
+[Wed Jun 24 13:40:15 2026] bash (14319): drop_caches: 2
+[Wed Jun 24 13:40:15 2026] bash (14321): drop_caches: 3
+[Wed Jun 24 13:45:16 2026] bash (16869): drop_caches: 1
+[Wed Jun 24 13:45:16 2026] bash (16871): drop_caches: 2
+[Wed Jun 24 13:45:16 2026] bash (16873): drop_caches: 3
+[Wed Jun 24 13:46:13 2026] br0: port 6(veth4) entered disabled state
+[Wed Jun 24 13:46:13 2026] vethf17eb73: renamed from eth0
+[Wed Jun 24 13:46:13 2026] br0: port 6(veth4) entered disabled state
+[Wed Jun 24 13:46:13 2026] veth4 (unregistering): left allmulticast mode
+[Wed Jun 24 13:46:13 2026] veth4 (unregistering): left promiscuous mode
+[Wed Jun 24 13:46:13 2026] br0: port 6(veth4) entered disabled state
+[Wed Jun 24 13:46:13 2026] br0: port 12(veth10) entered disabled state
+[Wed Jun 24 13:46:13 2026] vethc45a0f7: renamed from eth2
+[Wed Jun 24 13:46:13 2026] docker_gwbridge: port 9(veth4e00633) entered disabled state
+[Wed Jun 24 13:46:13 2026] veth9b1fefd: renamed from eth1
+[Wed Jun 24 13:46:13 2026] br0: port 12(veth10) entered disabled state
+[Wed Jun 24 13:46:13 2026] veth10 (unregistering): left allmulticast mode
+[Wed Jun 24 13:46:13 2026] veth10 (unregistering): left promiscuous mode
+[Wed Jun 24 13:46:13 2026] br0: port 12(veth10) entered disabled state
+[Wed Jun 24 13:50:15 2026] bash (19435): drop_caches: 1
+[Wed Jun 24 13:50:15 2026] bash (19439): drop_caches: 2
+[Wed Jun 24 13:50:15 2026] bash (19441): drop_caches: 3
+[Wed Jun 24 13:55:15 2026] bash (21970): drop_caches: 1
+[Wed Jun 24 13:55:15 2026] bash (21972): drop_caches: 2
+[Wed Jun 24 13:55:15 2026] bash (21974): drop_caches: 3
+[Wed Jun 24 14:00:15 2026] bash (24529): drop_caches: 1
+[Wed Jun 24 14:00:15 2026] bash (24531): drop_caches: 2
+[Wed Jun 24 14:00:15 2026] bash (24533): drop_caches: 3
+[Wed Jun 24 14:05:15 2026] bash (27055): drop_caches: 1
+[Wed Jun 24 14:05:15 2026] bash (27057): drop_caches: 2
+[Wed Jun 24 14:05:15 2026] bash (27059): drop_caches: 3
+[Wed Jun 24 14:10:15 2026] bash (29587): drop_caches: 1
+[Wed Jun 24 14:10:15 2026] bash (29589): drop_caches: 2
+[Wed Jun 24 14:10:16 2026] bash (29591): drop_caches: 3
+[Wed Jun 24 14:15:16 2026] bash (32125): drop_caches: 1
+[Wed Jun 24 14:15:16 2026] bash (32127): drop_caches: 2
+[Wed Jun 24 14:15:16 2026] bash (32129): drop_caches: 3
+[Wed Jun 24 14:20:15 2026] bash (34658): drop_caches: 1
+[Wed Jun 24 14:20:15 2026] bash (34660): drop_caches: 2
+[Wed Jun 24 14:20:15 2026] bash (34662): drop_caches: 3
+[Wed Jun 24 14:25:15 2026] bash (37189): drop_caches: 1
+[Wed Jun 24 14:25:15 2026] bash (37191): drop_caches: 2
+[Wed Jun 24 14:25:15 2026] bash (37193): drop_caches: 3
+[Wed Jun 24 14:30:15 2026] bash (39723): drop_caches: 1
+[Wed Jun 24 14:30:15 2026] bash (39725): drop_caches: 2
+[Wed Jun 24 14:30:15 2026] bash (39727): drop_caches: 3
+[Wed Jun 24 14:35:16 2026] bash (41389): drop_caches: 1
+[Wed Jun 24 14:35:16 2026] bash (41391): drop_caches: 2
+[Wed Jun 24 14:35:16 2026] bash (41393): drop_caches: 3
+[Wed Jun 24 14:38:30 2026] EXT4-fs warning (device sdb1): htree_dirblock_to_tree:1083: inode #2: lblock 0: comm bash: error -5 reading directory block
+[Wed Jun 24 14:38:31 2026] EXT4-fs warning (device sdb1): htree_dirblock_to_tree:1083: inode #2: lblock 0: comm ls: error -5 reading directory block
+[Wed Jun 24 14:40:15 2026] bash (43611): drop_caches: 1
+[Wed Jun 24 14:40:15 2026] bash (43613): drop_caches: 2
+[Wed Jun 24 14:40:16 2026] bash (43615): drop_caches: 3
+[Wed Jun 24 14:40:29 2026] EXT4-fs warning (device sdb1): htree_dirblock_to_tree:1083: inode #21233665: lblock 0: comm ls: error -5 reading directory block
+[Wed Jun 24 14:43:01 2026] EXT4-fs warning (device sdb1): htree_dirblock_to_tree:1083: inode #21233665: lblock 0: comm ls: error -5 reading directory block
+[Wed Jun 24 14:43:02 2026] br0: port 5(veth3) entered disabled state
+[Wed Jun 24 14:43:02 2026] vetha34b6ee: renamed from eth0
+[Wed Jun 24 14:43:03 2026] br0: port 5(veth3) entered disabled state
+[Wed Jun 24 14:43:03 2026] veth3 (unregistering): left allmulticast mode
+[Wed Jun 24 14:43:03 2026] veth3 (unregistering): left promiscuous mode
+[Wed Jun 24 14:43:03 2026] br0: port 5(veth3) entered disabled state
+[Wed Jun 24 14:43:03 2026] br0: port 11(veth9) entered disabled state
+[Wed Jun 24 14:43:03 2026] vethea427b6: renamed from eth2
+[Wed Jun 24 14:43:03 2026] docker_gwbridge: port 8(veth45c7104) entered disabled state
+[Wed Jun 24 14:43:03 2026] vetheacc874: renamed from eth1
+[Wed Jun 24 14:43:03 2026] br0: port 11(veth9) entered disabled state
+[Wed Jun 24 14:43:03 2026] veth9 (unregistering): left allmulticast mode
+[Wed Jun 24 14:43:03 2026] veth9 (unregistering): left promiscuous mode
+[Wed Jun 24 14:43:03 2026] br0: port 11(veth9) entered disabled state
+[Wed Jun 24 14:43:03 2026] br0: port 10(veth8) entered disabled state
+[Wed Jun 24 14:43:03 2026] veth5c8cb6a: renamed from eth0
+[Wed Jun 24 14:43:03 2026] docker_gwbridge: port 11(vethe9db370) entered disabled state
+[Wed Jun 24 14:43:03 2026] veth288e01f: renamed from eth1
+[Wed Jun 24 14:43:03 2026] br0: port 10(veth8) entered disabled state
+[Wed Jun 24 14:43:03 2026] veth8 (unregistering): left allmulticast mode
+[Wed Jun 24 14:43:03 2026] veth8 (unregistering): left promiscuous mode
+[Wed Jun 24 14:43:03 2026] br0: port 10(veth8) entered disabled state
+[Wed Jun 24 14:43:04 2026] br0: port 2(veth0) entered disabled state
+[Wed Jun 24 14:43:04 2026] br0: port 1(vxlan0) entered disabled state
+[Wed Jun 24 14:43:04 2026] ov-001000-svy85: renamed from br0
+[Wed Jun 24 14:43:04 2026] veth0: left allmulticast mode
+[Wed Jun 24 14:43:04 2026] veth0: left promiscuous mode
+[Wed Jun 24 14:43:04 2026] ov-001000-svy85: port 2(veth0) entered disabled state
+[Wed Jun 24 14:43:04 2026] vxlan0: left allmulticast mode
+[Wed Jun 24 14:43:04 2026] vxlan0: left promiscuous mode
+[Wed Jun 24 14:43:04 2026] ov-001000-svy85: port 1(vxlan0) entered disabled state
+[Wed Jun 24 14:43:04 2026] vx-001000-svy85: renamed from vxlan0
+[Wed Jun 24 14:43:04 2026] vethcb58dab: renamed from veth0
+[Wed Jun 24 14:43:04 2026] vethdedf3fa: renamed from eth0
+[Wed Jun 24 14:43:04 2026] veth2be840c: renamed from eth1
+[Wed Jun 24 14:43:04 2026] docker_gwbridge: port 1(veth329d2ff) entered disabled state
+[Wed Jun 24 14:43:04 2026] IPVS: stop unused estimator thread 0...
+[Wed Jun 24 14:43:06 2026] EXT4-fs warning (device sdb1): htree_dirblock_to_tree:1083: inode #21233665: lblock 0: comm ls: error -5 reading directory block

@@ -11,8 +11,8 @@ for LOOP_CLIENT in ${LIST_CLIENT}; do
     CCTV_CMD+=":local p [/ping $IPADDR count=1]; :put (\"CCTV|$HSTNAME|$IPADDR|\$p\"); "
 done
 
-MEGA_CMD=":global statusIndiHome; :global statusXL; "
-MEGA_CMD+=":put (\"ISP_FAILOVER|\" . \$statusIndiHome . \"|\" . \$statusXL); "
+MEGA_CMD=":global statusIndiHome; :global statusISPBackup; "
+MEGA_CMD+=":put (\"ISP_FAILOVER|\" . \$statusIndiHome . \"|\" . \$statusISPBackup); "
 MEGA_CMD+="$CCTV_CMD"
 MEGA_CMD+=":foreach i in=[/queue simple find] do={ :put (\"QUEUE|\" . [/queue simple get \$i name] . \"|\" . [/queue simple get \$i rate]) }; "
 # Ambil trafik seluruh interface aktif agar fungsi distribution & hectic bisa memfilter namanya nanti

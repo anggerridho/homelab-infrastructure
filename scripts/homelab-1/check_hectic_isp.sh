@@ -4,7 +4,7 @@ check_hectic_isp(){
     # DAFTAR ISP (Format: "Nama_ISP|Interface_MikroTik|Batas_Alert_Mbps")
     ISPS=(
         "IndiHome|ISP-1|50"
-        "XL_Backup|ISP-2|15"
+        "ISP_Backup|ISP-2|15"
     )
 
     echo "[$(date +'%Y%m%d_%H:%M:%S')] - Memproses trafik ISP Hectic dari cache..."

@@ -1,6 +1,6 @@
 const express = require('express');
 const { exec } = require('child_process');
-const fs = require('fs'); 
+const fs = require('fs');
 const path = require('path');
 
 const PORT = process.env.PORT || 3000;
@@ -8,8 +8,8 @@ const API_KEY = process.env.API_KEY;
 const ALERT_SERVICE_URL = process.env.ALERT_SERVICE_URL || 'http://alert-service:3001/api/alert';
 
 // --- VARIABEL STATE & TIMER ---
-const STATE_FILE = '/state/tailscale_timer.json'; 
-const SAMBA_STATE_FILE = '/state/samba_timer.json'; 
+const STATE_FILE = '/state/tailscale_timer.json';
+const SAMBA_STATE_FILE = '/state/samba_timer.json';
 const ROUTER9_STATE_FILE = '/state/9router_timer.json';
 const FORTICLIENT_STATE_FILE = '/state/forticlient_timer.json';
 
@@ -17,6 +17,7 @@ let tailscaleTimer = null;
 let sambaTimer = null;
 let router9Timer = null;
 let forticlientTimer = null;
+let isForticlientStarting = false;
 
 // --- OVERRIDE LOG UNTUK HIT ALERT SERVICE ---
 const originalLog = console.log;
@@ -24,14 +25,29 @@ const originalError = console.error;
 
 const getTimestamp = () => `[${new Date().toISOString().replace('T', ' ').split('.')[0]}]`;
 
-const forwardToAlertService = (text, type) => {
-    fetch(`${ALERT_SERVICE_URL}?api_key=${API_KEY}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, type })
-    }).catch(err => {
-        originalError(getTimestamp(), `[Gagal forward ke Alert Service]:`, err.message);
-    });
+// Fungsi helper hit alert-service internal (Dengan Auto-Retry)
+const forwardToAlertService = async (text, type, retries = 5) => {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await fetch(`${ALERT_SERVICE_URL}?api_key=${API_KEY}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text, type })
+            });
+
+            if (!response.ok) throw new Error(`HTTP Status ${response.status}`);
+            return; // Jika sukses, langsung keluar dari loop
+
+        } catch (err) {
+            if (i === retries - 1) {
+                // Jika sudah mencoba 5x dan masih gagal, barulah print error di log container
+                originalError(getTimestamp(), `[Gagal forward ke Alert Service setelah ${retries}x percobaan]:`, err.message);
+            } else {
+                // Tunggu 3 detik sebelum mencoba kirim ulang
+                await new Promise(res => setTimeout(res, 3000));
+            }
+        }
+    }
 };
 
 console.log = function () {
@@ -111,7 +127,7 @@ app.get('/api/tailscale/start', async (req, res) => {
 
         await runCommand("cd /data && export $(grep -v '^#' .env | xargs) && docker stack deploy -c tailscale-stack.yaml homelab");
         if (tailscaleTimer) clearTimeout(tailscaleTimer);
-        
+
         const timeoutMs = autoStopMinutes * 60 * 1000;
         fs.writeFileSync(STATE_FILE, JSON.stringify({ stopTime: Date.now() + timeoutMs }));
         tailscaleTimer = setTimeout(() => executeTailscaleStop('auto-stop'), timeoutMs);
@@ -150,7 +166,7 @@ app.get('/api/samba/start', async (req, res) => {
 
         await runCommand("cd /samba && sh deploy.sh");
         if (sambaTimer) clearTimeout(sambaTimer);
-        
+
         const timeoutMs = autoStopMinutes * 60 * 1000;
         fs.writeFileSync(SAMBA_STATE_FILE, JSON.stringify({ stopTime: Date.now() + timeoutMs }));
         sambaTimer = setTimeout(() => executeSambaStop('auto-stop'), timeoutMs);
@@ -187,7 +203,7 @@ app.get('/api/9router/start', async (req, res) => {
 
         await runCommand("cd /9router && sh deploy.sh");
         if (router9Timer) clearTimeout(router9Timer);
-        
+
         const timeoutMs = autoStopMinutes * 60 * 1000;
         fs.writeFileSync(ROUTER9_STATE_FILE, JSON.stringify({ stopTime: Date.now() + timeoutMs }));
         router9Timer = setTimeout(() => executeRouter9Stop('auto-stop'), timeoutMs);
@@ -218,41 +234,44 @@ const executeForticlientStop = async (reason) => {
 };
 
 app.get('/api/forticlient/start', async (req, res) => {
+    if (isForticlientStarting) {
+        return res.status(429).json({ error: 'Proses penyalaan FortiClient sedang berjalan, harap tunggu...' });
+    }
+    isForticlientStarting = true;
+
     try {
         const inputMinutes = req.query.minutes || req.body?.minutes;
         const autoStopMinutes = (inputMinutes && !isNaN(inputMinutes)) ? parseInt(inputMinutes, 10) : 60;
 
-        // 1. Eksekusi script deploy (docker-compose up -d)
+        // Container akan otomatis menembak log Telegram via curl di entrypoint
         await runCommand("cd /forticlient && sh deploy.sh");
-        
-        // 2. Beri jeda 8 detik agar VPN punya waktu untuk autentikasi
-        console.log('Menunggu 8 detik untuk verifikasi koneksi FortiClient...');
-        await new Promise(resolve => setTimeout(resolve, 8000));
-        
-        // 3. Baca 20 baris log terakhir dari container forticlient
-        const logs = await runCommand("cd /forticlient && docker-compose logs --tail=20");
-        
-        // 4. Analisa apakah ada indikasi gagal di log
-        if (logs.includes("Could not authenticate") || logs.includes("ERROR:") || logs.includes("Logged out.")) {
-            console.log('Koneksi VPN FortiClient Gagal! Melakukan roll-back (stop)...');
-            // Langsung eksekusi fungsi stop bawaan
-            await executeForticlientStop('Koneksi VPN Gagal');
-            
-            // Kembalikan response error agar Telegram tahu ini gagal
-            return res.status(500).json({ error: 'Autentikasi VPN Gagal (Cek kredensial/OTP). Container telah otomatis dihentikan.' });
-        }
 
-        // Jika sukses (tidak ada pesan error di log), lanjutkan pasang timer
         if (forticlientTimer) clearTimeout(forticlientTimer);
-        
+
         const timeoutMs = autoStopMinutes * 60 * 1000;
         fs.writeFileSync(FORTICLIENT_STATE_FILE, JSON.stringify({ stopTime: Date.now() + timeoutMs }));
         forticlientTimer = setTimeout(() => executeForticlientStop('auto-stop'), timeoutMs);
 
-        console.log(`Forticlient started. Auto-stop in ${autoStopMinutes} minutes.`);
-        res.json({ message: `Forticlient started. Auto-stop in ${autoStopMinutes} minutes.` });
-    } catch (err) { 
-        res.status(500).json({ error: 'Gagal mengeksekusi script start Forticlient' }); 
+        res.json({ message: `Perintah penyalaan FortiClient dikirim. (Auto-stop: ${autoStopMinutes} menit)` });
+    } catch (err) {
+        res.status(500).json({ error: 'Gagal mengeksekusi script start Forticlient' });
+    } finally {
+        isForticlientStarting = false;
+    }
+});
+
+app.all('/api/forticlient/otp', async (req, res) => {
+    try {
+        const code = req.query.code || req.body?.code;
+        if (!code) return res.status(400).json({ error: 'Kode OTP dibutuhkan.' });
+
+        // Menginjeksi tombol ketikan ke dalam layar tmux
+        const cmd = `docker exec forticlient tmux send-keys -t vpn_session "${code}" C-m`;
+        await runCommand(cmd);
+
+        res.json({ message: 'Kode OTP sedang diproses oleh FortiClient...' });
+    } catch (err) {
+        res.status(500).json({ error: `Gagal injeksi OTP: ${err.message}` });
     }
 });
 

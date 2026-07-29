@@ -14,6 +14,41 @@ app.use(express.json());
 
 const getTimestamp = () => `[${new Date().toISOString().replace('T', ' ').split('.')[0]}]`;
 
+// Catat waktu kapan container ini menyala (dalam detik)
+const STARTUP_TIME = Math.floor(Date.now() / 1000);
+
+// === PENANGANAN KONEKSI ZOMBIE (FAIL-FAST) ===
+let pollingErrorCount = 0;
+
+bot.on('polling_error', (error) => {
+    // Tangkap kode error spesifik selain pesannya
+    const errorCode = error.code || (error.response && error.response.statusCode);
+    console.error(`${getTimestamp()} [Polling Error]`, errorCode, error.message);
+
+    // Kategori error jaringan (NAT Timeout, DNS putus, dll) yang memicu mati suri
+    const isNetworkError = 
+        errorCode === 'EFATAL' || 
+        errorCode === 'ETIMEDOUT' || 
+        errorCode === 'ECONNRESET' || 
+        errorCode === 'ENOTFOUND' ||
+        error.message.includes('network timeout');
+
+    if (isNetworkError) {
+        pollingErrorCount++;
+        console.error(`${getTimestamp()} ⚠️ Terdeteksi gangguan jaringan ke Telegram (${pollingErrorCount}/3).`);
+
+        if (pollingErrorCount >= 3) {
+            console.error(`${getTimestamp()} 🔴 Koneksi mati suri terdeteksi! Membunuh proses (Exit 1) agar Docker Swarm melakukan Auto-Restart...`);
+            process.exit(1); 
+        }
+    }
+});
+
+// Reset hitungan error jika bot berhasil menerima pesan (koneksi berarti sehat)
+bot.on('message', () => {
+    pollingErrorCount = 0;
+});
+
 // === LISTENER PERINTAH DARI TELEGRAM ===
 
 // 1. Perintah Start Tailscale (Contoh di chat: /start_tailscale atau /start_tailscale 120)
@@ -107,17 +142,20 @@ bot.onText(/\/stop_9router/, async (msg) => {
 
 // --- 6. Perintah Start Forticlient ---
 bot.onText(/\/start_forticlient(?: (.+))?/, async (msg, match) => {
+    // ABAIKAN PESAN LAMA: Jika waktu pesan lebih kecil dari waktu bot menyala, abaikan!
+    if (msg.date < STARTUP_TIME) return;
+
     const chatId = msg.chat.id;
     if (chatId.toString() !== TELEGRAM_CHAT_ID) return;
     const minutes = match[1] ? match[1] : 60;
-    
+
     // Ubah pesan awal agar Anda tahu bot sedang melakukan verifikasi
     bot.sendMessage(chatId, `⏳ Sedang menyalakan Forticlient (${minutes} Menit)...\n_(Verifikasi koneksi butuh ~8 detik)_`, { parse_mode: 'Markdown' });
-    
+
     try {
         const response = await fetch(`http://api-manager:3000/api/forticlient/start?api_key=${API_KEY}&minutes=${minutes}`);
         const data = await response.json();
-        
+
         // Pengecekan Error: Jika api-manager membalas dengan JSON berisi 'error'
         if (data.error) {
             bot.sendMessage(chatId, `❌ **GAGAL:**\n${data.error}`, { parse_mode: 'Markdown' });
@@ -137,6 +175,32 @@ bot.onText(/\/stop_forticlient/, async (msg) => {
         const data = await response.json();
         bot.sendMessage(chatId, `✅ ${data.message}`);
     } catch (err) {}
+});
+
+// --- 7. Perintah Input OTP ---
+bot.onText(/\/otp(?: (.+))?/, async (msg, match) => {
+    const chatId = msg.chat.id;
+    if (chatId.toString() !== TELEGRAM_CHAT_ID) return;
+
+    const code = match[1];
+    if (!code) {
+        return bot.sendMessage(chatId, `⚠️ Format salah. Ketik kode beserta perintahnya.\nContoh: \`/otp 123456\``, { parse_mode: 'Markdown' });
+    }
+
+    bot.sendMessage(chatId, `⏳ Mengirim kode OTP ${code}...`);
+    try {
+        // Tembak endpoint OTP di API Manager
+        const response = await fetch(`http://api-manager:3000/api/forticlient/otp?api_key=${API_KEY}&code=${code}`);
+        const data = await response.json();
+
+        if (data.error) {
+            bot.sendMessage(chatId, `❌ **GAGAL:**\n${data.error}`, { parse_mode: 'Markdown' });
+        } else {
+            bot.sendMessage(chatId, `✅ ${data.message}`);
+        }
+    } catch (err) {
+        bot.sendMessage(chatId, `❌ Terjadi kesalahan saat menghubungi API Manager: ${err.message}`);
+    }
 });
 
 // === ENDPOINT ALERT UNTUK DARI LUAR ===
@@ -164,4 +228,10 @@ app.all('/api/alert', async (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`${getTimestamp()} Alert Service (Bot Polling) berjalan di port ${PORT}`);
+
+    // --- NOTIFIKASI STARTUP / RESTART ---
+    const startupMsg = `🤖 *Sistem Online*\n\nAlert Service baru saja menyala/restart dan siap menerima perintah Anda.`;
+
+    bot.sendMessage(TELEGRAM_CHAT_ID, startupMsg, { parse_mode: 'Markdown' })
+        .catch(err => console.error(`${getTimestamp()} Gagal mengirim notif startup:`, err.message));
 });

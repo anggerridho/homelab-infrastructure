@@ -1,7 +1,8 @@
 version: "3.10"
 services:
   carok-ai:
-    image: ghcr.io/decolua/9router:latest
+    # image: ghcr.io/decolua/9router:latest
+    image: decolua/9router:0.5.18
     networks:
       - net
     env_file:

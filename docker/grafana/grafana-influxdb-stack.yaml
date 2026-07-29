@@ -21,6 +21,7 @@ services:
 
   grafana:
     image: registry.localhostaddr.biz.id/grafana/grafana:latest
+    #image: grafana/grafana:latest
     ports:
       - target: 3000
         published: 3030

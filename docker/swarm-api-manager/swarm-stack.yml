@@ -3,7 +3,7 @@ version: '3.8'
 services:
   alert-service:
     # image: local-alert-service:0.2
-    image: registry.localhostaddr.biz.id/alert-service:0.4
+    image: registry.localhostaddr.biz.id/alert-service:0.9
     environment:
       - API_KEY=${API_KEY}
       - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
@@ -22,11 +22,11 @@ services:
       replicas: 1
       placement:
         constraints:
-          - node.role == manager
+          - node.hostname == homelab-1
 
   api-manager:
     # image: local-api-manager:0.6
-    image: registry.localhostaddr.biz.id/api-manager:0.8
+    image: registry.localhostaddr.biz.id/api-manager:1.1
     environment:
       - API_KEY=${API_KEY}
       - STOP_COMMAND=docker service rm homelab_tailscale
@@ -38,6 +38,10 @@ services:
       - .env
     networks:
       - net
+    ports:
+      - target: 3000
+        published: 3000
+        mode: ingress
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /root/homelab-infrastructure/docker/tailscale:/data:ro
@@ -52,7 +56,7 @@ services:
       placement:
         constraints:
           # WAJIB di manager node karena butuh docker.sock host
-          - node.role == manager
+          - node.hostname == homelab-1
 
 networks:
   net:

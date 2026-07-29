@@ -30,7 +30,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.role == manager
+          - node.hostname == homelab-1
 
 networks:
   net:

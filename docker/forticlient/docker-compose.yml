@@ -2,13 +2,16 @@ version: '3.8'
 
 services:
   openfortivpn:
-    image: registry.localhostaddr.biz.id/openfortivpn:latest
+    container_name: forticlient
+    image: registry.localhostaddr.biz.id/openfortivpn:0.1
     cap_add:
       - NET_ADMIN
     devices:
       - "/dev/ppp:/dev/ppp"
     volumes:
       - /root/homelab-infrastructure/docker/forticlient/configs/config:/etc/openfortivpn/config:ro
+    environment:
+      - API_KEY=${API_KEY}
     env_file:
       - .env
     network_mode: "host"

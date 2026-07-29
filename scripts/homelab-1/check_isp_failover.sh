@@ -7,13 +7,13 @@ cek_isp_failover(){
     # Ambil baris yang diawali dengan ISP_FAILOVER
     ISP_DATA=$(echo "$RAW_DATA" | grep "^ISP_FAILOVER|")
     
-    # Ekstrak nilai berdasarkan pembatas '|' (Kolom 2 untuk IndiHome, Kolom 3 untuk XL)
+    # Ekstrak nilai berdasarkan pembatas '|' (Kolom 2 untuk IndiHome, Kolom 3 untuk ISP_Backup)
     STATUS_INDIHOME=$(echo "$ISP_DATA" | awk -F'|' '{print $2}')
-    STATUS_XL=$(echo "$ISP_DATA" | awk -F'|' '{print $3}')
+    STATUS_ISPBACKUP=$(echo "$ISP_DATA" | awk -F'|' '{print $3}')
 
     # Fallback ke 0 (Down) jika MikroTik baru reboot dan variabel global masih kosong
     [ -z "$STATUS_INDIHOME" ] && STATUS_INDIHOME=0
-    [ -z "$STATUS_XL" ] && STATUS_XL=0
+    [ -z "$STATUS_ISPBACKUP" ] && STATUS_ISPBACKUP=0
 
     # FUNGSI PROCESSOR (GRAFANA + REDIS + TELEGRAM)
     process_isp() {
@@ -54,7 +54,7 @@ cek_isp_failover(){
 
     # Eksekusi fungsi dengan parameter yang sudah disiapkan
     process_isp "IndiHome" "$STATUS_INDIHOME" "ICMP Ping (8.8.8.8)"
-    process_isp "XL_Backup" "$STATUS_XL" "HTTP Fetch (cloudflare.com)"
+    process_isp "ISP_Backup" "$STATUS_ISPBACKUP" "HTTP Fetch (cloudflare.com)"
 
     echo "[$(date +'%Y%m%d_%H:%M:%S')] - Selesai mengecek ISP."
 }
