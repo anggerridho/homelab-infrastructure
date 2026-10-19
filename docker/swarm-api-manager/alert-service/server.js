@@ -19,6 +19,7 @@ const STARTUP_TIME = Math.floor(Date.now() / 1000);
 
 // === PENANGANAN KONEKSI ZOMBIE (FAIL-FAST) ===
 let pollingErrorCount = 0;
+let resetTimer = null; // Tambahkan variabel untuk timer
 
 bot.on('polling_error', (error) => {
     // Tangkap kode error spesifik selain pesannya
@@ -26,12 +27,13 @@ bot.on('polling_error', (error) => {
     console.error(`${getTimestamp()} [Polling Error]`, errorCode, error.message);
 
     // Kategori error jaringan (NAT Timeout, DNS putus, dll) yang memicu mati suri
-    const isNetworkError = 
-        errorCode === 'EFATAL' || 
-        errorCode === 'ETIMEDOUT' || 
-        errorCode === 'ECONNRESET' || 
+    const isNetworkError =
+        errorCode === 'EFATAL' ||
+        errorCode === 'ETIMEDOUT' ||
+        errorCode === 'ECONNRESET' ||
         errorCode === 'ENOTFOUND' ||
-        error.message.includes('network timeout');
+        error.message?.includes('network timeout') || // Gunakan tanda tanya (?) untuk mencegah TypeError
+        error.message?.includes('EAI_AGAIN');         // Tangkap error DNS spesifik
 
     if (isNetworkError) {
         pollingErrorCount++;
@@ -39,14 +41,19 @@ bot.on('polling_error', (error) => {
 
         if (pollingErrorCount >= 3) {
             console.error(`${getTimestamp()} 🔴 Koneksi mati suri terdeteksi! Membunuh proses (Exit 1) agar Docker Swarm melakukan Auto-Restart...`);
-            process.exit(1); 
+            process.exit(1);
         }
-    }
-});
 
-// Reset hitungan error jika bot berhasil menerima pesan (koneksi berarti sehat)
-bot.on('message', () => {
-    pollingErrorCount = 0;
+        // --- MEKANISME RESET BERBASIS WAKTU ---
+        // Bersihkan timer lama jika ada error baru yang beruntun
+        if (resetTimer) clearTimeout(resetTimer);
+
+        // Buat timer baru: jika selama 60 detik tidak ada error lagi, reset hitungan ke 0
+        resetTimer = setTimeout(() => {
+            pollingErrorCount = 0;
+            console.log(`${getTimestamp()} 🟢 Jaringan kembali stabil, mereset hitungan error.`);
+        }, 60000);
+    }
 });
 
 // === LISTENER PERINTAH DARI TELEGRAM ===

@@ -1,0 +1,23 @@
+version: "3.10"
+
+services:
+  termix:
+    image: bugattiguy527/termix:26.10.1
+    ports:
+      - "5674:5674"
+    environment:
+      - PORT=5674
+    volumes:
+      - /mnt/disk1/termix/data:/app/data
+    healthcheck:
+      test: ["NONE"]
+    networks:
+      - net
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab-1
+
+networks:
+  net:
+    external: true

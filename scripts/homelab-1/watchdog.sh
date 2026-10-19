@@ -8,6 +8,8 @@ source ${HOST_LAB}/selfhealing-container.sh
 source ${HOST_LAB}/need-reboot.sh
 source ${HOST_LAB}/check_vpn_kantor.sh
 source ${HOST_LAB}/check_traffic_vpn.sh
+source ${HOST_LAB}/monitor_stb.sh
+source ${HOST_LAB}/check_internet.sh
 
 main() {
     vault
@@ -20,6 +22,8 @@ main() {
     fi
 
     selfhealing_swarm
+    monitor_stb
+    check_internet
 }
 
 # Jalankan main dan catat log jika ada error

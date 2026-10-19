@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  alert-service:
+    # image: local-alert-service:0.2
+    image: registry.localhostaddr.biz.id/alert-service:1.0
+    environment:
+      - API_KEY=${API_KEY}
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - TZ=Asia/Jakarta
+    env_file:
+      - .env
+    networks:
+      - net
+    ports:
+      - target: 3001
+        published: 3001
+        mode: ingress
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == homelab-1
+
+networks:
+  net:
+    external: true
