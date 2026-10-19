@@ -8,6 +8,8 @@ source ${HOST_LAB}/hardware_metrics.sh
 source ${HOST_LAB}/need-reboot.sh
 source ${HOMELAB}/housekeeping.sh
 source ${HOMELAB}/check_remote.sh
+source ${HOST_LAB}/monitor_stb.sh
+source ${HOST_LAB}/check_internet.sh
 
 main() {
     vault
@@ -15,6 +17,8 @@ main() {
     need_reboot
     remote
     housekeeping
+    monitor_stb
+    check_internet
 }
 
 # Jalankan main dan catat log jika ada error
