@@ -22,7 +22,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.hostname == homelab-2
+          - node.hostname == homelab-1
 
 networks:
   net:

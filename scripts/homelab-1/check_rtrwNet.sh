@@ -1,10 +1,9 @@
 #!/bin/bash
 
 rtrw(){
-    # --- 0. HEALTH CHECK STB-2 (DB & REDIS HOST) ---
-    # Ping STB-2 sebanyak 2 paket dengan timeout 1 detik per paket
-    if ! ping -c 2 -W 1 "${DB_HOST}" > /dev/null 2>&1; then
-        echo "[$(date +'%Y%m%d_%H:%M:%S')] - [WARNING] ${DB_HOST} Down/Offline (Mati Listrik PLN). Pengecekan RTRW dilewati."
+    # --- 0. EXEC HEALTH CHECK INFLUXDB TERPISAH ---
+    if ! ${HOMELAB}/check_influx.sh; then
+        # Jika InfluxDB down, script langsung break/return 1
         return 1
     fi
 
