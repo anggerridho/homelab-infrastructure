@@ -1,6 +1,13 @@
 #!/bin/bash
 
 rtrw(){
+    # --- 0. HEALTH CHECK STB-2 (DB & REDIS HOST) ---
+    # Ping STB-2 sebanyak 2 paket dengan timeout 1 detik per paket
+    if ! ping -c 2 -W 1 "${DB_HOST}" > /dev/null 2>&1; then
+        echo "[$(date +'%Y%m%d_%H:%M:%S')] - [WARNING] ${DB_HOST} Down/Offline (Mati Listrik PLN). Pengecekan RTRW dilewati."
+        return 1
+    fi
+
     LIST_CLIENT="$(cat ${HOMELAB}/listCheck.conf | grep -E 'E1|E2' | grep -vi '#')"
     TOO_MUCH="10"
 
