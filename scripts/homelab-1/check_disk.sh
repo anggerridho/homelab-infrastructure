@@ -16,7 +16,7 @@ echo "${DISK_INFO}" | while read output
 
         # 2. INTEGRASI GRAFANA (INFLUXDB)
         # Kirim persentase disk ke tabel 'disk_usage'
-        curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+        curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
         --data-binary "disk_usage,partition=$SAFE_PARTITION value=$usep" > /dev/null 2>&1
 
         # 3. LOGIKA THRESHOLD, REDIS, DAN TELEGRAM

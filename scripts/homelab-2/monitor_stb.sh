@@ -63,7 +63,7 @@ fi
 # HEARTBEAT METRIK KE INFLUXDB
 # ==========================================
 # Kirim ke DB setiap kali script dieksekusi agar Grafana selalu memiliki data poin terbaru
-curl -s -i -m 5 -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+curl -s -i -m 5 -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
 --data-binary "stb_monitor,asal=${STB_ASAL},target=${TARGET_NAME} status=${STATUS_CODE}" > /dev/null 2>&1
 
 }

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 vps_monitor(){
-INFLUX_URL="http://${DB_HOST}/write?db=${DB_NAME}" # Pastikan nama DB-nya db_rtrw
+INFLUX_URL="${DB_HOST}/write?db=${DB_NAME}" # Pastikan nama DB-nya db_rtrw
 
 # Hit API VPS dengan timeout 10 detik agar script tidak hang
 RESPONSE=$(curl -s -m 10 -H "X-API-Key: $API_KEY" "$API_URL")

@@ -22,7 +22,7 @@ cek_isp_failover(){
         local METODE=$3
 
         # --- A. KIRIM KE GRAFANA (INFLUXDB) ---
-        curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+        curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
         --data-binary "isp_status,provider=$NAMA_ISP value=$STATUS_CODE" > /dev/null 2>&1
 
         # --- B. STATE MACHINE (REDIS) ---

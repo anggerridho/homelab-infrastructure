@@ -30,13 +30,13 @@ cctv(){
         # --------------------------------------------------
         SAFE_HSTNAME=$(echo "$HSTNAME" | tr -cd 'A-Za-z0-9_-')
         
-        curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+        curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
         --data-binary "cctv_individu,nama=$SAFE_HSTNAME status=$CCTV_STATUS" > /dev/null 2>&1
 
     done <<< "$CCTV_DATA"
 
     # GRAFANA: KIRIM STATUS TOTAL
-    curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+    curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
     --data-binary "cctv_total,kategori=semua_cctv online_count=${n}" > /dev/null 2>&1
 
     # REDIS LOCKING & TELEGRAM ALERT

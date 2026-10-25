@@ -33,7 +33,7 @@ cek_vpn_kantor() {
     if [ "$STATUS_CODE" != "$LAST_INFLUX_STATUS" ] || [ $((10#$MINUTE_NOW % 5)) -eq 0 ]; then
 
         # Tembak ke InfluxDB (Sudah menggunakan tag host)
-        curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+        curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
         --data-binary "remote_access,host=$(hostname),app=${APP_NAME} status=${STATUS_CODE}" > /dev/null 2>&1
 
         # Update memori Redis dengan status terbaru

@@ -29,7 +29,7 @@ for LOOP_REMOTE in ${LIST_REMOTE}; do
   fi
 
   # 2. INTEGRASI GRAFANA (INFLUXDB)
-  curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+  curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
   --data-binary "remote_access,host=$(hostname),app=${LOOP_REMOTE} status=${STATUS_CODE}" > /dev/null 2>&1
 
   # 3. LOGIKA REDIS & TELEGRAM ALERT

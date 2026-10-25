@@ -47,7 +47,7 @@ rtrw(){
 
         # --- A. INTEGRASI GRAFANA (INFLUXDB) ---
         # Fake connect akan ter-record sebagai status=0 agar grafik InfluxDB tetap akurat
-        curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+        curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
         --data-binary "client_hotspot,nama=${SAFE_CLIENT} status=${STATUS_CODE}" > /dev/null 2>&1
 
         # --- B. LOGIKA REDIS (ANTI-SPAM & STATE MACHINE) ---

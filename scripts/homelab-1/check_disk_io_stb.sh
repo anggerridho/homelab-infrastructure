@@ -30,7 +30,7 @@ check_disk_io_stb(){
             WRITE_MBS=$(awk -v kb="$WRITE_KBS" 'BEGIN { printf "%.2f", kb/1024 }')
 
             # --- KIRIM KE INFLUXDB ---
-            curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+            curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
             --data-binary "disk_performance,mount=$LABEL read_mbps=$READ_MBS,write_mbps=$WRITE_MBS" > /dev/null 2>&1
             
             # echo "[$LABEL] Read: $READ_MBS MB/s | Write: $WRITE_MBS MB/s"

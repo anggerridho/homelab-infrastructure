@@ -3,7 +3,7 @@
 cek_traffic_vpn() {
     if [ ! -d "/sys/class/net/$INTERFACE" ]; then
         # Jika VPN offline, laporkan ke InfluxDB dengan nilai 0 agar Grafana tidak "No Data"
-        curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+        curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
         --data-binary "vpn_traffic,interface=${INTERFACE} rx_mbps=0,tx_mbps=0" > /dev/null 2>&1
         return
     fi
@@ -39,7 +39,7 @@ cek_traffic_vpn() {
 
     # 4. KIRIM KE INFLUXDB (Measurement terpisah: vpn_traffic)
     # Menggunakan tag interface=ppp0 agar lebih rapi jika nanti ada interface lain
-    curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+    curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
     --data-binary "vpn_traffic,interface=${INTERFACE} rx_mbps=$RX_MBPS,tx_mbps=$TX_MBPS" > /dev/null 2>&1
 
     # 5. LOGIKA ALERT TELEGRAM

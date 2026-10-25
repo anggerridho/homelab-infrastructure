@@ -27,7 +27,7 @@ check_hectic_isp(){
             RX_MBPS=$(echo "$TRAFFIC" | awk '{printf "%.2f", $1/1000000}')
 
             # --- A. INTEGRASI GRAFANA ---
-            curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+            curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
             --data-binary "trafik_isp,interface=$INTERFACE,isp=$SAFE_NAME rx_mbps=$RX_MBPS" > /dev/null 2>&1
 
             # --- B. LOGIKA ALERT TELEGRAM DENGAN REDIS ---

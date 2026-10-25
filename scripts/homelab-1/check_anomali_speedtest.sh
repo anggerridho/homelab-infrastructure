@@ -27,7 +27,7 @@ cek_anomali_speedtest(){
         }')
 
         # --- A. KIRIM KE INFLUXDB (GRAFANA) ---
-        curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+        curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
         --data-binary "app_anomali,app=Speedtest value=$TX_MBPS" > /dev/null 2>&1
 
         # --- B. CEK REDIS & TELEGRAM ALERT ---

@@ -40,7 +40,7 @@ if [ "$STATUS_CODE" -eq 1 ]; then
         fi
         
         # Selalu kirim data status=1 ke InfluxDB saat inisialisasi/recovery agar grafik Grafana terisi
-        curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+        curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
         --data-binary "internet_monitor,host=${STB_NAME} status=${STATUS_CODE}" > /dev/null 2>&1
         
         # Bersihkan / pastikan Redis bersih dari flag offline
@@ -56,7 +56,7 @@ else
         
         TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
         
-        curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+        curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
         --data-binary "internet_monitor,host=${STB_NAME} status=${STATUS_CODE}" > /dev/null 2>&1
         
         # Set flag di Redis agar masuk mode silent

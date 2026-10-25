@@ -40,7 +40,7 @@ check_top_user(){
             SAFE_NAME=$(echo "$NAME" | tr -cd 'A-Za-z0-9_-')
 
             # --- KIRIM KE INFLUXDB ---
-            curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+            curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
             --data-binary "top_users,user=$SAFE_NAME value=$TX_MBPS" > /dev/null 2>&1
 
             # --- CEK REDIS & TELEGRAM ALERT ---

@@ -19,7 +19,7 @@ check_cpu_load_usage_mikrotik(){
         fi
         
         # --- KIRIM KE INFLUXDB ---
-        curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+        curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
         --data-binary "router_resource,device=mikrotik cpu_load=$CPU_LOAD,mem_usage=$MEM_USAGE_PCT" > /dev/null 2>&1
         
         # Silakan uncomment baris di bawah ini jika ingin memantau angkanya di terminal

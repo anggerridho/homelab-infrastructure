@@ -24,7 +24,7 @@ traffic_distribution(){
             TX_MBPS=$(echo "$TRAFFIC" | awk '{printf "%.2f", $1/1000000}')
 
             # --- A. INTEGRASI GRAFANA ---
-            curl -s -i -XPOST "http://${DB_HOST}/write?db=${DB_NAME}" \
+            curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
             --data-binary "trafik_lokal,interface=$INTERFACE,nama=$SAFE_NAME tx_mbps=$TX_MBPS" > /dev/null 2>&1
 
             # --- B. LOGIKA ALERT TELEGRAM DENGAN REDIS ---
