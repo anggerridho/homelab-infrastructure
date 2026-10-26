@@ -20,9 +20,9 @@ AVG_TIME_MS=$(echo "$AGH_STATS" | jq '.avg_processing_time * 1000' | awk '{print
 # =========================================================
 
 # --- A. METRIK HOMELAB-2 (Tarik dari Redis Node-2) ---
-HL2_RAM_USED=$(redis-cli -h "$REDIS_HOST" GET dump_ram_used | tr -d '\r\n')
-HL2_RAM_FREE=$(redis-cli -h "$REDIS_HOST" GET dump_ram_free | tr -d '\r\n')
-HL2_CPU_LOAD=$(redis-cli -h "$REDIS_HOST" GET dump_cpu_loadavg | tr -d '\r\n')
+#HL2_RAM_USED=$(redis-cli -h "$REDIS_HOST" GET dump_ram_used | tr -d '\r\n')
+#HL2_RAM_FREE=$(redis-cli -h "$REDIS_HOST" GET dump_ram_free | tr -d '\r\n')
+#HL2_CPU_LOAD=$(redis-cli -h "$REDIS_HOST" GET dump_cpu_loadavg | tr -d '\r\n')
 
 # Validasi jika Node-2 mati
 HL2_RAM_USED=${HL2_RAM_USED:-0}
@@ -48,7 +48,6 @@ HL1_CPU_LOAD=${HL1_CPU_LOAD:-0}
 # Pastikan tidak ada spasi di sekitar tanda sama dengan (=) pada tag dan field
 
 PAYLOAD="adguard_dns,host=homelab-1 total_queries=$DNS_QUERIES,blocked_queries=$BLOCKED,processing_time_ms=$AVG_TIME_MS
-stb_system,host=homelab-2 ram_used_mb=$HL2_RAM_USED,ram_free_mb=$HL2_RAM_FREE,cpu_load=$HL2_CPU_LOAD
 stb_system,host=homelab-1 ram_used_mb=$HL1_RAM_USED,ram_free_mb=$HL1_RAM_FREE,cpu_load=$HL1_CPU_LOAD"
 
 # Tembak data ke InfluxDB

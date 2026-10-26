@@ -51,6 +51,7 @@ rtrw(){
                 [ -z "$AVG_LATENCY" ] && AVG_LATENCY=0
                 
                 # Flag Redis khusus anti-spam alert koneksi lambat
+                INACTIVE_FLAG="inactive_flag_${SAFE_CLIENT}"
                 SLOW_FLAG="slow_flag_${SAFE_CLIENT}"
                 HAS_SLOW_ALERT=$(redis-cli -h ${REDIS_HOST} GET $SLOW_FLAG)
                 
@@ -86,16 +87,15 @@ rtrw(){
 
         if [ "$STATUS_CODE" -eq 1 ]; then
             # JIKA ONLINE SUNGGUHAN
-            COUNT_INACTIVE=$(redis-cli -h ${REDIS_HOST} GET $REDIS_KEY)
+            HAS_INACTIVE_ALERT=$(redis-cli -h ${REDIS_HOST} GET $INACTIVE_FLAG)
                 
-            if [[ -n "$COUNT_INACTIVE" && "$COUNT_INACTIVE" -gt 0 ]]; then
+            if [ "$HAS_INACTIVE_ALERT" == "1" ]; then
                 MSG="[$(date +'%Y%m%d_%H:%M:%S')] - ${READ_CLIENT} Connected"
                 echo "${MSG}"
                 TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
                 
-                # Reset Seluruh Redis Key
-                redis-cli -h ${REDIS_HOST} DEL $REDIS_KEY > /dev/null 2>&1
-                redis-cli -h ${REDIS_HOST} DEL $REBOOT_FLAG > /dev/null 2>&1
+                # Reset Flag Inactive & Fake Connect di Redis
+                redis-cli -h ${REDIS_HOST} DEL $INACTIVE_FLAG > /dev/null 2>&1
                 redis-cli -h ${REDIS_HOST} DEL $FAKE_FLAG > /dev/null 2>&1
             else
                 echo "[$(date +'%Y%m%d_%H:%M:%S')] - ${READ_CLIENT} Connected"
@@ -103,10 +103,8 @@ rtrw(){
                 
         else
             # JIKA OFFLINE ATAU FAKE CONNECT
-            COUNT_INACTIVE=$(redis-cli -h ${REDIS_HOST} INCR $REDIS_KEY)
-            redis-cli -h ${REDIS_HOST} EXPIRE $REDIS_KEY 86400 > /dev/null 2>&1
             
-            # 1. Kirim Alert segera untuk Fake Connect
+            # 1. Kirim Alert segera untuk Fake Connect (Hotspot active tapi RTO)
             if [ "$FAKE_CONNECT" -eq 1 ]; then
                 HAS_FAKE_ALERT=$(redis-cli -h ${REDIS_HOST} GET $FAKE_FLAG)
                 if [ "$HAS_FAKE_ALERT" != "1" ]; then
@@ -114,43 +112,47 @@ rtrw(){
                     echo "${MSG}"
                     TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
                     
-                    # Set flag agar tidak spam alert fake connect setiap loop
+                    # Flag agar tidak spam alert Fake Connect
                     redis-cli -h ${REDIS_HOST} SET $FAKE_FLAG "1" > /dev/null 2>&1
-                else
-                    echo "[HECTIC] ${READ_CLIENT} Fake Connect (Hitungan ke-${COUNT_INACTIVE}). Silent mode." > /dev/null 2>&1
                 fi
                 
-            # 2. Kirim Alert untuk Inactive biasa (Benar-benar tidak ada di MikroTik)
-            elif [ "$COUNT_INACTIVE" -eq 1 ]; then
-                MSG="[$(date +'%Y%m%d_%H:%M:%S')] - ${READ_CLIENT} Inactive"
-                echo "${MSG}"
-                TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
+            # 2. Kirim Alert untuk Inactive biasa (Benar-benar tidak ada di list MikroTik)
+            else
+                HAS_INACTIVE_ALERT=$(redis-cli -h ${REDIS_HOST} GET $INACTIVE_FLAG)
+                if [ "$HAS_INACTIVE_ALERT" != "1" ]; then
+                    MSG="[$(date +'%Y%m%d_%H:%M:%S')] - ${READ_CLIENT} Inactive"
+                    echo "${MSG}"
+                    TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
+                    
+                    # Flag di Redis agar tidak dikirim berulang kali selama masih offline
+                    redis-cli -h ${REDIS_HOST} SET $INACTIVE_FLAG "1" > /dev/null 2>&1
+                fi
             fi
             
             # Logika eskalasi reboot tetap dilanjutkan jika Timeout berlarut-larut
-            if [ "$COUNT_INACTIVE" -eq 5 ]; then
-                MSG="A customer has received ${COUNT_INACTIVE} alerts indicating a failed connection to (${SSID_WISP}). I recommend that you try restarting the MikroTik as a troubleshooting step before contacting the customer regarding the issue they are experiencing."
-                echo "${MSG}"
-                TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
-                
-            elif [ "$COUNT_INACTIVE" -gt "$TOO_MUCH" ]; then
-                HAS_REBOOTED=$(redis-cli -h ${REDIS_HOST} GET $REBOOT_FLAG)
-                
-                if [ "$HAS_REBOOTED" != "1" ]; then
-                    MSG="A customer has received ${COUNT_INACTIVE} alerts indicating a failed connection to (${SSID_WISP}). I will help you restart MikroTik."
-                    echo "${MSG}"
-                    TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
-                    
-                    redis-cli -h ${REDIS_HOST} SET $REBOOT_FLAG "1" > /dev/null 2>&1
-                    
-                    # Eksekusi Reboot
-                    ${HOMELAB}/terminate.sh -t 3 sshpass -p "$(echo ${MIKROTIK_PSSWD} | base64 -d)" ssh -t -oStrictHostKeyChecking=no ${MIKROTIK_HOST} ":execute {/system reboot}"
-                else
-                    MSG="A customer has received ${COUNT_INACTIVE} alerts indicating a failed connection to (${SSID_WISP}). Please go on-site immediately to conduct a thorough and serious investigation."
-                    echo "${MSG}"
-                    TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
-                fi
-            fi
+            # if [ "$COUNT_INACTIVE" -eq 5 ]; then
+            #     MSG="A customer has received ${COUNT_INACTIVE} alerts indicating a failed connection to (${SSID_WISP}). I recommend that you try restarting the MikroTik as a troubleshooting step before contacting the customer regarding the issue they are experiencing."
+            #     echo "${MSG}"
+            #     TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
+            #     
+            # elif [ "$COUNT_INACTIVE" -gt "$TOO_MUCH" ]; then
+            #     HAS_REBOOTED=$(redis-cli -h ${REDIS_HOST} GET $REBOOT_FLAG)
+            #     
+            #     if [ "$HAS_REBOOTED" != "1" ]; then
+            #         MSG="A customer has received ${COUNT_INACTIVE} alerts indicating a failed connection to (${SSID_WISP}). I will help you restart MikroTik."
+            #         echo "${MSG}"
+            #         TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
+            #         
+            #         redis-cli -h ${REDIS_HOST} SET $REBOOT_FLAG "1" > /dev/null 2>&1
+            #         
+            #         # Eksekusi Reboot
+            #         ${HOMELAB}/terminate.sh -t 3 sshpass -p "$(echo ${MIKROTIK_PSSWD} | base64 -d)" ssh -t -oStrictHostKeyChecking=no ${MIKROTIK_HOST} ":execute {/system reboot}"
+            #     else
+            #         MSG="A customer has received ${COUNT_INACTIVE} alerts indicating a failed connection to (${SSID_WISP}). Please go on-site immediately to conduct a thorough and serious investigation."
+            #         echo "${MSG}"
+            #         TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
+            #     fi
+            # fi
         fi
     done <<< "$LIST_CLIENT"
 }

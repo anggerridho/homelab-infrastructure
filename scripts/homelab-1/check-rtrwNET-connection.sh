@@ -61,6 +61,8 @@ main #| tee -ai ${LOG_FILE}
 # Buat lagi database-nya (kosong)
 # curl -i -XPOST 'http://localhost:8086/query' --data-urlencode "q=CREATE DATABASE db_rtrw"
 
+# DB_HOST="influx.localhostaddr.biz.id"; DB_NAME="db_rtrw"; curl -s -XPOST "${DB_HOST}/query?db=${DB_NAME}"   --data-urlencode "q=DROP MEASUREMENT disk_performance"
+
 # Cek Redis
 # redis-cli keys "*"
 
