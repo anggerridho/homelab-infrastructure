@@ -32,22 +32,52 @@ rtrw(){
             
         STATUS_CODE=0
         FAKE_CONNECT=0
+        PACKET_LOSS=0
+        AVG_LATENCY=0
 
-        # --- VALIDASI PING (FITUR FAKE CONNECT) ---
+        # --- VALIDASI PING (FITUR FAKE CONNECT & KUALITAS JARINGAN) ---
         if [ -n "${CHECK_ACTIVE}" ]; then
-            # Jika terdaftar aktif, validasi dengan ping (1 paket, timeout 2 detik)
+            # 1. Cek Ketersediaan (Ping Standar)
             if ping -c 8 -i 0.5 -W 1 "${TARGET_IP}" > /dev/null 2>&1; then
                 STATUS_CODE=1 # Benar-benar online
+                
+                # 2. Cek KUALITAS (Ping Payload Besar 1472 bytes)
+                PING_RESULT=$(ping -c 10 -s 1472 -i 0.2 -W 1 "${TARGET_IP}")
+                PACKET_LOSS=$(echo "$PING_RESULT" | grep -oP '\d+(?=% packet loss)')
+                AVG_LATENCY=$(echo "$PING_RESULT" | tail -1 | awk -F '/' '{print $5}' | cut -d '.' -f 1)
+                
+                # Fallback nilai jika output kosong
+                [ -z "$PACKET_LOSS" ] && PACKET_LOSS=100
+                [ -z "$AVG_LATENCY" ] && AVG_LATENCY=0
+                
+                # Flag Redis khusus anti-spam alert koneksi lambat
+                SLOW_FLAG="slow_flag_${SAFE_CLIENT}"
+                HAS_SLOW_ALERT=$(redis-cli -h ${REDIS_HOST} GET $SLOW_FLAG)
+                
+                if [[ "$PACKET_LOSS" -gt 20 ]] || [[ "$AVG_LATENCY" -gt 150 ]]; then
+                    if [ "$HAS_SLOW_ALERT" != "1" ]; then
+                        MSG="[$(date +'%Y%m%d_%H:%M:%S')] - ⚠️ WARNING: Koneksi ${READ_CLIENT} (${TARGET_IP}) terindikasi lambat/buruk! Loss: ${PACKET_LOSS}% | Latency: ${AVG_LATENCY}ms"
+                        echo "${MSG}"
+                        TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
+                        
+                        # Set delay alert 1 jam (3600s) agar tidak spam
+                        redis-cli -h ${REDIS_HOST} SET $SLOW_FLAG "1" EX 3600 > /dev/null 2>&1
+                    fi
+                else
+                    redis-cli -h ${REDIS_HOST} DEL $SLOW_FLAG > /dev/null 2>&1
+                fi
             else
                 STATUS_CODE=0 # Fake Connect (Offline)
                 FAKE_CONNECT=1
+                PACKET_LOSS=100
+                AVG_LATENCY=0
             fi
         fi
 
         # --- A. INTEGRASI GRAFANA (INFLUXDB) ---
-        # Fake connect akan ter-record sebagai status=0 agar grafik InfluxDB tetap akurat
+        # Kirim status, loss, dan latency sekaligus ke InfluxDB
         curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
-        --data-binary "client_hotspot,nama=${SAFE_CLIENT} status=${STATUS_CODE}" > /dev/null 2>&1
+        --data-binary "client_hotspot,nama=${SAFE_CLIENT} status=${STATUS_CODE},loss=${PACKET_LOSS},latency=${AVG_LATENCY}" > /dev/null 2>&1
 
         # --- B. LOGIKA REDIS (ANTI-SPAM & STATE MACHINE) ---
         REDIS_KEY="count_rtrw_${SAFE_CLIENT}"
