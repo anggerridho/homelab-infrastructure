@@ -22,7 +22,7 @@ if ! curl -s -f --connect-timeout 2 -m 3 "${DB_HOST}/ping" > /dev/null 2>&1; the
     fi
 
     if [ "$HAS_ALERTED" != "1" ]; then
-        MSG="[$(date +'%Y%m%d_%H:%M:%S')] - 🚨 ALERT: (${DB_HOST}) Down/Tidak Dapat Diakses! Pengecekan dihentikan."
+        MSG="[$(date +'%Y%m%d_%H:%M:%S')] - ⚠️ WARNING: InfluxDB (${DB_HOST}) Offline/Tidak Dapat Diakses! Penulisan log Grafana di-skip, pengecekan pelanggan tetap berjalan."
 
         # Kirim alert Telegram jika script alertelegram.sh ada
         if [ -x "${HOMELAB}/alertelegram.sh" ]; then

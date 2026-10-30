@@ -7,10 +7,10 @@ export HOST_LAB="${HOMELAB}/homelab-1"
 source ${HOMELAB}/vault.sh
 source ${HOST_LAB}/get_data_mikrotik.sh
 #source ${HOST_LAB}/check_cctv.sh
-#source ${HOST_LAB}/check_rtrwNet.sh
+source ${HOST_LAB}/check_rtrwNet.sh
 #source ${HOST_LAB}/check_hectic_isp.sh
 #source ${HOST_LAB}/check_traffic_distribution.sh
-source ${HOST_LAB}/check_top_user.sh
+#source ${HOST_LAB}/check_top_user.sh
 #source ${HOST_LAB}/check_isp_failover.sh
 #source ${HOST_LAB}/check_critical_applications.sh
 #source ${HOST_LAB}/check_anomali_speedtest.sh
@@ -27,10 +27,10 @@ main(){
     vault
     get_data
     #cctv
-    #rtrw
+    rtrw
     #check_hectic_isp
     #traffic_distribution
-    check_top_user
+    #check_top_user
     #cek_isp_failover
     #cek_critical_applications
     #cek_anomali_speedtest

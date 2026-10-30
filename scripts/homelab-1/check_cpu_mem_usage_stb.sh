@@ -46,8 +46,8 @@ check_cpu_mem_usage_stb(){
     if [[ -z "$HL2_MEM_USAGE" ]]; then HL2_MEM_USAGE="0.00"; fi
 
     # Kirim metrik Homelab-2 ke InfluxDB (Gunakan tag device=homelab_2)
-    curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
-    --data-binary "stb_resource,device=homelab_2 cpu_load=$HL2_CPU_LOAD,mem_usage=$HL2_MEM_USAGE" > /dev/null 2>&1
+    # curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
+    # --data-binary "stb_resource,device=homelab_2 cpu_load=$HL2_CPU_LOAD,mem_usage=$HL2_MEM_USAGE" > /dev/null 2>&1
 
     # Tarik data Top Process dari Redis Homelab-2
     HL2_TOP_APP_NAME=$(redis-cli -h "$REDIS_HOST" GET dump_top_app_name)
@@ -58,6 +58,6 @@ check_cpu_mem_usage_stb(){
     if [[ -z "$HL2_TOP_APP_CPU" ]]; then HL2_TOP_APP_CPU="0.00"; fi
 
     # Kirim Top Process Homelab-2 ke InfluxDB
-    curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
-    --data-binary "stb_top_process,device=homelab_2,app_name=$HL2_TOP_APP_NAME cpu_usage=$HL2_TOP_APP_CPU" > /dev/null 2>&1
+    # curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
+    # --data-binary "stb_top_process,device=homelab_2,app_name=$HL2_TOP_APP_NAME cpu_usage=$HL2_TOP_APP_CPU" > /dev/null 2>&1
 }

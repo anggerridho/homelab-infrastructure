@@ -1,10 +1,61 @@
 #!/bin/bash
 
 rtrw(){
+    # =========================================================================
+    # --- OPTION: CHECK STATUS PLN VIA MULTIPLE CCTV ---
+    # Set 'true' untuk mengaktifkan deteksi PLN padam, 'false' jika sudah pakai UPS.
+    # =========================================================================
+    ENABLE_PLN_CHECK=true
+    CCTV_IPS=("192.168.88.201" "192.168.10.11" "192.168.88.203")
+    PLN_FLAG="pln_outage_flag"
+
+    if [ "$ENABLE_PLN_CHECK" = true ]; then
+        DEAD_CCTV_COUNT=0
+
+        # Cek ping ke setiap CCTV
+        for IP in "${CCTV_IPS[@]}"; do
+            if ! ping -c 2 -i 0.2 -W 1 "${IP}" > /dev/null 2>&1; then
+                ((DEAD_CCTV_COUNT++))
+            fi
+        done
+
+        # Jika minimal 2 CCTV mati -> PLN Terkonfirmasi Padam
+        if [ "$DEAD_CCTV_COUNT" -ge 2 ]; then
+            HAS_PLN_ALERT=$(redis-cli -h ${REDIS_HOST} GET $PLN_FLAG)
+
+            if [ "$HAS_PLN_ALERT" != "1" ]; then
+                MSG="[$(date +'%Y%m%d_%H:%M:%S')] - 🔌 WARNING: PLN Padam / Listrik Mati! (${DEAD_CCTV_COUNT}/3 CCTV Offline). Pengecekan pelanggan di-skip."
+                echo "${MSG}"
+                TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
+                
+                # Set flag di Redis agar tidak spam alert
+                redis-cli -h ${REDIS_HOST} SET $PLN_FLAG "1" > /dev/null 2>&1
+            else
+                echo "[$(date +'%Y%m%d_%H:%M:%S')] - PLN masih padam (${DEAD_CCTV_COUNT}/3 CCTV Offline). Pengecekan di-skip."
+            fi
+
+            # Skip seluruh pengecekan pelanggan & InfluxDB
+            return 0
+        else
+            # PLN Normal / Menyala (Kurang dari 2 CCTV yang mati)
+            HAS_PLN_ALERT=$(redis-cli -h ${REDIS_HOST} GET $PLN_FLAG)
+
+            if [ "$HAS_PLN_ALERT" == "1" ]; then
+                MSG="[$(date +'%Y%m%d_%H:%M:%S')] - ⚡ RECOVERY: PLN Kembali Menyala! Pengecekan pelanggan dilanjutkan."
+                echo "${MSG}"
+                TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
+                
+                # Hapus flag PLN Padam dari Redis
+                redis-cli -h ${REDIS_HOST} DEL $PLN_FLAG > /dev/null 2>&1
+            fi
+        fi
+    fi
+
     # --- 0. EXEC HEALTH CHECK INFLUXDB TERPISAH ---
+    INFLUX_ONLINE=true
     if ! ${HOMELAB}/check_influx.sh; then
-        # Jika InfluxDB down, script langsung break/return 1
-        return 1
+        echo "[WARNING] InfluxDB Down/Unreachable! Penulisan log ke InfluxDB di-skip sementara."
+        INFLUX_ONLINE=false
     fi
 
     LIST_CLIENT="$(cat ${HOMELAB}/listCheck.conf | grep -E 'E1|E2' | grep -vi '#')"
@@ -27,6 +78,13 @@ rtrw(){
         # Ekstrak IP Address dari LOOP_CLIENT
         TARGET_IP="$(echo "${LOOP_CLIENT}" | awk -F'|' '{print $2}')"
             
+        # --- DEKLARASIKAN KUNCI REDIS DI SINI (AGAR SELALU TERSEDIA) ---
+        INACTIVE_FLAG="inactive_flag_${SAFE_CLIENT}"
+        SLOW_FLAG="slow_flag_${SAFE_CLIENT}"
+        REDIS_KEY="count_rtrw_${SAFE_CLIENT}"
+        REBOOT_FLAG="reboot_flag_${SAFE_CLIENT}"
+        FAKE_FLAG="fake_connect_flag_${SAFE_CLIENT}"
+
         # 2. Pengecekan awal IP di list active MikroTik
         CHECK_ACTIVE=$(echo "$ALL_ACTIVE_CLIENTS" | grep -E "${TARGET_IP}")
             
@@ -50,12 +108,9 @@ rtrw(){
                 [ -z "$PACKET_LOSS" ] && PACKET_LOSS=100
                 [ -z "$AVG_LATENCY" ] && AVG_LATENCY=0
                 
-                # Flag Redis khusus anti-spam alert koneksi lambat
-                INACTIVE_FLAG="inactive_flag_${SAFE_CLIENT}"
-                SLOW_FLAG="slow_flag_${SAFE_CLIENT}"
                 HAS_SLOW_ALERT=$(redis-cli -h ${REDIS_HOST} GET $SLOW_FLAG)
                 
-                if [[ "$PACKET_LOSS" -gt 20 ]] || [[ "$AVG_LATENCY" -gt 150 ]]; then
+                if [[ "$PACKET_LOSS" -gt 100 ]] || [[ "$AVG_LATENCY" -gt 500 ]]; then
                     if [ "$HAS_SLOW_ALERT" != "1" ]; then
                         MSG="[$(date +'%Y%m%d_%H:%M:%S')] - ⚠️ WARNING: Koneksi ${READ_CLIENT} (${TARGET_IP}) terindikasi lambat/buruk! Loss: ${PACKET_LOSS}% | Latency: ${AVG_LATENCY}ms"
                         echo "${MSG}"
@@ -76,20 +131,20 @@ rtrw(){
         fi
 
         # --- A. INTEGRASI GRAFANA (INFLUXDB) ---
-        # Kirim status, loss, dan latency sekaligus ke InfluxDB
-        curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
-        --data-binary "client_hotspot,nama=${SAFE_CLIENT} status=${STATUS_CODE},loss=${PACKET_LOSS},latency=${AVG_LATENCY}" > /dev/null 2>&1
+        # Hanya kirim ke InfluxDB jika DB dapat diakses
+        if [ "$INFLUX_ONLINE" = true ]; then
+            curl -s -i -XPOST "${DB_HOST}/write?db=${DB_NAME}" \
+            --data-binary "client_hotspot,nama=${SAFE_CLIENT} status=${STATUS_CODE},loss=${PACKET_LOSS},latency=${AVG_LATENCY}" > /dev/null 2>&1
+        fi
 
         # --- B. LOGIKA REDIS (ANTI-SPAM & STATE MACHINE) ---
-        REDIS_KEY="count_rtrw_${SAFE_CLIENT}"
-        REBOOT_FLAG="reboot_flag_${SAFE_CLIENT}"
-        FAKE_FLAG="fake_connect_flag_${SAFE_CLIENT}"
-
         if [ "$STATUS_CODE" -eq 1 ]; then
             # JIKA ONLINE SUNGGUHAN
             HAS_INACTIVE_ALERT=$(redis-cli -h ${REDIS_HOST} GET $INACTIVE_FLAG)
+            HAS_FAKE_ALERT=$(redis-cli -h ${REDIS_HOST} GET $FAKE_FLAG)
                 
-            if [ "$HAS_INACTIVE_ALERT" == "1" ]; then
+            # Cek apakah sebelumnya pelanggan sempat Inactive ATAU Fake Connect
+            if [ "$HAS_INACTIVE_ALERT" == "1" ] || [ "$HAS_FAKE_ALERT" == "1" ]; then
                 MSG="[$(date +'%Y%m%d_%H:%M:%S')] - ${READ_CLIENT} Connected"
                 echo "${MSG}"
                 TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
@@ -114,6 +169,8 @@ rtrw(){
                     
                     # Flag agar tidak spam alert Fake Connect
                     redis-cli -h ${REDIS_HOST} SET $FAKE_FLAG "1" > /dev/null 2>&1
+                else
+                    echo "[$(date +'%Y%m%d_%H:%M:%S')] - ${READ_CLIENT} Fake Connect (Tertahan Anti-Spam)"
                 fi
                 
             # 2. Kirim Alert untuk Inactive biasa (Benar-benar tidak ada di list MikroTik)
@@ -126,33 +183,11 @@ rtrw(){
                     
                     # Flag di Redis agar tidak dikirim berulang kali selama masih offline
                     redis-cli -h ${REDIS_HOST} SET $INACTIVE_FLAG "1" > /dev/null 2>&1
+                else
+                    MSG="[$(date +'%Y%m%d_%H:%M:%S')] - ${READ_CLIENT} Inactive (Tertahan Anti-Spam)"
+                    echo "${MSG}"
                 fi
             fi
-            
-            # Logika eskalasi reboot tetap dilanjutkan jika Timeout berlarut-larut
-            # if [ "$COUNT_INACTIVE" -eq 5 ]; then
-            #     MSG="A customer has received ${COUNT_INACTIVE} alerts indicating a failed connection to (${SSID_WISP}). I recommend that you try restarting the MikroTik as a troubleshooting step before contacting the customer regarding the issue they are experiencing."
-            #     echo "${MSG}"
-            #     TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
-            #     
-            # elif [ "$COUNT_INACTIVE" -gt "$TOO_MUCH" ]; then
-            #     HAS_REBOOTED=$(redis-cli -h ${REDIS_HOST} GET $REBOOT_FLAG)
-            #     
-            #     if [ "$HAS_REBOOTED" != "1" ]; then
-            #         MSG="A customer has received ${COUNT_INACTIVE} alerts indicating a failed connection to (${SSID_WISP}). I will help you restart MikroTik."
-            #         echo "${MSG}"
-            #         TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
-            #         
-            #         redis-cli -h ${REDIS_HOST} SET $REBOOT_FLAG "1" > /dev/null 2>&1
-            #         
-            #         # Eksekusi Reboot
-            #         ${HOMELAB}/terminate.sh -t 3 sshpass -p "$(echo ${MIKROTIK_PSSWD} | base64 -d)" ssh -t -oStrictHostKeyChecking=no ${MIKROTIK_HOST} ":execute {/system reboot}"
-            #     else
-            #         MSG="A customer has received ${COUNT_INACTIVE} alerts indicating a failed connection to (${SSID_WISP}). Please go on-site immediately to conduct a thorough and serious investigation."
-            #         echo "${MSG}"
-            #         TxT="$(echo "${MSG}")" ${HOMELAB}/alertelegram.sh
-            #     fi
-            # fi
         fi
     done <<< "$LIST_CLIENT"
 }

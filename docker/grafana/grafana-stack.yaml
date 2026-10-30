@@ -13,6 +13,8 @@ services:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_NAME=Main Org.
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_SERVER_DOMAIN=grafana.localhostaddr.biz.id
+      - GF_SERVER_ROOT_URL=https://grafana.localhostaddr.biz.id/
     volumes:
       # Pastikan path ini sudah ada beserta datanya di homelab-2
       - /mnt/disk1/grafana/data:/var/lib/grafana

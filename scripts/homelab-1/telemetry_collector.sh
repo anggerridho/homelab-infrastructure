@@ -25,9 +25,9 @@ AVG_TIME_MS=$(echo "$AGH_STATS" | jq '.avg_processing_time * 1000' | awk '{print
 #HL2_CPU_LOAD=$(redis-cli -h "$REDIS_HOST" GET dump_cpu_loadavg | tr -d '\r\n')
 
 # Validasi jika Node-2 mati
-HL2_RAM_USED=${HL2_RAM_USED:-0}
-HL2_RAM_FREE=${HL2_RAM_FREE:-0}
-HL2_CPU_LOAD=${HL2_CPU_LOAD:-0}
+#HL2_RAM_USED=${HL2_RAM_USED:-0}
+#HL2_RAM_FREE=${HL2_RAM_FREE:-0}
+#HL2_CPU_LOAD=${HL2_CPU_LOAD:-0}
 
 # --- B. METRIK HOMELAB-1 (Ambil Lokal) ---
 HL1_CPU_LOAD=$(awk '{print $1}' /proc/loadavg)
